@@ -1,72 +1,64 @@
 import React from 'react'
-import { StyleSheet, View, TextInput } from 'react-native'
-import { useFonts } from 'expo-font'
+import { StyleSheet, View, Text, TextInput } from 'react-native'
+import { Button } from 'react-native-paper'
+import styled from 'styled-components/native'
 
-//  components
-import Button from './Button'
-
-const Separator = () => (
-  <View style={styles.separator} />
-)
+const Separator = styled.View`
+  border-bottom-width: 1px;
+  border-bottom-color: #EBEBEB;
+  width: 133px;
+`
 
 const Login = () => {
-  const [fontsLoaded] = useFonts({
-    'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf')
-  })
+  // const [fontsLoaded] = useFonts({
+  //   'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf')
+  // })
 
-  if (!fontsLoaded) {
-    return null
-  } else {
-    return (
-      <View style={styles.container}>
-        <Separator />
-        <TextInput />
-        <Button />
+  // if (!fontsLoaded) {
+  //   return null
+  // } else {
+  return (
+    <View style={styles.container}>
+
+      <Text>Iniciar Sesión con</Text>
+      <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 42.5 }}>
+        <Separator /><Text style={{ paddingHorizontal: 12.5, flex: 0, alignItems: 'flex-end' }}>O</Text><Separator />
       </View>
-    )
-  }
+
+      <View>
+        <TextInput placeholder='Email' placeholderTextColor='#000' style={{ width: 291, fontSize: 14, borderBottomWidth: 1, borderBottomColor: '#707070', paddingBottom: 10, marginBottom: 22 }} />
+        <TextInput placeholder='Contraseña' placeholderTextColor='#000' style={{ width: 291, fontSize: 14, borderBottomWidth: 1, borderBottomColor: '#707070', paddingBottom: 10, marginBottom: 40 }} />
+      </View>
+
+      <View>
+        <Button mode='contained' color='#E1B21C' style={{ borderWidth: 0, borderRadius: 29, width: 291, marginBottom: 24 }}><Text style={{ color: '#fff' }}>Entrar</Text></Button>
+        <Button style={{ marginBottom: 72 }}><Text style={{ textTransform: 'capitalize', color: '#E1B21C' }}>Olvidaste tu Contraseña?</Text></Button>
+        <Button mode='contained' color='#fff' style={{ borderWidth: 1, borderRadius: 29, borderColor: '#707070', width: 291 }}>Registrate</Button>
+      </View>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: '21px'
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 20,
+    position: 'relative'
   },
 
-  signup: {
-    backgroundColor: '#E1B21C',
-    width: '100%',
-    paddingVertical: '16px',
-    borderRadius: '29px',
-    marginBottom: '20'
+  span: {
+    fontSize: 12
   },
 
-  textSignup: {
-    color: '#fff',
-    fontSize: '18px',
-    fontFamily: 'Poppins-Bold',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    textTransform: 'capitalize'
-  },
-
-  signin: {
-    backgroundColor: '#E1B21C',
-    width: '100%',
-    paddingVertical: '16px',
-    borderRadius: '29px',
-    marginBottom: '20'
-  },
-
-  textSignin: {
-    color: '#000',
-    fontSize: '18px',
-    fontFamily: 'Poppins-Bold',
-    textAlign: 'center',
-    textTransform: 'capitalize'
+  input: {
+    width: 291,
+    fontSize: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#707070',
+    paddingBottom: 5
   },
 
   separator: {
