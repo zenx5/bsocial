@@ -1,21 +1,32 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
 
 //  views
-import Login from './components/Login' // eslint-disable-line
+import Login from './views/Login.view'
+import RegisterUser from './components/registerUser'
 
-export default function App () {
+import Icons from './components/Icons/Icons'
+
+//  Header Logo
+const LogoBsocialBienvenida = () => {
   return (
-    <View style={styles.container}>
-      <Login />
+    <View style={{ alignItems: 'center', backgroundColor: '#fff', paddingTop: 37 }}>
+      <Icons name='BSocialBienvenida' />
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-})
+const Stack = createStackNavigator()
+
+export default function App () {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='Home'>
+        <Stack.Screen name='Register' component={RegisterUser} />
+        <Stack.Screen name='Login' options={{ header: props => <LogoBsocialBienvenida {...props} /> }} component={Login} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}

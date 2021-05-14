@@ -1,13 +1,10 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
-
-//  components
-import Button from './Button'
+import { View, StyleSheet, Text } from 'react-native'
 
 const Header = () => {
   return (
     <View style={styles.container}>
-      <Button bgColor='#E1B21C' borderRadius='27px' text='Crear Evento' textColor='#fff' />
+      <Text>Hello!</Text>
     </View>
   )
 }
