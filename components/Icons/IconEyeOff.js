@@ -6,7 +6,7 @@ function IconEyeOff (props) {
     <Svg
       {...props}
       xmlns='http://www.w3.org/2000/svg'
-      width={18.326}
+      width={21.641}
       height={18.326}
       viewBox='0 0 18.326 18.326'
     >

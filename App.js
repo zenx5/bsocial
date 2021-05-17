@@ -1,31 +1,47 @@
 import React from 'react'
-import { View } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
+import AppLoading from 'expo-app-loading'
 
 //  views
-import Login from './views/Login.view'
-import RegisterUser from './components/registerUser'
+import Login from './screens/Login'
+import Signup from './screens/Signup'
+import Home from './screens/Home'
+import CreateEvent from './screens/CreateEvent'
+import HomeTest from './screens/Home/HomeTest'
 
-import Icons from './components/Icons/Icons'
+//  Headers
+import SignupHeader from './screens/Signup/SignupHeader'
+import HomeHeader from './screens/Home/HomeHeader'
+import CreateEventHeader from './components/CreateEventHeader'
 
-//  Header Logo
-const LogoBsocialBienvenida = () => {
+const Stack = createStackNavigator()
+const Tab = createBottomTabNavigator()
+
+const HomeTabs = () => {
   return (
-    <View style={{ alignItems: 'center', backgroundColor: '#fff', paddingTop: 37 }}>
-      <Icons name='BSocialBienvenida' />
-    </View>
+    <Tab.Navigator>
+      <Tab.Screen name='Home' component={Home} options={{ tabBarBadge: 3 }} />
+    </Tab.Navigator>
   )
 }
 
-const Stack = createStackNavigator()
-
 export default function App () {
+  //  fonts
+  const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins700Bold: Poppins_700Bold })
+  if (!fontsLoaded) {
+    return <AppLoading />
+  }
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home'>
-        <Stack.Screen name='Register' component={RegisterUser} />
-        <Stack.Screen name='Login' options={{ header: props => <LogoBsocialBienvenida {...props} /> }} component={Login} />
+      <Stack.Navigator>
+        <Stack.Screen name='Create Event' component={CreateEvent} options={{ header: props => <CreateEventHeader {...props} /> }} />
+        <Stack.Screen name='Login' component={Login} options={{ header: () => null }} />
+        <Stack.Screen name='Signup' component={Signup} options={{ header: props => <SignupHeader {...props} /> }} />
+        <Stack.Screen name='Home' component={HomeTabs} options={{ header: props => <HomeHeader {...props} /> }} />
+        <Stack.Screen name='test localizacion' component={HomeTest} />
       </Stack.Navigator>
     </NavigationContainer>
   )
