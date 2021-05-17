@@ -11,19 +11,41 @@ import Signup from './screens/Signup'
 import Home from './screens/Home'
 import CreateEvent from './screens/CreateEvent'
 import HomeTest from './screens/Home/HomeTest'
+import Settings from './screens/Settings'
 
 //  Headers
 import SignupHeader from './screens/Signup/SignupHeader'
-import HomeHeader from './screens/Home/HomeHeader'
 import CreateEventHeader from './components/CreateEventHeader'
+
+//  icons
+import IconsSwitching from './components/Icons/IconsSwitching'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
 
 const HomeTabs = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name='Home' component={Home} options={{ tabBarBadge: 3 }} />
+    <Tab.Navigator
+      screenOptions={({ route }) => (
+        {
+          tabBarIcon: ({ focused }) => {
+            let iconName
+
+            if (route.name === 'Home') {
+              iconName = focused
+                ? 'HomeOn'
+                : 'HomeOff'
+            } else if (route.name === 'Settings') {
+              iconName = focused ? 'SettingOn' : 'SettingOff'
+            }
+
+            return <IconsSwitching name={iconName} />
+          }
+        }
+      )}
+    >
+      <Tab.Screen name='Home' component={Home} options={{ tabBarLabel: () => null }} />
+      <Tab.Screen name='Settings' component={Settings} options={{ tabBarLabel: () => null }} />
     </Tab.Navigator>
   )
 }
@@ -37,10 +59,10 @@ export default function App () {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name='Create Event' component={CreateEvent} options={{ header: props => <CreateEventHeader {...props} /> }} />
         <Stack.Screen name='Login' component={Login} options={{ header: () => null }} />
         <Stack.Screen name='Signup' component={Signup} options={{ header: props => <SignupHeader {...props} /> }} />
-        <Stack.Screen name='Home' component={HomeTabs} options={{ header: props => <HomeHeader {...props} /> }} />
+        <Stack.Screen name='Home' component={HomeTabs} options={{ header: () => null }} />
+        <Stack.Screen name='Create Event' component={CreateEvent} options={{ header: props => <CreateEventHeader {...props} /> }} />
         <Stack.Screen name='test localizacion' component={HomeTest} />
       </Stack.Navigator>
     </NavigationContainer>

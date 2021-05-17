@@ -4,15 +4,14 @@ import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from 
 import AppLoading from 'expo-app-loading'
 
 //  components
-import InputLogin from './InputLogin'
-import InputPassword from './InputPassword'
 
 //  icons / logos
 import LogoBSocialBienvenida from '../../components/Icons/LogoBsocialBienvenida'
 import IconFacebook from '../../components/Icons/IconFacebook'
 import IconGoogle from '../../components/Icons/IconGoogle'
 
-const Login = (props) => {
+const Settings = (props) => {
+  console.log(props)
   const goSignup = () => props.navigation.navigate('Signup')
   const goHome = () => props.navigation.navigate('Home')
 
@@ -37,9 +36,6 @@ const Login = (props) => {
       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 42.5 }}>
         <View style={styles.separator} /><Text style={{ paddingHorizontal: 12.5, fontFamily: 'Poppins_400Regular' }}>o</Text><View style={styles.separator} />
       </View>
-
-      <InputLogin />
-      <InputPassword />
 
       <TouchableOpacity onPress={goHome} style={{ backgroundColor: '#E1B21C', borderRadius: 29, paddingVertical: 16, width: 291, marginBottom: 24 }}>
         <Text style={{ color: '#FFFFFF', textAlign: 'center', fontSize: 18, textTransform: 'uppercase', fontFamily: 'Poppins_700Bold' }}>
@@ -79,4 +75,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Login
+export default Settings
