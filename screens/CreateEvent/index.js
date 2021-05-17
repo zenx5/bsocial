@@ -13,6 +13,9 @@ const CreateEvent = () => {
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
 
+  //  button
+  const [completeInfo, setCompleteInfo] = useState(false)  // eslint-disable-line
+
   //  on waiting for the fonts
   if (!fontsLoaded) {
     return <AppLoading />
@@ -22,32 +25,42 @@ const CreateEvent = () => {
     <View style={styles.container}>
       {/* Geolocalizador Input */}
       <View style={{ marginBottom: 26.7 }}>
-        <TouchableOpacity pla style={styles.geolocalizadorInput}>
+        <TouchableOpacity style={styles.geolocalizadorInput}>
           <Text style={styles.geolocalizadorText}>Ubicación</Text>
           <IconGeolocalizador style={styles.geolocalizadorIcon} />
         </TouchableOpacity>
         <Text style={{ fontSize: 11, fontFamily: 'Poppins_300Light', color: '#00000050' }}>Zona horaria determinada por ubicación</Text>
       </View>
 
-      {/* Date */}
-      <TextInput placeholder='Nombre' placeholderTextColor='#000' style={styles.textInput} />
+      <View style={styles.dateTimeContainer}>
+        {/* Date */}
+        <IconDate />
 
-      {/* Time */}
-      <TextInput placeholder='Apellido' placeholderTextColor='#000' style={styles.textInput} />
+        {/* Time */}
+        <IconTime />
+      </View>
 
-      <TextInput placeholder='correo' placeholderTextColor='#000' style={styles.textInput} />
+      {/* event name */}
+      <TextInput placeholder='Nombre del evento' placeholderTextColor='#000' style={styles.eventName} />
 
-      <TouchableOpacity>
+      {/* description */}
+      <TextInput placeholder='Descripcion' multiline placeholderTextColor='#000' style={styles.description} />
+
+      {/* image upload */}
+      <TouchableOpacity style={styles.imageInput}>
         <IconImage />
-        <Text style={styles.textInput}>Subir Foto</Text>
+        <Text style={styles.imageText}>Subir Foto</Text>
       </TouchableOpacity>
 
-      {/* CheckBox */}
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 48 }}>
-        <Text style={styles.checkBoxText}>He leído las terminos y políticas de la empresa</Text>
+      {/* category */}
+      <View style={styles.categoriContainer}>
+        <Text style={styles.categoriText}>Selecciona una categoria</Text>
       </View>
 
       {/* Button */}
+      <TouchableOpacity disabled={!completeInfo} style={[styles.buttonDisable, completeInfo && styles.buttonBase]}>
+        <Text style={[styles.buttonTextDisable, completeInfo && styles.buttonTextBase]}>Continuar</Text>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -57,7 +70,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 24
   },
 
   geolocalizadorInput: {
@@ -65,7 +80,6 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: '#00000014',
     borderRadius: 10,
-    position: 'relative',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -83,56 +97,88 @@ const styles = StyleSheet.create({
 
   geolocalizadorIcon: {
     paddingRight: 7,
-    with: 43.12,
+    width: 43.12,
     height: 37.73
   },
 
-  text: {
-    marginTop: 38,
-    marginBottom: 27,
-    fontSize: 12,
-    fontFamily: 'Poppins_400Regular'
+  dateTimeContainer: {
+    width: 320,
+    height: 60,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 25
+  },
+
+  date: {
+    width: 157,
+    height: 60,
+    backgroundColor: '#00000014',
+    borderRadius: 10,
+    marginLeft: 6
+  },
+
+  time: {
+    marginRight: 20,
+    width: 157,
+    height: 60,
+    backgroundColor: '#00000014',
+    borderRadius: 10
+  },
+
+  eventName: {
+    width: 320,
+    height: 60,
+    color: '#000000',
+    fontSize: 16,
+    fontFamily: 'Poppins_400Regular',
+    paddingLeft: 17,
+    paddingVertical: 19,
+    backgroundColor: '#00000014',
+    borderRadius: 10,
+    marginBottom: 24
+  },
+
+  description: {
+    width: 320,
+    height: 117,
+    paddingTop: 16,
+    paddingLeft: 16,
+    color: '#000',
+    fontSize: 16,
+    fontFamily: 'Poppins_400Regular',
+    backgroundColor: '#00000014',
+    borderRadius: 10,
+    marginBottom: 25
   },
 
   imageInput: {
-    backgroundColor: '#EBEBEB',
-    width: 102,
-    height: 102,
-    borderRadius: 20,
+    width: 320,
+    height: 140,
+    backgroundColor: '#00000014',
+    borderRadius: 10,
     justifyContent: 'center',
-    marginBottom: 18
+    alignItems: 'center',
+    marginBottom: 20
   },
 
-  textInput: {
-    backgroundColor: '#EBEBEB',
-    borderRadius: 20,
-    width: 291,
-    height: 39,
-    paddingLeft: 41,
-    marginBottom: 18,
-    fontSize: 11,
-    fontFamily: 'Poppins_400Regular'
+  imageText: {
+    color: '#000',
+    fontSize: 16,
+    fontFamily: 'Poppins_400Regular',
+    marginTop: 15.5
   },
 
-  checkboxBase: {
-    backgroundColor: '#EBEBEB',
-    borderWidth: 0,
-    borderRadius: 5,
-    width: 20,
-    height: 20,
-    justifyContent: 'center',
-    alignItems: 'center'
+  categoriContainer: {
+    flexDirection: 'row',
+    marginBottom: 16
   },
 
-  checkboxChecked: {
-    backgroundColor: '#E1B21C'
-  },
-
-  checkBoxText: {
-    color: '#231F20',
-    marginLeft: 10,
-    fontSize: 10,
-    fontFamily: 'Poppins_400Regular'
+  categoriText: {
+    color: '#000',
+    fontSize: 16,
+    fontFamily: 'Poppins_400Regular',
+    textAlign: 'left'
   },
 
   buttonDisable: {
@@ -148,7 +194,7 @@ const styles = StyleSheet.create({
   },
 
   buttonTextDisable: {
-    color: '#58595B',
+    color: '#00000040',
     textAlign: 'center',
     fontSize: 18,
     fontFamily: 'Poppins_700Bold',
