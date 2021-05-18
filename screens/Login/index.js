@@ -14,7 +14,7 @@ import IconGoogle from '../../components/Icons/IconGoogle'
 
 const Login = (props) => {
   const goSignup = () => props.navigation.navigate('Signup')
-  const goHome = () => props.navigation.navigate('Home')
+  const goHome = () => props.navigation.navigate('MainTabs')
 
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
 
@@ -26,7 +26,7 @@ const Login = (props) => {
     <View style={styles.container}>
       <LogoBSocialBienvenida />
 
-      <Text style={{ marginBottom: 15, fontFamily: 'Poppins_400Regular' }}>Iniciar Sesión con</Text>
+      <Text style={{ marginTop: 50, marginBottom: 15, fontFamily: 'Poppins_400Regular' }}>Iniciar Sesión con</Text>
 
       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', marginBottom: 57.5 }}>
         <IconFacebook style={{ marginRight: 40 }} />
@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingTop: 37,
-    paddingBottom: 29
+    paddingTop: 30,
+    paddingBottom: 30
   },
 
   separator: {

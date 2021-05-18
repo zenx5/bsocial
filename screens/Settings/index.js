@@ -1,21 +1,17 @@
 import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
-import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
+import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native'
+import { useFonts, Poppins_300Light, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
 import AppLoading from 'expo-app-loading'
 
 //  components
 
 //  icons / logos
-import LogoBSocialBienvenida from '../../components/Icons/LogoBsocialBienvenida'
-import IconFacebook from '../../components/Icons/IconFacebook'
-import IconGoogle from '../../components/Icons/IconGoogle'
+import IconArrowLeft from '../../components/Icons/IconArrowLeft'
 
 const Settings = (props) => {
-  console.log(props)
-  const goSignup = () => props.navigation.navigate('Signup')
-  const goHome = () => props.navigation.navigate('Home')
+  const logout = () => props.navigation.navigate('Login')
 
-  const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
+  const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_500Medium, Poppins_700Bold })
 
   if (!fontsLoaded) {
     return <AppLoading />
@@ -23,36 +19,66 @@ const Settings = (props) => {
 
   return (
     <View style={styles.container}>
-      <LogoBSocialBienvenida />
+      {/* Title */}
+      <Text style={styles.title}>Ajustes</Text>
 
-      <Text style={{ marginBottom: 15, fontFamily: 'Poppins_400Regular' }}>Iniciar Sesión con</Text>
-
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', marginBottom: 57.5 }}>
-        <IconFacebook style={{ marginRight: 40 }} />
-        <IconGoogle />
+      {/* foto de perfil */}
+      <View style={styles.section}>
+        <Text style={styles.sectionName}>Foto de perfil</Text>
+        <View style={styles.sectionContent}>
+          <Image style={styles.contentSectionImage} />
+          <IconArrowLeft stroke='#00000029' />
+        </View>
       </View>
 
       {/* separator */}
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 42.5 }}>
-        <View style={styles.separator} /><Text style={{ paddingHorizontal: 12.5, fontFamily: 'Poppins_400Regular' }}>o</Text><View style={styles.separator} />
+      <View style={styles.separator} />
+
+      {/* account */}
+      <View style={styles.section}>
+        <Text style={styles.sectionName}>Nombre</Text>
+        <View style={styles.sectionContent}>
+          <Text style={styles.contentSectionText}>John William</Text>
+          <IconArrowLeft stroke='#00000029' />
+        </View>
       </View>
 
-      <TouchableOpacity onPress={goHome} style={{ backgroundColor: '#E1B21C', borderRadius: 29, paddingVertical: 16, width: 291, marginBottom: 24 }}>
-        <Text style={{ color: '#FFFFFF', textAlign: 'center', fontSize: 18, textTransform: 'uppercase', fontFamily: 'Poppins_700Bold' }}>
-          Entrar
-        </Text>
-      </TouchableOpacity>
+      {/* separator */}
+      <View style={styles.separator} />
 
-      <TouchableOpacity style={{ marginBottom: 72 }}>
-        <Text style={{ textTransform: 'capitalize', color: '#E1B21C', fontFamily: 'Poppins_300Light' }}>
-          Olvidaste tu Contraseña?
-        </Text>
-      </TouchableOpacity>
+      {/* name */}
+      <View style={styles.section}>
+        <Text style={styles.sectionName}>Nombre</Text>
+        <View style={styles.sectionContent}>
+          <Text style={styles.contentSectionText}>johnywill@gmail.com</Text>
+          <IconArrowLeft stroke='#00000029' />
+        </View>
+      </View>
 
-      <TouchableOpacity onPress={goSignup} style={{ backgroundColor: '#fff', borderWidth: 1, borderRadius: 29, borderColor: '#707070', width: 291, paddingVertical: 16 }}>
-        <Text style={{ color: '#000', textAlign: 'center', textTransform: 'uppercase', fontFamily: 'Poppins_700Bold' }}>
-          Registrate
-        </Text>
+      {/* separator */}
+      <View style={styles.separator} />
+
+      {/* actualizar contraseña */}
+      <View style={styles.section}>
+        <Text style={styles.sectionName}>Actualizar Contraseña</Text>
+        <View style={styles.sectionContent}>
+          <IconArrowLeft stroke='#00000029' />
+        </View>
+      </View>
+
+      {/* separator */}
+      <View style={styles.separator} />
+
+      {/* Intereses */}
+      <View style={styles.section}>
+        <Text style={styles.sectionName}>Intereses</Text>
+        <View style={styles.sectionContent}>
+          <IconArrowLeft stroke='#00000029' />
+        </View>
+      </View>
+
+      <TouchableOpacity onPress={logout} style={styles.button}>
+        <Text style={styles.buttonText}>Cerrar Sesión</Text>
       </TouchableOpacity>
     </View>
   )
@@ -61,17 +87,80 @@ const Settings = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingTop: 37,
-    paddingBottom: 29
+    paddingTop: 30,
+    paddingBottom: 30
+  },
+
+  title: {
+    fontSize: 20,
+    fontFamily: 'Poppins_700Bold',
+    alignSelf: 'flex-start',
+    paddingLeft: 30,
+    marginBottom: 26
+  },
+
+  section: {
+    width: 375,
+    height: 62,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+
+  sectionName: {
+    fontSize: 12,
+    color: '#000',
+    fontFamily: 'Poppins_500Medium',
+    paddingLeft: 30
+  },
+
+  sectionContent: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingRight: 30
+  },
+
+  contentSectionText: {
+    fontSize: 12,
+    color: '#000',
+    fontFamily: 'Poppins_300Light',
+    paddingRight: 30
+  },
+
+  contentSectionImage: {
+    width: 53,
+    height: 53,
+    borderRadius: 10,
+    backgroundColor: '#00000029',
+    marginRight: 30
   },
 
   separator: {
+    width: 350,
     borderBottomWidth: 1,
-    borderBottomColor: '#EBEBEB',
-    width: 133
+    borderColor: '#00000014',
+    marginVertical: 7.5
+  },
+
+  button: {
+    width: 291,
+    height: 36,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderRadius: 16,
+    borderColor: '#EC6666',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 175
+  },
+
+  buttonText: {
+    fontSize: 14,
+    color: '#EC6666',
+    fontFamily: 'Poppins_500Medium'
   }
 })
 
