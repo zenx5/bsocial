@@ -9,7 +9,7 @@ import IconDate from '../../components/Icons/IconDate'
 import IconTime from '../../components/Icons/IconTime'
 import IconImage from '../../components/Icons/IconImage'
 
-const CreateEvent = () => {
+const CreateEventStep1 = () => {
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
 
@@ -207,4 +207,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default CreateEvent
+export default CreateEventStep1

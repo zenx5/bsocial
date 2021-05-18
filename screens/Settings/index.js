@@ -36,9 +36,9 @@ const Settings = (props) => {
 
       {/* account */}
       <View style={styles.section}>
-        <Text style={styles.sectionName}>Nombre</Text>
+        <Text style={styles.sectionName}>Cuenta</Text>
         <View style={styles.sectionContent}>
-          <Text style={styles.contentSectionText}>John William</Text>
+          <Text style={styles.contentSectionText}>johnywill@gmail.com</Text>
           <IconArrowLeft stroke='#00000029' />
         </View>
       </View>
@@ -50,7 +50,7 @@ const Settings = (props) => {
       <View style={styles.section}>
         <Text style={styles.sectionName}>Nombre</Text>
         <View style={styles.sectionContent}>
-          <Text style={styles.contentSectionText}>johnywill@gmail.com</Text>
+          <Text style={styles.contentSectionText}>John William</Text>
           <IconArrowLeft stroke='#00000029' />
         </View>
       </View>
@@ -89,15 +89,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingTop: 30,
-    paddingBottom: 30
+    padding: 30
   },
 
   title: {
     fontSize: 20,
     fontFamily: 'Poppins_700Bold',
     alignSelf: 'flex-start',
-    paddingLeft: 30,
     marginBottom: 26
   },
 
@@ -106,7 +104,8 @@ const styles = StyleSheet.create({
     height: 62,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingRight: 30
   },
 
   sectionName: {
@@ -119,8 +118,7 @@ const styles = StyleSheet.create({
   sectionContent: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
-    paddingRight: 30
+    alignItems: 'center'
   },
 
   contentSectionText: {

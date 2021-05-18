@@ -15,23 +15,28 @@ const HomeHeader = ({ navigation }) => {
       <TouchableOpacity onPress={() => navigation.navigate('Create Event')} style={styles.button}>
         <Text style={styles.buttonText}>Crear Evento</Text>
       </TouchableOpacity>
-      <Image
-        style={styles.image}
-        source={{
-          uri: 'https://static3.abc.es/media/tecnologia/2020/12/18/cyberpunk-kcrB--620x349@abc.jpg'
-        }}
-      />
+
+      <View>
+        <Image
+          style={styles.image}
+          source={{
+            uri: ''
+          }}
+        />
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
     backgroundColor: '#fff',
-    paddingTop: 15,
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    paddingVertical: 15,
+    paddingHorizontal: 20
   },
 
   button: {
@@ -40,7 +45,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#E1B21C',
     borderRadius: 27,
     paddingVertical: 13,
-    marginLeft: 23,
     marginBottom: 18
   },
 
@@ -55,8 +59,8 @@ const styles = StyleSheet.create({
   image: {
     width: 53,
     height: 53,
-    marginRight: 18,
-    borderRadius: 6
+    borderRadius: 6,
+    backgroundColor: '#00000029'
   }
 })
 

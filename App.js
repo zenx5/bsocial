@@ -9,7 +9,7 @@ import AppLoading from 'expo-app-loading'
 import Login from './screens/Login'
 import Signup from './screens/Signup'
 import Home from './screens/Home'
-import CreateEvent from './screens/CreateEvent'
+import CreateEventStep1 from './screens/CreateEventStep1'
 import HomeTest from './screens/Home/HomeTest'
 import Settings from './screens/Settings'
 
@@ -62,7 +62,7 @@ export default function App () {
         <Stack.Screen name='Login' component={Login} options={{ header: () => null }} />
         <Stack.Screen name='Signup' component={Signup} options={{ header: props => <SignupHeader {...props} /> }} />
         <Stack.Screen name='MainTabs' component={MainTabs} options={{ header: () => null }} />
-        <Stack.Screen name='Create Event' component={CreateEvent} options={{ header: props => <CreateEventHeader {...props} /> }} />
+        <Stack.Screen name='Create Event' component={CreateEventStep1} options={{ header: props => <CreateEventHeader {...props} /> }} />
         <Stack.Screen name='test localizacion' component={HomeTest} />
       </Stack.Navigator>
     </NavigationContainer>

@@ -14,7 +14,7 @@ const SignupHeader = ({ navigation }) => {
   }
 
   return (
-    <View style={{ backgroundColor: '#fff', paddingTop: 29, flexDirection: 'row' }}>
+    <View style={{ backgroundColor: '#fff', paddingTop: 30, flexDirection: 'row' }}>
       <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 32 }}>
         <IconBack />
       </TouchableOpacity>
