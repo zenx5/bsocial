@@ -15,22 +15,32 @@ const UpcomingEvents = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Proximos Eventos</Text>
-      <IconSettings style={styles.icon} />
+      <View style={styles.containerHeader}>
+        <Text style={styles.text}>Proximos Eventos</Text>
+        <IconSettings style={styles.icon} />
+      </View>
+      <View style={styles.containerMap} />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
     backgroundColor: '#fff',
     flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 11,
+    paddingHorizontal: 20,
+    marginVertical: 9
+  },
+
+  containerHeader: {
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    marginTop: 7
+    marginBottom: 11
   },
 
   text: {
@@ -41,6 +51,13 @@ const styles = StyleSheet.create({
 
   icon: {
     paddingRight: 15
+  },
+
+  containerMap: {
+    width: 356,
+    height: 243,
+    borderRadius: 5,
+    backgroundColor: '#00000020'
   }
 })
 
