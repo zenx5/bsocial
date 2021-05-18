@@ -9,9 +9,11 @@ import AppLoading from 'expo-app-loading'
 import Login from './screens/Login'
 import Signup from './screens/Signup'
 import Home from './screens/Home'
+import Contacts from './screens/Contacts'
+import List from './screens/List'
+import Settings from './screens/Settings'
 import CreateEventStep1 from './screens/CreateEventStep1'
 import HomeTest from './screens/Home/HomeTest'
-import Settings from './screens/Settings'
 
 //  Headers
 import SignupHeader from './screens/Signup/SignupHeader'
@@ -32,9 +34,11 @@ const MainTabs = () => {
             let iconName
 
             if (route.name === 'Home') {
-              iconName = focused
-                ? 'HomeOn'
-                : 'HomeOff'
+              iconName = focused ? 'HomeOn' : 'HomeOff'
+            } else if (route.name === 'Contacts') {
+              iconName = focused ? 'ContactOn' : 'ContactOff'
+            } else if (route.name === 'List') {
+              iconName = focused ? 'ListOn' : 'ListOff'
             } else if (route.name === 'Settings') {
               iconName = focused ? 'SettingOn' : 'SettingOff'
             }
@@ -45,6 +49,8 @@ const MainTabs = () => {
       )}
     >
       <Tab.Screen name='Home' component={Home} options={{ tabBarLabel: () => null }} />
+      <Tab.Screen name='Contacts' component={Contacts} options={{ tabBarLabel: () => null }} />
+      <Tab.Screen name='List' component={List} options={{ tabBarLabel: () => null }} />
       <Tab.Screen name='Settings' component={Settings} options={{ tabBarLabel: () => null }} />
     </Tab.Navigator>
   )
