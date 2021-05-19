@@ -1,12 +1,12 @@
 import React from 'react'
-import { TouchableOpacity, View, Text } from 'react-native'
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native'
 import { useFonts, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 
 //  icons
 import IconClose from './Icons/IconClose'
 
-const CreateEventHeader = ({ navigation }) => {
+const CreateEventStep1Header = ({ navigation }) => {
   const [fontsLoaded] = useFonts({ Poppins_700Bold })
 
   if (!fontsLoaded) {
@@ -14,7 +14,7 @@ const CreateEventHeader = ({ navigation }) => {
   }
 
   return (
-    <View style={{ backgroundColor: '#fff', paddingTop: 27, paddingHorizontal: 30, flexDirection: 'row', justifyContent: 'space-between' }}>
+    <View style={styles.container}>
       <Text style={{ fontSize: 18, fontFamily: 'Poppins_700Bold' }}>Crear evento</Text>
 
       <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -24,4 +24,16 @@ const CreateEventHeader = ({ navigation }) => {
   )
 }
 
-export default CreateEventHeader
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    backgroundColor: '#fff',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 25,
+    paddingHorizontal: 20
+  }
+})
+
+export default CreateEventStep1Header

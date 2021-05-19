@@ -9,13 +9,13 @@ import IconDate from '../../components/Icons/IconDate'
 import IconTime from '../../components/Icons/IconTime'
 import IconImage from '../../components/Icons/IconImage'
 
-const CreateEventStep1 = () => {
+const CreateEventStep1 = (props) => {
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
 
   //  button
-  const [completeInfo, setCompleteInfo] = useState(false)  // eslint-disable-line
-
+  const [completeInfo, setCompleteInfo] = useState(true)  // eslint-disable-line
+  const goStep2 = () => props.navigation.navigate('Create Event Step 2')
   //  on waiting for the fonts
   if (!fontsLoaded) {
     return <AppLoading />
@@ -23,8 +23,9 @@ const CreateEventStep1 = () => {
 
   return (
     <View style={styles.container}>
+
       {/* Geolocalizador Input */}
-      <View style={{ marginBottom: 26.7 }}>
+      <View style={styles.location}>
         <TouchableOpacity style={styles.geolocalizadorInput}>
           <Text style={styles.geolocalizadorText}>Ubicación</Text>
           <IconGeolocalizador style={styles.geolocalizadorIcon} />
@@ -34,10 +35,16 @@ const CreateEventStep1 = () => {
 
       <View style={styles.dateTimeContainer}>
         {/* Date */}
-        <IconDate />
+        <View style={styles.dateTime}>
+          <IconDate />
+          <Text style={styles.dateTimeText}>Fecha</Text>
+        </View>
 
         {/* Time */}
-        <IconTime />
+        <View style={styles.dateTime}>
+          <IconTime />
+          <Text style={styles.dateTimeText}>Hora</Text>
+        </View>
       </View>
 
       {/* event name */}
@@ -53,12 +60,13 @@ const CreateEventStep1 = () => {
       </TouchableOpacity>
 
       {/* category */}
-      <View style={styles.categoriContainer}>
+      <View style={styles.categoryContainer}>
+        <TouchableOpacity style={styles.categoryDisabled} />
         <Text style={styles.categoriText}>Selecciona una categoria</Text>
       </View>
 
       {/* Button */}
-      <TouchableOpacity disabled={!completeInfo} style={[styles.buttonDisable, completeInfo && styles.buttonBase]}>
+      <TouchableOpacity disabled={!completeInfo} onPress={goStep2} style={[styles.buttonDisable, completeInfo && styles.buttonBase]}>
         <Text style={[styles.buttonTextDisable, completeInfo && styles.buttonTextBase]}>Continuar</Text>
       </TouchableOpacity>
     </View>
@@ -72,11 +80,16 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 24
+    paddingVertical: 30,
+    paddingHorizontal: 20
+  },
+
+  location: {
+    width: '100%',
+    marginBottom: 25
   },
 
   geolocalizadorInput: {
-    width: 320,
     height: 60,
     backgroundColor: '#00000014',
     borderRadius: 10,
@@ -85,7 +98,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#00000011',
-    marginBottom: 6
+    marginBottom: 7
   },
 
   geolocalizadorText: {
@@ -102,32 +115,32 @@ const styles = StyleSheet.create({
   },
 
   dateTimeContainer: {
-    width: 320,
+    width: '100%',
     height: 60,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
     marginBottom: 25
   },
 
-  date: {
-    width: 157,
+  dateTime: {
+    width: '49%',
     height: 60,
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#00000014',
     borderRadius: 10,
-    marginLeft: 6
+    paddingLeft: 17.5
   },
 
-  time: {
-    marginRight: 20,
-    width: 157,
-    height: 60,
-    backgroundColor: '#00000014',
-    borderRadius: 10
+  dateTimeText: {
+    fontSize: 16,
+    fontFamily: 'Poppins_400Regular',
+    color: '#000',
+    marginLeft: 13.2
   },
 
   eventName: {
-    width: 320,
+    width: '100%',
     height: 60,
     color: '#000000',
     fontSize: 16,
@@ -140,7 +153,7 @@ const styles = StyleSheet.create({
   },
 
   description: {
-    width: 320,
+    width: '100%',
     height: 117,
     paddingTop: 16,
     paddingLeft: 16,
@@ -153,7 +166,7 @@ const styles = StyleSheet.create({
   },
 
   imageInput: {
-    width: 320,
+    width: '100%',
     height: 140,
     backgroundColor: '#00000014',
     borderRadius: 10,
@@ -169,9 +182,18 @@ const styles = StyleSheet.create({
     marginTop: 15.5
   },
 
-  categoriContainer: {
+  categoryContainer: {
+    width: '100%',
     flexDirection: 'row',
     marginBottom: 16
+  },
+
+  categoryDisabled: {
+    backgroundColor: '#00000014',
+    borderRadius: 30,
+    width: 22,
+    height: 22,
+    marginRight: 12
   },
 
   categoriText: {

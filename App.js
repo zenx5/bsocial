@@ -13,11 +13,13 @@ import Contacts from './screens/Contacts'
 import List from './screens/List'
 import Settings from './screens/Settings'
 import CreateEventStep1 from './screens/CreateEventStep1'
+import CreateEventStep2 from './screens/CreateEventStep2'
+import CreateEventStep3 from './screens/CreateEventStep3'
 import HomeTest from './screens/Home/HomeTest'
 
 //  Headers
 import SignupHeader from './screens/Signup/SignupHeader'
-import CreateEventHeader from './components/CreateEventHeader'
+import CreateEventStep1Header from './components/CreateEventStep1Header'
 
 //  icons
 import IconsSwitching from './components/Icons/IconsSwitching'
@@ -68,7 +70,9 @@ export default function App () {
         <Stack.Screen name='Login' component={Login} options={{ header: () => null }} />
         <Stack.Screen name='Signup' component={Signup} options={{ header: props => <SignupHeader {...props} /> }} />
         <Stack.Screen name='MainTabs' component={MainTabs} options={{ header: () => null }} />
-        <Stack.Screen name='Create Event' component={CreateEventStep1} options={{ header: props => <CreateEventHeader {...props} /> }} />
+        <Stack.Screen name='Create Event Step 1' component={CreateEventStep1} options={{ header: props => <CreateEventStep1Header {...props} /> }} />
+        <Stack.Screen name='Create Event Step 2' component={CreateEventStep2} options={{ header: () => null }} />
+        <Stack.Screen name='Create Event Step 3' component={CreateEventStep3} options={{ header: () => null }} />
         <Stack.Screen name='test localizacion' component={HomeTest} />
       </Stack.Navigator>
     </NavigationContainer>

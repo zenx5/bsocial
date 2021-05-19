@@ -12,7 +12,7 @@ const HomeHeader = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.navigate('Create Event')} style={styles.button}>
+      <TouchableOpacity onPress={() => navigation.navigate('Create Event Step 1')} style={styles.button}>
         <Text style={styles.buttonText}>Crear Evento</Text>
       </TouchableOpacity>
 

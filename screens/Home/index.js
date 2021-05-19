@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView } from 'react-native'
+import { ScrollView, View } from 'react-native'
 
 //  components
 import HomeHeader from '../../components/HomeHeader'
@@ -8,11 +8,16 @@ import FeaturedEvents from '../../components/FeaturedEvents'
 
 const Home = (props) => {
   return (
-    <ScrollView>
-      <HomeHeader {...props} />
-      <UpcomingEvents />
-      <FeaturedEvents />
-    </ScrollView>
+    <>
+      <View>
+        <HomeHeader {...props} />
+      </View>
+
+      <ScrollView>
+        <UpcomingEvents />
+        <FeaturedEvents />
+      </ScrollView>
+    </>
   )
 }
 
