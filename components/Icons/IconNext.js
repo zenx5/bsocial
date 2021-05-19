@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Svg, { Path } from 'react-native-svg'
 
-function IconArrowLeft (props) {
+function IconNext (props) {
   return (
     <Svg
       {...props}
@@ -23,4 +23,4 @@ function IconArrowLeft (props) {
   )
 }
 
-export default IconArrowLeft
+export default IconNext

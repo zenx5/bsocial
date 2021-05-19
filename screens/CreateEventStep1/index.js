@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native'
 import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 
@@ -22,54 +22,56 @@ const CreateEventStep1 = (props) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView>
+      <View style={styles.container}>
 
-      {/* Geolocalizador Input */}
-      <View style={styles.location}>
-        <TouchableOpacity style={styles.geolocalizadorInput}>
-          <Text style={styles.geolocalizadorText}>Ubicación</Text>
-          <IconGeolocalizador style={styles.geolocalizadorIcon} />
+        {/* Geolocalizador Input */}
+        <View style={styles.location}>
+          <TouchableOpacity style={styles.geolocalizadorInput}>
+            <Text style={styles.geolocalizadorText}>Ubicación</Text>
+            <IconGeolocalizador style={styles.geolocalizadorIcon} />
+          </TouchableOpacity>
+          <Text style={{ fontSize: 11, fontFamily: 'Poppins_300Light', color: '#00000050' }}>Zona horaria determinada por ubicación</Text>
+        </View>
+
+        <View style={styles.dateTimeContainer}>
+          {/* Date */}
+          <View style={styles.dateTime}>
+            <IconDate />
+            <Text style={styles.dateTimeText}>Fecha</Text>
+          </View>
+
+          {/* Time */}
+          <View style={styles.dateTime}>
+            <IconTime />
+            <Text style={styles.dateTimeText}>Hora</Text>
+          </View>
+        </View>
+
+        {/* event name */}
+        <TextInput placeholder='Nombre del evento' placeholderTextColor='#000' style={styles.eventName} />
+
+        {/* description */}
+        <TextInput placeholder='Descripcion' multiline placeholderTextColor='#000' style={styles.description} />
+
+        {/* image upload */}
+        <TouchableOpacity style={styles.imageInput}>
+          <IconImage />
+          <Text style={styles.imageText}>Subir Foto</Text>
         </TouchableOpacity>
-        <Text style={{ fontSize: 11, fontFamily: 'Poppins_300Light', color: '#00000050' }}>Zona horaria determinada por ubicación</Text>
-      </View>
 
-      <View style={styles.dateTimeContainer}>
-        {/* Date */}
-        <View style={styles.dateTime}>
-          <IconDate />
-          <Text style={styles.dateTimeText}>Fecha</Text>
+        {/* category */}
+        <View style={styles.categoryContainer}>
+          <TouchableOpacity style={styles.categoryDisabled} />
+          <Text style={styles.categoriText}>Selecciona una categoria</Text>
         </View>
 
-        {/* Time */}
-        <View style={styles.dateTime}>
-          <IconTime />
-          <Text style={styles.dateTimeText}>Hora</Text>
-        </View>
+        {/* Button */}
+        <TouchableOpacity disabled={!completeInfo} onPress={goStep2} style={[styles.buttonDisable, completeInfo && styles.buttonBase]}>
+          <Text style={[styles.buttonTextDisable, completeInfo && styles.buttonTextBase]}>Continuar</Text>
+        </TouchableOpacity>
       </View>
-
-      {/* event name */}
-      <TextInput placeholder='Nombre del evento' placeholderTextColor='#000' style={styles.eventName} />
-
-      {/* description */}
-      <TextInput placeholder='Descripcion' multiline placeholderTextColor='#000' style={styles.description} />
-
-      {/* image upload */}
-      <TouchableOpacity style={styles.imageInput}>
-        <IconImage />
-        <Text style={styles.imageText}>Subir Foto</Text>
-      </TouchableOpacity>
-
-      {/* category */}
-      <View style={styles.categoryContainer}>
-        <TouchableOpacity style={styles.categoryDisabled} />
-        <Text style={styles.categoriText}>Selecciona una categoria</Text>
-      </View>
-
-      {/* Button */}
-      <TouchableOpacity disabled={!completeInfo} onPress={goStep2} style={[styles.buttonDisable, completeInfo && styles.buttonBase]}>
-        <Text style={[styles.buttonTextDisable, completeInfo && styles.buttonTextBase]}>Continuar</Text>
-      </TouchableOpacity>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -185,7 +187,7 @@ const styles = StyleSheet.create({
   categoryContainer: {
     width: '100%',
     flexDirection: 'row',
-    marginBottom: 16
+    marginBottom: 15
   },
 
   categoryDisabled: {

@@ -6,7 +6,7 @@ import AppLoading from 'expo-app-loading'
 //  components
 
 //  icons / logos
-import IconArrowLeft from '../../components/Icons/IconArrowLeft'
+import IconNext from '../../components/Icons/IconNext'
 
 const Settings = (props) => {
   const logout = () => props.navigation.navigate('Login')
@@ -27,7 +27,7 @@ const Settings = (props) => {
         <Text style={styles.sectionName}>Foto de perfil</Text>
         <View style={styles.sectionContent}>
           <Image style={styles.contentSectionImage} />
-          <IconArrowLeft stroke='#00000029' />
+          <IconNext stroke='#00000029' />
         </View>
       </View>
 
@@ -39,7 +39,7 @@ const Settings = (props) => {
         <Text style={styles.sectionName}>Cuenta</Text>
         <View style={styles.sectionContent}>
           <Text style={styles.contentSectionText}>johnywill@gmail.com</Text>
-          <IconArrowLeft stroke='#00000029' />
+          <IconNext stroke='#00000029' />
         </View>
       </View>
 
@@ -51,7 +51,7 @@ const Settings = (props) => {
         <Text style={styles.sectionName}>Nombre</Text>
         <View style={styles.sectionContent}>
           <Text style={styles.contentSectionText}>John William</Text>
-          <IconArrowLeft stroke='#00000029' />
+          <IconNext stroke='#00000029' />
         </View>
       </View>
 
@@ -62,7 +62,7 @@ const Settings = (props) => {
       <View style={styles.section}>
         <Text style={styles.sectionName}>Actualizar Contraseña</Text>
         <View style={styles.sectionContent}>
-          <IconArrowLeft stroke='#00000029' />
+          <IconNext stroke='#00000029' />
         </View>
       </View>
 
@@ -73,7 +73,7 @@ const Settings = (props) => {
       <View style={styles.section}>
         <Text style={styles.sectionName}>Intereses</Text>
         <View style={styles.sectionContent}>
-          <IconArrowLeft stroke='#00000029' />
+          <IconNext stroke='#00000029' />
         </View>
       </View>
 

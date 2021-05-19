@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import IconEye from './IconEye'
 import IconEyeOff from './IconEyeOff'
 import IconEyeOffBlack from './IconEyeOffBlack'
@@ -10,6 +10,7 @@ import IconContactOn from './IconContactOn'
 import IconContactOff from './IconContactOff'
 import IconListOn from './IconListOn'
 import IconListOff from './IconListOff'
+import IconCheck from './IconCheck'
 
 function IconsSwitching ({ name, style }) {
   switch (name) {
@@ -35,6 +36,10 @@ function IconsSwitching ({ name, style }) {
       return <IconListOn />
     case 'ListOff':
       return <IconListOff />
+    case 'Check':
+      return <IconCheck />
+    default:
+      return null
   }
 }
 

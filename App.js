@@ -20,6 +20,7 @@ import HomeTest from './screens/Home/HomeTest'
 //  Headers
 import SignupHeader from './screens/Signup/SignupHeader'
 import CreateEventStep1Header from './components/CreateEventStep1Header'
+import CreateEventStep2Header from './components/CreateEventStep2Header'
 
 //  icons
 import IconsSwitching from './components/Icons/IconsSwitching'
@@ -58,6 +59,22 @@ const MainTabs = () => {
   )
 }
 
+const Step1 = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Create Event Step 1' component={CreateEventStep1} options={{ header: () => null }} />
+    </Stack.Navigator>
+  )
+}
+
+const Step2 = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Create Event Step 2' component={CreateEventStep2} options={{ header: () => null }} />
+    </Stack.Navigator>
+  )
+}
+
 export default function App () {
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins700Bold: Poppins_700Bold })
@@ -70,10 +87,10 @@ export default function App () {
         <Stack.Screen name='Login' component={Login} options={{ header: () => null }} />
         <Stack.Screen name='Signup' component={Signup} options={{ header: props => <SignupHeader {...props} /> }} />
         <Stack.Screen name='MainTabs' component={MainTabs} options={{ header: () => null }} />
-        <Stack.Screen name='Create Event Step 1' component={CreateEventStep1} options={{ header: props => <CreateEventStep1Header {...props} /> }} />
-        <Stack.Screen name='Create Event Step 2' component={CreateEventStep2} options={{ header: () => null }} />
+        <Stack.Screen name='Create Event Step 1' component={Step1} options={{ header: props => <CreateEventStep1Header {...props} /> }} />
+        <Stack.Screen name='Create Event Step 2' component={Step2} options={{ header: props => <CreateEventStep2Header {...props} /> }} />
         <Stack.Screen name='Create Event Step 3' component={CreateEventStep3} options={{ header: () => null }} />
-        <Stack.Screen name='test localizacion' component={HomeTest} />
+        <Stack.Screen name='test localizacion' component={HomeTest} options={{ header: () => null }} />
       </Stack.Navigator>
     </NavigationContainer>
   )

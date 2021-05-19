@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, Image } from 'react-native'
 import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins' //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 
+//  components
 const Item = ({ title }) => (
   <View>
     <View style={styles.item}>
@@ -14,9 +15,10 @@ const Item = ({ title }) => (
         <View style={styles.iconContainer} />
       </View>
     </View>
-    <View style={styles.separator} />
   </View>
 )
+
+const Separator = () => <View style={styles.separator} />
 
 const FeatureEvents = (props) => {
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_500Medium, Poppins_700Bold })
@@ -58,8 +60,12 @@ const FeatureEvents = (props) => {
       </View>
 
       <View>
-        <FlatList data={DATA} renderItem={renderItem} keyExtractor={item => item.id} />
-        <View style={styles.separatorBlank} />
+        <FlatList
+          data={DATA}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          ItemSeparatorComponent={Separator}
+        />
       </View>
     </View>
   )
