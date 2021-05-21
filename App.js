@@ -10,7 +10,7 @@ import Login from './screens/Login'
 import Signup from './screens/Signup'
 import Home from './screens/Home'
 import Contacts from './screens/Contacts'
-import List from './screens/List'
+import ListEvents from './screens/ListEvents'
 import Settings from './screens/Settings'
 import CreateEventStep1 from './screens/CreateEventStep1'
 import CreateEventStep2 from './screens/CreateEventStep2'
@@ -53,7 +53,7 @@ const MainTabs = () => {
     >
       <Tab.Screen name='Home' component={Home} options={{ tabBarLabel: () => null }} />
       <Tab.Screen name='Contacts' component={Contacts} options={{ tabBarLabel: () => null }} />
-      <Tab.Screen name='List' component={List} options={{ tabBarLabel: () => null }} />
+      <Tab.Screen name='List' component={ListEvents} options={{ tabBarLabel: () => null }} />
       <Tab.Screen name='Settings' component={Settings} options={{ tabBarLabel: () => null }} />
     </Tab.Navigator>
   )
