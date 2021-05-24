@@ -19,8 +19,7 @@ const Settings = (props) => {
 
   return (
     <View style={styles.container}>
-      {/* Title */}
-      <Text style={styles.title}>Ajustes</Text>
+      <Text style={styles.header}>Ajustes</Text>
 
       {/* foto de perfil */}
       <View style={styles.section}>
@@ -87,12 +86,15 @@ const Settings = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    padding: 30
+    paddingTop: 35,
+    paddingBottom: 20,
+    paddingHorizontal: 30
   },
 
-  title: {
+  header: {
     fontSize: 20,
     fontFamily: 'Poppins_700Bold',
     alignSelf: 'flex-start',
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
   },
 
   section: {
-    width: 375,
+    width: '100%',
     height: 62,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
   },
 
   separator: {
-    width: 350,
+    width: '100%',
     borderBottomWidth: 1,
     borderColor: '#00000014',
     marginVertical: 7.5

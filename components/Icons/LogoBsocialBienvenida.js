@@ -13,12 +13,12 @@ import Svg, {
 function LogoBsocialBienvenida (props) {
   return (
     <Svg
-      {...props}
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
       width={156}
       height={172.691}
       viewBox='0 0 156 172.691'
+      {...props}
     >
       <Defs>
         <RadialGradient
@@ -109,7 +109,7 @@ function LogoBsocialBienvenida (props) {
         fontWeight={200}
         letterSpacing='.034em'
       >
-        <TSpan x={-77.096} y={0}>
+        <TSpan x={-77.096} y={0} stroke='#000'>
           BIENVENIDO A
         </TSpan>
       </Text>

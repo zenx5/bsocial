@@ -20,7 +20,7 @@ const Item = ({ title }) => (
 
 const Separator = () => <View style={styles.separator} />
 
-const FeatureEvents = (props) => {
+const FeatureEvents = () => {
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_500Medium, Poppins_700Bold })
   //  example data
   const DATA = [
@@ -55,18 +55,14 @@ const FeatureEvents = (props) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Eventos destacados</Text>
-      </View>
+      <Text style={styles.headerTitle}>Eventos destacados</Text>
 
-      <View>
-        <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          ItemSeparatorComponent={Separator}
-        />
-      </View>
+      <FlatList
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        ItemSeparatorComponent={Separator}
+      />
     </View>
   )
 }
@@ -77,15 +73,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    paddingVertical: 15,
+    paddingVertical: 17,
     paddingHorizontal: 20
-  },
-
-  header: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 22
   },
 
   headerTitle: {

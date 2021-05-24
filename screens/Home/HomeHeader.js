@@ -19,9 +19,6 @@ const HomeHeader = ({ navigation }) => {
       <View>
         <Image
           style={styles.image}
-          source={{
-            uri: ''
-          }}
         />
       </View>
     </View>
@@ -32,11 +29,12 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor: '#fff',
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 15,
-    paddingHorizontal: 20
+    paddingTop: 40,
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+    marginBottom: 7
   },
 
   button: {

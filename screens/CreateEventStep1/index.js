@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 
 import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 
+import CreateEventStep1Header from './CreateEventStep1Header'
+
 //  icon
 import IconGeolocalizador from '../../components/Icons/IconGeolocalizador'
 import IconDate from '../../components/Icons/IconDate'
@@ -22,8 +24,9 @@ const CreateEventStep1 = (props) => {
   }
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <CreateEventStep1Header />
+      <ScrollView>
 
         {/* Geolocalizador Input */}
         <View style={styles.location}>
@@ -70,8 +73,8 @@ const CreateEventStep1 = (props) => {
         <TouchableOpacity disabled={!completeInfo} onPress={goStep2} style={[styles.buttonDisable, completeInfo && styles.buttonBase]}>
           <Text style={[styles.buttonTextDisable, completeInfo && styles.buttonTextBase]}>Continuar</Text>
         </TouchableOpacity>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   )
 }
 

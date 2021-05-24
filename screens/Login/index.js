@@ -47,7 +47,7 @@ const Login = (props) => {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={{ marginBottom: 72 }}>
+      <TouchableOpacity style={{ marginBottom: 32 }}>
         <Text style={{ textTransform: 'capitalize', color: '#E1B21C', fontFamily: 'Poppins_300Light' }}>
           Olvidaste tu Contraseña?
         </Text>
@@ -68,8 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingTop: 30,
-    paddingBottom: 30
+    paddingVertical: 30
   },
 
   separator: {

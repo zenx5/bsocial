@@ -2,7 +2,7 @@ import React from 'react'
 import { ScrollView, View } from 'react-native'
 
 //  components
-import ListEventsHeader from '../../components/ListEvenstHeader'
+import ListEventsHeader from './ListEvenstHeader'
 import Search from './Search'
 import Categories from './Categories'
 import DiscoverEvents from './DiscoverEvents'

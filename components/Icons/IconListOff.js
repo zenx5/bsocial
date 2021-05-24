@@ -9,6 +9,7 @@ function IconListOff (props) {
       width={20.952}
       height={20}
       viewBox='0 0 20.952 20'
+      fill='#000'
     >
       <G data-name='Icon ionic-md-list' opacity={0.3}>
         <G data-name='Grupo 30'>

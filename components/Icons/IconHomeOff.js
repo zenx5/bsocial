@@ -14,6 +14,7 @@ function IconHomeOff (props) {
         data-name='Icon ionic-md-home'
         d='M8.333 20v-6.667h5V20h5.083V10h3.25L10.833 0 0 10h3.25v10z'
         opacity={0.3}
+        fill='#000'
       />
     </Svg>
   )

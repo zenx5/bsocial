@@ -1,24 +1,27 @@
 import React from 'react'
-import { ScrollView, View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
 //  components
-import HomeHeader from '../../components/HomeHeader'
-import UpcomingEvents from '../../components/UpcomingEvents'
-import FeaturedEvents from '../../components/FeaturedEvents'
+import HomeHeader from './HomeHeader'
+import UpcomingEvents from './UpcomingEvents'
+import FeaturedEvents from './FeaturedEvents'
 
 const Home = (props) => {
   return (
-    <>
-      <View>
-        <HomeHeader {...props} />
-      </View>
-
-      <ScrollView>
-        <UpcomingEvents />
-        <FeaturedEvents />
-      </ScrollView>
-    </>
+    <View style={styles.container}>
+      <HomeHeader {...props} />
+      <UpcomingEvents />
+      <FeaturedEvents />
+    </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})
 
 export default Home

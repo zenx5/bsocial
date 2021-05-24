@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 //  icon
-import IconBack from './Icons/IconBack'
+import IconBack from '../../components/Icons/IconBack'
 
 const ListEventsHeader = (props) => {
   const goBack = () => props.navigation.goBack()

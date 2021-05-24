@@ -4,7 +4,7 @@ import { useFonts, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  esli
 import AppLoading from 'expo-app-loading'
 
 //  icons
-import IconClose from './Icons/IconClose'
+import IconClose from '../../components/Icons/IconClose'
 
 const CreateEventStep1Header = ({ navigation }) => {
   const [fontsLoaded] = useFonts({ Poppins_700Bold })
@@ -26,9 +26,7 @@ const CreateEventStep1Header = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
     backgroundColor: '#fff',
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 30,
