@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
-import AppLoading from 'expo-app-loading'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 //  views
+import OnboardingScreen from './screens/OnboardingScreen'
 import Login from './screens/Login'
 import Signup from './screens/Signup'
 import Home from './screens/Home'
@@ -15,7 +15,6 @@ import Settings from './screens/Settings'
 import CreateEventStep1 from './screens/CreateEventStep1'
 import CreateEventStep2 from './screens/CreateEventStep2'
 import CreateEventStep3 from './screens/CreateEventStep3'
-import HomeTest from './screens/Home/HomeTest'
 
 //  Headers
 import SignupHeader from './screens/Signup/SignupHeader'
@@ -76,22 +75,51 @@ const Step2 = () => {
 }
 
 export default function App () {
-  //  fonts
-  const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins700Bold: Poppins_700Bold })
-  if (!fontsLoaded) {
-    return <AppLoading />
+  const [isFirstLaunch, setIsFirstLaunch] = useState(null)
+
+  const getDataLaunch = async () => {
+    const value = await AsyncStorage.getItem('alreadyLaunched')
+
+    if (value === null) {
+      await AsyncStorage.setItem('alreadyLaunched', 'true')
+      setIsFirstLaunch(true)
+    } else {
+      setIsFirstLaunch(false)
+    }
   }
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name='Login' component={Login} options={{ header: () => null }} />
-        <Stack.Screen name='Signup' component={Signup} options={{ header: props => <SignupHeader {...props} /> }} />
-        <Stack.Screen name='MainTabs' component={MainTabs} options={{ header: () => null }} />
-        <Stack.Screen name='Create Event Step 1' component={Step1} options={{ header: props => <CreateEventStep1Header {...props} /> }} />
-        <Stack.Screen name='Create Event Step 2' component={Step2} options={{ header: props => <CreateEventStep2Header {...props} /> }} />
-        <Stack.Screen name='Create Event Step 3' component={CreateEventStep3} options={{ header: () => null }} />
-        <Stack.Screen name='test localizacion' component={HomeTest} options={{ header: () => null }} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  )
+
+  useEffect(() => {
+    getDataLaunch()
+  })
+
+  if (isFirstLaunch === null) {
+    return null
+  } else if (isFirstLaunch === true) {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator headerMode='none'>
+          <Stack.Screen name='Onboarding' component={OnboardingScreen} />
+          <Stack.Screen name='Login' component={Login} options={{ header: () => null }} />
+          <Stack.Screen name='Signup' component={Signup} options={{ header: props => <SignupHeader {...props} /> }} />
+          <Stack.Screen name='MainTabs' component={MainTabs} options={{ header: () => null }} />
+          <Stack.Screen name='Create Event Step 1' component={Step1} options={{ header: props => <CreateEventStep1Header {...props} /> }} />
+          <Stack.Screen name='Create Event Step 2' component={Step2} options={{ header: props => <CreateEventStep2Header {...props} /> }} />
+          <Stack.Screen name='Create Event Step 3' component={CreateEventStep3} options={{ header: () => null }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    )
+  } else {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator headerMode='none'>
+          <Stack.Screen name='Login' component={Login} options={{ header: () => null }} />
+          <Stack.Screen name='Signup' component={Signup} options={{ header: props => <SignupHeader {...props} /> }} />
+          <Stack.Screen name='MainTabs' component={MainTabs} options={{ header: () => null }} />
+          <Stack.Screen name='Create Event Step 1' component={Step1} options={{ header: props => <CreateEventStep1Header {...props} /> }} />
+          <Stack.Screen name='Create Event Step 2' component={Step2} options={{ header: props => <CreateEventStep2Header {...props} /> }} />
+          <Stack.Screen name='Create Event Step 3' component={CreateEventStep3} options={{ header: () => null }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    )
+  }
 }

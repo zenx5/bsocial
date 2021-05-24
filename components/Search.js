@@ -24,6 +24,7 @@ const Search = () => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     position: 'relative'
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
   },
 
   searchInput: {
-    fontSize: '16',
+    fontSize: 16,
     width: '100%',
     height: 48,
     paddingLeft: 52,

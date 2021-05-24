@@ -67,12 +67,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontFamily: 'Poppins_700Bold',
     textAlign: 'center',
-    with: 246,
+    width: 246,
     height: 55
   },
 
   text2Container: {
-    with: 330,
+    width: 330,
     marginBottom: 25
   },
 

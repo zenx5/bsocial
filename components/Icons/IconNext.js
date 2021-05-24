@@ -4,10 +4,10 @@ import Svg, { Path } from 'react-native-svg'
 function IconNext (props) {
   return (
     <Svg
-      {...props}
       xmlns='http://www.w3.org/2000/svg'
       width={8.248}
       height={14.495}
+      {...props}
       viewBox='0 0 8.248 14.495'
     >
       <Path
