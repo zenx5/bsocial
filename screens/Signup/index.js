@@ -26,7 +26,9 @@ const Signup = (props) => {
 
   //  password input
   const [secureTextEntry, setSecureTextEntry] = useState(true)
+
   const [eye, setEye] = useState('EyeOffBlack')
+
   const showPassword = () => {
     if (secureTextEntry === true) {
       setSecureTextEntry(false)
@@ -53,8 +55,9 @@ const Signup = (props) => {
 
       <Text style={styles.text}>Ingresa los siguientes datos para crear tu usuario</Text>
 
+      {/* image input */}
       <TouchableOpacity style={styles.imageInput}>
-        <IconCamera style={{ with: 43.12, height: 37.73 }} />
+        <IconCamera style={styles.iconCamera} />
       </TouchableOpacity>
 
       <TextInput placeholder='Nombre' placeholderTextColor='#000' style={styles.textInput} />
@@ -64,9 +67,9 @@ const Signup = (props) => {
       <TextInput placeholder='correo' placeholderTextColor='#000' style={styles.textInput} />
 
       {/* Password Input */}
-      <View style={{ position: 'relative', marginBottom: 30 }}>
+      <View style={styles.passwordInputContainer}>
         <TextInput secureTextEntry={secureTextEntry} placeholder='Contraseña' placeholderTextColor='#000' style={styles.textInput} />
-        <TouchableOpacity onPress={showPassword} style={{ position: 'absolute', top: 10, right: 15 }}>
+        <TouchableOpacity onPress={showPassword} style={styles.iconEyeContainer}>
           <IconSwitch name={eye} />
         </TouchableOpacity>
       </View>
@@ -74,7 +77,7 @@ const Signup = (props) => {
       {/* CheckBox */}
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 48 }}>
         <Pressable onPress={onCheckmarkPress} style={[styles.checkboxBase, checked && styles.checkboxChecked]}>
-          {checked && <IconCheck style={{ width: 15, height: 15 }} />}
+          {checked && <IconCheck style={styles.iconCheck} />}
         </Pressable>
         <Text style={styles.checkBoxText}>He leído las terminos y políticas de la empresa</Text>
       </View>
@@ -126,7 +129,13 @@ const styles = StyleSheet.create({
     height: wp('26%'), //  102~
     borderRadius: 20,
     justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: hp('2.5%') // 18~
+  },
+
+  iconCamera: {
+    width: wp('11%'), //  43~~
+    height: hp('5%') //  37~~
   },
 
   textInput: {
@@ -138,6 +147,17 @@ const styles = StyleSheet.create({
     marginBottom: hp('2.4%'), //  18~
     fontSize: hp('1.5%'), //  11~~
     fontFamily: 'Poppins_400Regular'
+  },
+
+  passwordInputContainer: {
+    position: 'relative',
+    marginBottom: hp('4%') // 30~~
+  },
+
+  iconEyeContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 15
   },
 
   checkboxBase: {
@@ -159,6 +179,11 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: hp('1.36%'), //  10~~
     fontFamily: 'Poppins_400Regular'
+  },
+
+  iconCheck: {
+    width: 15,
+    height: 15
   },
 
   buttonDisable: {

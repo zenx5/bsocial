@@ -12,14 +12,14 @@ import IconListOn from './IconListOn'
 import IconListOff from './IconListOff'
 import IconCheck from './IconCheck'
 
-function IconsSwitching ({ name, style }) {
+function IconsSwitching ({ name, ...props }) {
   switch (name) {
     case 'Eye':
-      return <IconEye style={style} />
+      return <IconEye {...props} />
     case 'EyeOff':
-      return <IconEyeOff style={style} />
+      return <IconEyeOff {...props} />
     case 'EyeOffBlack':
-      return <IconEyeOffBlack />
+      return <IconEyeOffBlack {...props} />
     case 'HomeOn':
       return <IconHomeOn />
     case 'HomeOff':
