@@ -2,13 +2,15 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Pressable } from 'react-native'
 import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 //  icon
+import IconBack from '../../components/Icons/IconBack'
 import IconCamera from '../../components/Icons/IconCamera'
 import IconSwitch from '../../components/Icons/IconsSwitching'
 import IconCheck from '../../components/Icons/IconCheck'
 
-const RegisterUser = () => {
+const Signup = (props) => {
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
 
@@ -42,6 +44,13 @@ const RegisterUser = () => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.header_icon}>
+          <IconBack />
+        </TouchableOpacity>
+        <Text style={styles.header_text}>Registra tu usuario</Text>
+      </View>
+
       <Text style={styles.text}>Ingresa los siguientes datos para crear tu usuario</Text>
 
       <TouchableOpacity style={styles.imageInput}>
@@ -81,37 +90,53 @@ const RegisterUser = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
     flex: 1,
-    flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 30
+    backgroundColor: '#fff',
+    paddingVertical: hp('3%') // ~22.9
+  },
+
+  header: {
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    alignItems: 'center'
+  },
+
+  header_icon: {
+    marginLeft: wp('6%')
+  },
+
+  header_text: {
+    fontSize: hp('2.4%'), //  ~18
+    fontFamily: 'Poppins_700Bold',
+    marginLeft: 23.5
   },
 
   text: {
-    marginTop: 38,
-    marginBottom: 27,
-    fontSize: 12,
+    marginTop: hp('5.1%'), //  ~38
+    marginBottom: hp('3.6%'), //  ~27
+    fontSize: hp('1.6%'), //  12
     fontFamily: 'Poppins_400Regular'
   },
 
   imageInput: {
     backgroundColor: '#EBEBEB',
-    width: 102,
-    height: 102,
+    width: wp('26%'), //  102~
+    height: wp('26%'), //  102~
     borderRadius: 20,
     justifyContent: 'center',
-    marginBottom: 18
+    marginBottom: hp('2.5%') // 18~
   },
 
   textInput: {
     backgroundColor: '#EBEBEB',
     borderRadius: 20,
-    width: 291,
-    height: 39,
-    paddingLeft: 41,
-    marginBottom: 18,
-    fontSize: 11,
+    width: wp('74.3%'), //  291~
+    height: hp('5.2%'), //  39~
+    paddingLeft: wp('10%'), // 39~
+    marginBottom: hp('2.4%'), //  18~
+    fontSize: hp('1.5%'), //  11~~
     fontFamily: 'Poppins_400Regular'
   },
 
@@ -132,16 +157,17 @@ const styles = StyleSheet.create({
   checkBoxText: {
     color: '#231F20',
     marginLeft: 10,
-    fontSize: 10,
+    fontSize: hp('1.36%'), //  10~~
     fontFamily: 'Poppins_400Regular'
   },
 
   buttonDisable: {
     backgroundColor: '#EBEBEB',
-    width: 291,
-    height: 57,
+    width: wp('74.3%'), //  291~
+    height: hp('7.5%'), //  57
     borderWidth: 0,
-    borderRadius: 29
+    borderRadius: 29,
+    justifyContent: 'center'
   },
 
   buttonBase: {
@@ -151,10 +177,9 @@ const styles = StyleSheet.create({
   buttonTextDisable: {
     color: '#58595B',
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: hp('2.4%'), //  ~18
     fontFamily: 'Poppins_700Bold',
-    textTransform: 'uppercase',
-    paddingVertical: 16
+    textTransform: 'uppercase'
   },
 
   buttonTextBase: {
@@ -162,4 +187,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default RegisterUser
+export default Signup

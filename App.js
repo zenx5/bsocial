@@ -73,7 +73,6 @@ export default function App () {
 
   const getDataLaunch = async () => {
     const value = await AsyncStorage.getItem('alreadyLaunched')
-    console.log(value)
 
     if (value === null) {
       await AsyncStorage.setItem('alreadyLaunched', 'true')
@@ -86,8 +85,6 @@ export default function App () {
   useEffect(() => {
     getDataLaunch()
   }, [])
-
-  console.log(isFirstLaunch)
 
   if (isFirstLaunch === null) {
     return null

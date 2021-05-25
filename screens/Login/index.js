@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import AppLoading from 'expo-app-loading'
 
 //  components
@@ -24,24 +25,24 @@ const Login = (props) => {
 
   return (
     <View style={styles.container}>
-      <LogoBSocialBienvenida />
+      <LogoBSocialBienvenida style={styles.logo} />
 
-      <Text style={{ marginTop: 50, marginBottom: 15, fontFamily: 'Poppins_400Regular' }}>Iniciar Sesión con</Text>
+      <Text style={styles.text}>Iniciar Sesión con</Text>
 
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', marginBottom: 57.5 }}>
-        <IconFacebook style={{ marginRight: 40 }} />
+      <View style={styles.otherLogin}>
+        <IconFacebook style={{ marginRight: wp('16%') }} />
         <IconGoogle />
       </View>
 
       {/* separator */}
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 42.5 }}>
-        <View style={styles.separator} /><Text style={{ paddingHorizontal: 12.5, fontFamily: 'Poppins_400Regular' }}>o</Text><View style={styles.separator} />
+      <View style={styles.containerSeparator}>
+        <View style={styles.separator} /><Text style={styles.separator_center}>o</Text><View style={styles.separator} />
       </View>
 
       <InputLogin />
       <InputPassword />
 
-      <TouchableOpacity onPress={goHome} style={{ backgroundColor: '#E1B21C', borderRadius: 29, paddingVertical: 16, width: 291, marginBottom: 24 }}>
+      <TouchableOpacity onPress={goHome} style={[styles.button, styles.loginButton]}>
         <Text style={{ color: '#FFFFFF', textAlign: 'center', fontSize: 18, textTransform: 'uppercase', fontFamily: 'Poppins_700Bold' }}>
           Entrar
         </Text>
@@ -53,7 +54,7 @@ const Login = (props) => {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={goSignup} style={{ backgroundColor: '#fff', borderWidth: 1, borderRadius: 29, borderColor: '#707070', width: 291, paddingVertical: 16 }}>
+      <TouchableOpacity onPress={goSignup} style={[styles.button, styles.signupButton]}>
         <Text style={{ color: '#000', textAlign: 'center', textTransform: 'uppercase', fontFamily: 'Poppins_700Bold' }}>
           Registrate
         </Text>
@@ -68,13 +69,63 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingVertical: 30
+    paddingVertical: hp('3%'),
+    paddingHorizontal: wp('5%')
+  },
+
+  logo: {
+    width: wp('37%'),
+    height: hp('25%')
+  },
+
+  text: {
+    fontSize: hp('1.8%'),
+    marginTop: hp('3%'),
+    marginBottom: hp('2.23%'),
+    fontFamily: 'Poppins_400Regular'
+  },
+
+  otherLogin: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: hp('2.3%')
+  },
+
+  containerSeparator: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: hp('2%')
   },
 
   separator: {
     borderBottomWidth: 1,
     borderBottomColor: '#EBEBEB',
-    width: 133
+    width: wp('35%')
+  },
+
+  separator_center: {
+    paddingHorizontal: 12.5,
+    fontFamily: 'Poppins_400Regular'
+  },
+
+  button: {
+    borderRadius: 29,
+    width: wp('71%'),
+    height: hp('8%'),
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  loginButton: {
+    backgroundColor: '#E1B21C',
+    marginBottom: hp('3.2%')
+  },
+
+  signupButton: {
+    borderWidth: 1,
+    backgroundColor: '#fff',
+    borderColor: '#707070'
   }
 })
 

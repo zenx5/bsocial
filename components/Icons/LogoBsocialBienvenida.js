@@ -15,8 +15,6 @@ function LogoBsocialBienvenida (props) {
     <Svg
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
-      width={156}
-      height={172.691}
       viewBox='0 0 156 172.691'
       {...props}
     >
