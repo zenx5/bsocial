@@ -39,7 +39,10 @@ const Login = (props) => {
         <View style={styles.separator} /><Text style={styles.separator_center}>o</Text><View style={styles.separator} />
       </View>
 
+      {/* email */}
       <InputLogin />
+
+      {/* password */}
       <InputPassword />
 
       <TouchableOpacity onPress={goHome} style={[styles.button, styles.loginButton]}>
