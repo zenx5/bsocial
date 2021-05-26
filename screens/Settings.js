@@ -1,15 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native'
 import { useFonts, Poppins_300Light, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
 import AppLoading from 'expo-app-loading'
+import AuthContext from '../context/Auth/AuthContext'
 
 //  components
 
 //  icons / logos
-import IconNext from '../../components/Icons/IconNext'
+import IconNext from '../components/Icons/IconNext'
 
-const Settings = (props) => {
-  const logout = () => props.navigation.navigate('Login')
+const Settings = () => {
+  const { signOut } = useContext(AuthContext)
 
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_500Medium, Poppins_700Bold })
 
@@ -76,7 +77,7 @@ const Settings = (props) => {
         </View>
       </View>
 
-      <TouchableOpacity onPress={logout} style={styles.button}>
+      <TouchableOpacity onPress={signOut} style={styles.button}>
         <Text style={styles.buttonText}>Cerrar Sesión</Text>
       </TouchableOpacity>
     </View>

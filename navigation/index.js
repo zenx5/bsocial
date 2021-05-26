@@ -1,8 +1,13 @@
 import React from 'react'
 import Routes from './Routes'
+import AuthState from '../context/Auth/AuthState'
 
 const Providers = () => {
-  return <Routes />
+  return (
+    <AuthState>
+      <Routes />
+    </AuthState>
+  )
 }
 
 export default Providers

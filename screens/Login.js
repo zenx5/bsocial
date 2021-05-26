@@ -1,23 +1,64 @@
-import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import React, { useState, useContext } from 'react'
+import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native'
 import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import AppLoading from 'expo-app-loading'
-
-//  components
-import InputLogin from './InputLogin'
-import InputPassword from './InputPassword'
+import AuthContext from '../context/Auth/AuthContext'
 
 //  icons / logos
-import LogoBSocialBienvenida from '../../components/Icons/LogoBsocialBienvenida'
-import IconFacebook from '../../components/Icons/IconFacebook'
-import IconGoogle from '../../components/Icons/IconGoogle'
+import LogoBSocialBienvenida from '../components/Icons/LogoBsocialBienvenida'
+import IconFacebook from '../components/Icons/IconFacebook'
+import IconGoogle from '../components/Icons/IconGoogle'
+import IconEmail from '../components/Icons/IconEmail'
+import IconPassword from '../components/Icons/IconPassword'
+import IconsSwitching from '../components/Icons/IconsSwitching'
 
 const Login = (props) => {
+  const { signIn } = useContext(AuthContext)
+
   const goSignup = () => props.navigation.navigate('Signup')
-  const goHome = () => props.navigation.navigate('MainTabs')
 
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
+
+  const [data, setData] = useState({
+    email: '',
+    password: ''
+  })
+
+  //  password
+  const [secureTextEntry, setSecureTextEntry] = useState(true)
+  const [eye, setEye] = useState('EyeOff')
+  const showPassword = () => {
+    if (secureTextEntry === true) {
+      setSecureTextEntry(false)
+      setEye('Eye')
+    } else {
+      setSecureTextEntry(true)
+      setEye('EyeOff')
+    }
+  }
+
+  const hanldeEmailInput = (value) => {
+    if (value.lenght !== 0) {
+      setData({
+        ...data,
+        email: value
+      })
+    }
+  }
+
+  const handlePasswordInput = (value) => {
+    if (value.lenght !== 0) {
+      setData({
+        ...data,
+        password: value
+      })
+    }
+  }
+
+  const onSignIn = () => {
+    signIn(data)
+  }
 
   if (!fontsLoaded) {
     return <AppLoading />
@@ -40,12 +81,33 @@ const Login = (props) => {
       </View>
 
       {/* email */}
-      <InputLogin />
+      <View style={styles.inputContainer}>
+        <IconEmail style={styles.inputIcon} />
+        <TextInput
+          placeholder='Email'
+          placeholderTextColor='#000'
+          keyboardType='email-address'
+          style={styles.input}
+          onChangeText={hanldeEmailInput}
+        />
+      </View>
 
       {/* password */}
-      <InputPassword />
+      <View style={styles.inputContainer}>
+        <IconPassword style={styles.inputIcon} />
+        <TextInput
+          secureTextEntry={secureTextEntry}
+          placeholder='Contraseña'
+          placeholderTextColor='#000'
+          style={styles.input}
+          onChangeText={handlePasswordInput}
+        />
+        <TouchableOpacity onPress={showPassword} style={styles.iconEye}>
+          <IconsSwitching name={eye} />
+        </TouchableOpacity>
+      </View>
 
-      <TouchableOpacity onPress={goHome} style={[styles.button, styles.loginButton]}>
+      <TouchableOpacity onPress={onSignIn} style={[styles.button, styles.loginButton]}>
         <Text style={{ color: '#FFFFFF', textAlign: 'center', fontSize: 18, textTransform: 'uppercase', fontFamily: 'Poppins_700Bold' }}>
           Entrar
         </Text>
@@ -110,6 +172,33 @@ const styles = StyleSheet.create({
   separator_center: {
     paddingHorizontal: 12.5,
     fontFamily: 'Poppins_400Regular'
+  },
+
+  inputContainer: {
+    position: 'relative',
+    width: wp('71%'),
+    borderBottomWidth: 1,
+    borderBottomColor: '#70707016',
+    marginBottom: hp('3.5%')
+  },
+
+  inputIcon: {
+    position: 'absolute',
+    left: 0,
+    bottom: 5
+  },
+
+  input: {
+    width: wp('71%'),
+    fontSize: hp('1.8%'),
+    paddingBottom: hp('1.5%'),
+    paddingLeft: wp('8.3%')
+  },
+
+  iconEye: {
+    position: 'absolute',
+    top: 0,
+    right: 0
   },
 
   button: {
