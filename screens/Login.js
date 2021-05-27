@@ -82,7 +82,9 @@ const Login = (props) => {
 
       {/* email */}
       <View style={styles.inputContainer}>
-        <IconEmail style={styles.inputIcon} />
+        <View style={styles.inputIcon}>
+          <IconEmail />
+        </View>
         <TextInput
           placeholder='Email'
           placeholderTextColor='#000'
@@ -94,7 +96,9 @@ const Login = (props) => {
 
       {/* password */}
       <View style={styles.inputContainer}>
-        <IconPassword style={styles.inputIcon} />
+        <View style={styles.inputIcon}>
+          <IconPassword />
+        </View>
         <TextInput
           secureTextEntry={secureTextEntry}
           placeholder='Contraseña'
@@ -191,8 +195,9 @@ const styles = StyleSheet.create({
   input: {
     width: wp('71%'),
     fontSize: hp('1.8%'),
-    paddingBottom: hp('1.5%'),
-    paddingLeft: wp('8.3%')
+    paddingBottom: hp('1.2%'),
+    paddingLeft: wp('10%'),
+    fontFamily: 'Poppins_300Light'
   },
 
   iconEye: {

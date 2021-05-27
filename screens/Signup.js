@@ -5,10 +5,10 @@ import AppLoading from 'expo-app-loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 //  icon
-import IconBack from '../../components/Icons/IconBack'
-import IconCamera from '../../components/Icons/IconCamera'
-import IconSwitch from '../../components/Icons/IconsSwitching'
-import IconCheck from '../../components/Icons/IconCheck'
+import IconBack from '../components/Icons/IconBack'
+import IconCamera from '../components/Icons/IconCamera'
+import IconSwitch from '../components/Icons/IconsSwitching'
+import IconCheck from '../components/Icons/IconCheck'
 
 const Signup = (props) => {
   //  fonts
@@ -46,6 +46,7 @@ const Signup = (props) => {
 
   return (
     <View style={styles.container}>
+      {/* header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.header_icon}>
           <IconBack />

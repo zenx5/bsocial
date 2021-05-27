@@ -1,4 +1,4 @@
-import { SIGNIN, SIGNOUT } from '../types'
+import { SIGNIN, SIGNOUT, LOADING } from '../types'
 
 const AuthReducers = (state, action) => {
   const { payload, type } = action
@@ -13,6 +13,11 @@ const AuthReducers = (state, action) => {
       return {
         ...state,
         userToken: payload
+      }
+    case LOADING:
+      return {
+        ...state,
+        isLoading: payload
       }
     default:
       return state

@@ -1,30 +1,32 @@
 import React from 'react'
 import { View, Text, ImageBackground, Image, StyleSheet } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
-import IconNext from '../../components/Icons/IconNext'
+//  icons
+import IconNext from '../components/Icons/IconNext'
 
 const slides = [
   {
     key: 'one',
     title: 'Fiestas Privadas en casa',
     text: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    slide: require('../../assets/onboarding-1.png'),
-    image: require('../../assets/logobsocial.png')
+    slide: require('../assets/onboarding-1.png'),
+    image: require('../assets/logobsocial.png')
   },
   {
     key: 'two',
     title: 'Eventos Empresariales',
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    slide: require('../../assets/onboarding-2.png'),
-    image: require('../../assets/logobsocial.png')
+    slide: require('../assets/onboarding-2.png'),
+    image: require('../assets/logobsocial.png')
   },
   {
     key: 'three',
     title: 'DESPEDIDAS DE SOLTEROS',
     text: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-    slide: require('../../assets/onboarding-3.png'),
-    image: require('../../assets/logobsocial.png')
+    slide: require('../assets/onboarding-3.png'),
+    image: require('../assets/logobsocial.png')
   }
 ]
 
@@ -77,11 +79,11 @@ const styles = StyleSheet.create({
   image: {
     resizeMode: 'center',
     width: '35%',
-    height: 200
+    height: hp('27%') // 199~~
   },
 
   container_title: {
-    width: '60%'
+    width: '65%'
   },
 
   container_text: {
@@ -89,16 +91,16 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 28,
+    fontSize: hp('3.8%'), //  28
     textTransform: 'uppercase',
     textAlign: 'center',
     color: '#fff',
-    marginBottom: 25,
+    marginBottom: hp('3.4%'), //  25~~
     flexWrap: 'wrap'
   },
 
   text: {
-    fontSize: 14,
+    fontSize: hp('1.9%'), //  14~~
     textAlign: 'center',
     color: '#F8E8B0',
     flexWrap: 'wrap'
