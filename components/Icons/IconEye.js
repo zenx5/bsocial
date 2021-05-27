@@ -5,8 +5,6 @@ function IconEye (props) {
   return (
     <Svg
       xmlns='http://www.w3.org/2000/svg'
-      width={21.641}
-      height={18.546}
       viewBox='0 0 18.782 12.521'
       fill='#000'
       {...props}

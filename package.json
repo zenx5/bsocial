@@ -40,11 +40,6 @@
     "react-devtools": "^4.13.4",
     "standard": "^16.0.3"
   },
-  "rnpm": {
-    "assets": [
-      "./assets/fonts/"
-    ]
-  },
   "eslintConfig": {
     "extends": "./node_modules/standard/eslintrc.json"
   },

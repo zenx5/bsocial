@@ -4,11 +4,9 @@ import Svg, { G, Path } from 'react-native-svg'
 function IconEyeOff (props) {
   return (
     <Svg
-      {...props}
       xmlns='http://www.w3.org/2000/svg'
-      width={21.641}
-      height={18.326}
       viewBox='0 0 18.326 18.326'
+      {...props}
     >
       <G fill='none' stroke='#000' strokeLinecap='round' strokeLinejoin='round'>
         <Path

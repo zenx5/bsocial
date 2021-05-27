@@ -17,7 +17,6 @@ const Routes = () => {
       </View>
     )
   }
-  console.log(userToken)
   return (
     <NavigationContainer>
       {userToken !== null ? <HomeTabs /> : <AuthStack />}

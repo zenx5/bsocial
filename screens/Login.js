@@ -14,44 +14,61 @@ import IconPassword from '../components/Icons/IconPassword'
 import IconsSwitching from '../components/Icons/IconsSwitching'
 
 const Login = (props) => {
+  //  context
   const { signIn } = useContext(AuthContext)
+
+  //  state
+  const [data, setData] = useState({
+    email: '',
+    password: '',
+    secureTextEntry: true,
+    iconEye: 'EyeOff',
+    isValidEmail: true,
+    isValidPassword: true
+  })
 
   const goSignup = () => props.navigation.navigate('Signup')
 
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
 
-  const [data, setData] = useState({
-    email: '',
-    password: ''
-  })
-
-  //  password
-  const [secureTextEntry, setSecureTextEntry] = useState(true)
-  const [eye, setEye] = useState('EyeOff')
+  //  show password
   const showPassword = () => {
-    if (secureTextEntry === true) {
-      setSecureTextEntry(false)
-      setEye('Eye')
+    if (data.secureTextEntry === true) {
+      setData({ ...data, secureTextEntry: false, iconEye: 'Eye' })
     } else {
-      setSecureTextEntry(true)
-      setEye('EyeOff')
+      setData({ ...data, secureTextEntry: true, iconEye: 'EyeOff' })
     }
   }
 
+  //  validating inputs
   const hanldeEmailInput = (value) => {
-    if (value.lenght !== 0) {
+    if (value.length >= 8) {
       setData({
         ...data,
-        email: value
+        email: value,
+        isValidEmail: true
+      })
+    } else {
+      setData({
+        ...data,
+        email: value,
+        isValidEmail: false
       })
     }
   }
 
   const handlePasswordInput = (value) => {
-    if (value.lenght !== 0) {
+    if (value.length >= 6) {
       setData({
         ...data,
-        password: value
+        password: value,
+        isValidPassword: true
+      })
+    } else {
+      setData({
+        ...data,
+        password: value,
+        isValidPassword: false
       })
     }
   }
@@ -71,8 +88,8 @@ const Login = (props) => {
       <Text style={styles.text}>Iniciar Sesión con</Text>
 
       <View style={styles.otherLogin}>
-        <IconFacebook style={{ marginRight: wp('16%') }} />
-        <IconGoogle />
+        <IconFacebook style={styles.iconFacebook} />
+        <IconGoogle style={styles.iconGoogle} />
       </View>
 
       {/* separator */}
@@ -85,6 +102,7 @@ const Login = (props) => {
         <View style={styles.inputIcon}>
           <IconEmail />
         </View>
+
         <TextInput
           placeholder='Email'
           placeholderTextColor='#000'
@@ -92,6 +110,14 @@ const Login = (props) => {
           style={styles.input}
           onChangeText={hanldeEmailInput}
         />
+
+        {data.isValidEmail
+          ? null
+          : (
+            <View style={styles.errorMessageContainer}>
+              <Text style={styles.errorMessage}>¡Email invalido!</Text>
+            </View>
+            )}
       </View>
 
       {/* password */}
@@ -100,31 +126,38 @@ const Login = (props) => {
           <IconPassword />
         </View>
         <TextInput
-          secureTextEntry={secureTextEntry}
+          secureTextEntry={data.secureTextEntry}
           placeholder='Contraseña'
           placeholderTextColor='#000'
           style={styles.input}
           onChangeText={handlePasswordInput}
         />
-        <TouchableOpacity onPress={showPassword} style={styles.iconEye}>
-          <IconsSwitching name={eye} />
+        <TouchableOpacity onPress={showPassword} style={styles.iconEyeContainer}>
+          <IconsSwitching name={data.iconEye} style={styles.iconEye} />
         </TouchableOpacity>
+        {data.isValidPassword
+          ? null
+          : (
+            <View style={styles.errorMessageContainer}>
+              <Text style={styles.errorMessage}>¡Contraseña debe ser mayor de 6 caracteres!</Text>
+            </View>
+            )}
       </View>
 
       <TouchableOpacity onPress={onSignIn} style={[styles.button, styles.loginButton]}>
-        <Text style={{ color: '#FFFFFF', textAlign: 'center', fontSize: 18, textTransform: 'uppercase', fontFamily: 'Poppins_700Bold' }}>
+        <Text style={[styles.buttonTextBase, styles.buttonTextLogin]}>
           Entrar
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={{ marginBottom: 32 }}>
-        <Text style={{ textTransform: 'capitalize', color: '#E1B21C', fontFamily: 'Poppins_300Light' }}>
+      <TouchableOpacity style={styles.forgotPasswordContainer}>
+        <Text style={styles.forgotPassword}>
           Olvidaste tu Contraseña?
         </Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={goSignup} style={[styles.button, styles.signupButton]}>
-        <Text style={{ color: '#000', textAlign: 'center', textTransform: 'uppercase', fontFamily: 'Poppins_700Bold' }}>
+        <Text style={[styles.buttonTextBase, styles.buttonTextSignup]}>
           Registrate
         </Text>
       </TouchableOpacity>
@@ -138,12 +171,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingVertical: hp('3%'),
+    paddingVertical: hp('3%'), // ~22.9
     paddingHorizontal: wp('5%')
   },
 
   logo: {
-    width: wp('37%'),
+    width: hp('18.3%'),
     height: hp('25%')
   },
 
@@ -158,6 +191,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: hp('2.3%')
+  },
+
+  iconFacebook: {
+    width: hp('6%'),
+    height: hp('6%'),
+    marginRight: wp('16%')
+  },
+
+  iconGoogle: {
+    width: hp('6%'),
+    height: hp('6%')
   },
 
   containerSeparator: {
@@ -183,7 +227,7 @@ const styles = StyleSheet.create({
     width: wp('71%'),
     borderBottomWidth: 1,
     borderBottomColor: '#70707016',
-    marginBottom: hp('3.5%')
+    marginBottom: hp('4.5%')
   },
 
   inputIcon: {
@@ -195,23 +239,42 @@ const styles = StyleSheet.create({
   input: {
     width: wp('71%'),
     fontSize: hp('1.8%'),
-    paddingBottom: hp('1.2%'),
+    paddingBottom: hp('1%'),
     paddingLeft: wp('10%'),
     fontFamily: 'Poppins_300Light'
   },
 
-  iconEye: {
+  iconEyeContainer: {
     position: 'absolute',
     top: 0,
     right: 0
   },
 
+  iconEye: {
+    width: hp('3.2%'), // 21~~
+    height: hp('2.7%') //  18~~
+  },
+
   button: {
     borderRadius: 29,
     width: wp('71%'),
-    height: hp('8%'),
+    height: hp('7.5%'),
     justifyContent: 'center',
     alignItems: 'center'
+  },
+
+  buttonTextBase: {
+    fontSize: hp('2.4%'), //  ~18
+    textTransform: 'uppercase',
+    fontFamily: 'Poppins_700Bold'
+  },
+
+  buttonTextLogin: {
+    color: '#FFFFFF'
+  },
+
+  buttonTextSignup: {
+    color: '#000'
   },
 
   loginButton: {
@@ -223,6 +286,29 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: '#fff',
     borderColor: '#707070'
+  },
+
+  forgotPasswordContainer: {
+    marginBottom: hp('2.5%')
+  },
+
+  forgotPassword: {
+    fontSize: hp('2%'),
+    color: '#E1B21C',
+    fontFamily: 'Poppins_300Light'
+  },
+
+  errorMessageContainer: {
+    position: 'absolute',
+    width: '100%',
+    right: '0%',
+    bottom: '-50%'
+  },
+
+  errorMessage: {
+    textAlign: 'center',
+    fontSize: hp('1.7%'),
+    color: '#DD4C4C'
   }
 })
 

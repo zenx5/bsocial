@@ -6,8 +6,6 @@ function IconGoogle (props) {
     <Svg
       {...props}
       xmlns='http://www.w3.org/2000/svg'
-      width={46}
-      height={46}
       viewBox='0 0 46 46'
     >
       <G transform='translate(-203 -212)'>

@@ -27,9 +27,9 @@ const AuthState = (props) => {
         email: data.email,
         password: data.password
       })
-
+      console.log(res.data)
+      // dispatch({ type: LOADING, payload: true })
       if (res) {
-        dispatch({ type: LOADING, payload: true })
         try {
           await AsyncStorage.setItem('userToken', res.data.access_token)
         } catch (err) {
@@ -38,18 +38,17 @@ const AuthState = (props) => {
         dispatch({ type: LOADING, payload: false })
         dispatch({ type: SIGNIN, payload: res.data.access_token })
       }
+      dispatch({ type: LOADING, payload: false })
     },
 
     signUp: async (data) => {
-      if (data.name !== '' && data.lastName !== '' && data.email !== '' && data.password !== '') {
-        const res = await axios.post(API_SIGNUP, {
-          name: data.name,
-          lastName: data.lastName,
-          email: data.email,
-          password: data.password
-        })
-        console.log(res.data)
-      }
+      const res = await axios.post(API_SIGNUP, {
+        name: data.name,
+        lastName: data.lastName,
+        email: data.email,
+        password: data.password
+      })
+      console.log(res.data)
     },
 
     signOut: async () => {

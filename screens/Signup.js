@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Pressable } from 'react-native'
 import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import * as ImagePicker from 'expo-image-picker'
+import AuthContext from '../context/Auth/AuthContext'
 
 //  icon
 import IconBack from '../components/Icons/IconBack'
@@ -11,32 +13,84 @@ import IconSwitch from '../components/Icons/IconsSwitching'
 import IconCheck from '../components/Icons/IconCheck'
 
 const Signup = (props) => {
+  //  context
+  const { signUp } = useContext(AuthContext)
+
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
 
-  //  checkbox
-  const [checked, setChecked] = useState(false)
-  const onCheckmarkPress = () => {
-    if (checked === false) {
-      setChecked(!false)
+  //  state
+  const [data, setData] = useState({
+    name: '',
+    lastName: '',
+    email: '',
+    password: '',
+    checked: false,
+    secureTextEntry: true,
+    iconEye: 'EyeOffBlack',
+    activateButton: false
+  })
+
+  //  show password
+  const showPassword = () => {
+    if (data.secureTextEntry === true) {
+      setData({ ...data, secureTextEntry: false, iconEye: 'Eye' })
     } else {
-      setChecked(false)
+      setData({ ...data, secureTextEntry: true, iconEye: 'EyeOffBlack' })
     }
   }
 
-  //  password input
-  const [secureTextEntry, setSecureTextEntry] = useState(true)
-
-  const [eye, setEye] = useState('EyeOffBlack')
-
-  const showPassword = () => {
-    if (secureTextEntry === true) {
-      setSecureTextEntry(false)
-      setEye('Eye')
+  //  checkbox
+  const onCheckmarkPress = () => {
+    if (data.checked === false) {
+      setData({ ...data, checked: true })
     } else {
-      setSecureTextEntry(true)
-      setEye('EyeOffBlack')
+      setData({ ...data, checked: false })
     }
+  }
+
+  //  inputs handler
+  const handleNameInput = (value) => setData({ ...data, name: value })
+  const handleLastNameInput = (value) => setData({ ...data, lastName: value })
+  const handleEmailInput = (value) => setData({ ...data, email: value.trim() })
+  const handlePasswordInput = (value) => setData({ ...data, password: value })
+
+  //  validating inputs
+  const handleValidName = (event) => {
+    console.log(event.nativeEvent.text)
+  }
+
+  //  activation of the button
+  useEffect(() => {
+    if (data.name && data.lastName && data.email && data.password && data.checked) {
+      if (data.activateButton === false) {
+        setData({ ...data, activateButton: true })
+      }
+    } else {
+      if (data.activateButton === true) {
+        setData({ ...data, activateButton: false })
+      }
+    }
+  }, [data.name, data.lastName, data.email, data.password, data.checked])
+
+  //  submit
+  const onSignUp = () => {
+    signUp({
+      name: data.name,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password
+    })
+    setData({
+      name: '',
+      lastName: '',
+      email: '',
+      password: '',
+      checked: false,
+      secureTextEntry: true,
+      iconEye: 'EyeOffBlack',
+      activateButton: false
+    })
   }
 
   //  on waiting for the fonts
@@ -61,31 +115,67 @@ const Signup = (props) => {
         <IconCamera style={styles.iconCamera} />
       </TouchableOpacity>
 
-      <TextInput placeholder='Nombre' placeholderTextColor='#000' style={styles.textInput} />
+      {/* name input */}
+      <TextInput
+        placeholder='Nombre'
+        placeholderTextColor='#000'
+        style={styles.textInput}
+        value={data.name}
+        onChangeText={handleNameInput}
+        onEndEditing={handleValidName}
+      />
 
-      <TextInput placeholder='Apellido' placeholderTextColor='#000' style={styles.textInput} />
+      {/* lastName input */}
+      <TextInput
+        placeholder='Apellido'
+        placeholderTextColor='#000'
+        style={styles.textInput}
+        value={data.lastName}
+        onChangeText={handleLastNameInput}
+      />
 
-      <TextInput placeholder='correo' placeholderTextColor='#000' style={styles.textInput} />
+      {/* email input */}
+      <TextInput
+        placeholder='correo'
+        keyboardType='email-address'
+        autoCapitalize='none'
+        placeholderTextColor='#000'
+        style={styles.textInput}
+        value={data.email}
+        onChangeText={handleEmailInput}
+      />
 
       {/* Password Input */}
       <View style={styles.passwordInputContainer}>
-        <TextInput secureTextEntry={secureTextEntry} placeholder='Contraseña' placeholderTextColor='#000' style={styles.textInput} />
+        <TextInput
+          placeholder='Contraseña'
+          secureTextEntry={data.secureTextEntry}
+          autoCompleteType='off'
+          placeholderTextColor='#000'
+          style={styles.textInput}
+          value={data.password}
+          onChangeText={handlePasswordInput}
+        />
         <TouchableOpacity onPress={showPassword} style={styles.iconEyeContainer}>
-          <IconSwitch name={eye} />
+          <IconSwitch name={data.iconEye} style={styles.iconEye} />
         </TouchableOpacity>
       </View>
 
       {/* CheckBox */}
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 48 }}>
-        <Pressable onPress={onCheckmarkPress} style={[styles.checkboxBase, checked && styles.checkboxChecked]}>
-          {checked && <IconCheck style={styles.iconCheck} />}
+        <Pressable onPress={onCheckmarkPress} style={[styles.checkboxBase, data.checked && styles.checkboxChecked]}>
+          {data.checked && <IconCheck style={styles.iconCheck} />}
         </Pressable>
         <Text style={styles.checkBoxText}>He leído las terminos y políticas de la empresa</Text>
       </View>
 
       {/* Button */}
-      <TouchableOpacity disabled={!checked} style={[styles.buttonDisable, checked && styles.buttonBase]}>
-        <Text style={[styles.buttonTextDisable, checked && styles.buttonTextBase]}>Entrar</Text>
+      <TouchableOpacity
+        disabled={!data.activateButton}
+        style={[styles.buttonDisable, data.activateButton && styles.buttonBase]}
+        onPress={onSignUp}
+      >
+        <Text style={[styles.buttonTextDisable, data.activateButton && styles.buttonTextBase]}>Entrar</Text>
       </TouchableOpacity>
 
     </View>
@@ -159,6 +249,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 15
+  },
+
+  iconEye: {
+    width: hp('3.2%'), // 21~~
+    height: hp('2.7%') //  18~~
   },
 
   checkboxBase: {
