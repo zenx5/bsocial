@@ -205,7 +205,7 @@ const Signup = (props) => {
       password: data.password
     })
 
-    // setData(initialState)
+    setData(initialState)
   }
 
   useEffect(() => {

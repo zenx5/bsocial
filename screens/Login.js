@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native'
 import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -24,7 +24,10 @@ const Login = (props) => {
     secureTextEntry: true,
     iconEye: 'EyeOff',
     isValidEmail: true,
-    isValidPassword: true
+    emailEmpty: false,
+    isValidPassword: true,
+    passwordEmpty: false,
+    activateButton: false
   })
 
   const goSignup = () => props.navigation.navigate('Signup')
@@ -42,17 +45,27 @@ const Login = (props) => {
 
   //  validating inputs
   const hanldeEmailInput = (value) => {
-    if (value.length >= 8) {
+    const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i
+
+    if (emailRegex.test(value)) {
+      setData({
+        ...data,
+        email: value.trim(),
+        isValidEmail: true,
+        emailEmpty: false
+      })
+    } else if (value.length === 0) {
       setData({
         ...data,
         email: value,
-        isValidEmail: true
+        emailEmpty: true
       })
     } else {
       setData({
         ...data,
         email: value,
-        isValidEmail: false
+        isValidEmail: false,
+        emailEmpty: false
       })
     }
   }
@@ -62,17 +75,46 @@ const Login = (props) => {
       setData({
         ...data,
         password: value,
-        isValidPassword: true
+        isValidPassword: true,
+        passwordEmpty: false
+      })
+    } else if (value.length === 0) {
+      setData({
+        ...data,
+        password: value,
+        passwordEmpty: true
       })
     } else {
       setData({
         ...data,
         password: value,
-        isValidPassword: false
+        isValidPassword: false,
+        passwordEmpty: false
       })
     }
   }
 
+  //  activation of the button
+  useEffect(() => {
+    if (
+      data.email &&
+      data.password &&
+      data.isValidEmail &&
+      data.isValidPassword &&
+      !data.emailEmpty &&
+      !data.passwordEmpty
+    ) {
+      if (data.activateButton === false) {
+        setData({ ...data, activateButton: true })
+      }
+    } else {
+      if (data.activateButton === true) {
+        setData({ ...data, activateButton: false })
+      }
+    }
+  }, [data.email, data.password])
+
+  //  on submit
   const onSignIn = () => {
     signIn(data)
   }
@@ -110,14 +152,8 @@ const Login = (props) => {
           style={styles.input}
           onChangeText={hanldeEmailInput}
         />
+        {data.isValidEmail ? null : (data.emailEmpty ? <View style={styles.errorMessageContainer}><Text style={styles.errorMessage}>El Email es Requerido!</Text></View> : <View style={styles.errorMessageContainer}><Text style={styles.errorMessage}>Ingrese un Email Valido</Text></View>)}
 
-        {data.isValidEmail
-          ? null
-          : (
-            <View style={styles.errorMessageContainer}>
-              <Text style={styles.errorMessage}>¡Email invalido!</Text>
-            </View>
-            )}
       </View>
 
       {/* password */}
@@ -135,16 +171,10 @@ const Login = (props) => {
         <TouchableOpacity onPress={showPassword} style={styles.iconEyeContainer}>
           <IconsSwitching name={data.iconEye} style={styles.iconEye} />
         </TouchableOpacity>
-        {data.isValidPassword
-          ? null
-          : (
-            <View style={styles.errorMessageContainer}>
-              <Text style={styles.errorMessage}>¡Contraseña debe ser mayor de 6 caracteres!</Text>
-            </View>
-            )}
+        {data.isValidPassword ? null : (data.passwordEmpty ? <View style={styles.errorMessageContainer}><Text style={styles.errorMessage}>La Contraseña es Requerida!</Text></View> : <View style={styles.errorMessageContainer}><Text style={styles.errorMessage}>Debe tener al menos 6 caracteres</Text></View>)}
       </View>
 
-      <TouchableOpacity onPress={onSignIn} style={[styles.button, styles.loginButton]}>
+      <TouchableOpacity disabled={!data.activateButton} onPress={onSignIn} style={[styles.button, styles.loginButton]}>
         <Text style={[styles.buttonTextBase, styles.buttonTextLogin]}>
           Entrar
         </Text>

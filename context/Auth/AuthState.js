@@ -34,7 +34,7 @@ const AuthState = (props) => {
         password: data.password
       })
       console.log(res.data)
-      // dispatch({ type: LOADING, payload: true })
+
       if (res) {
         try {
           await AsyncStorage.setItem('userToken', res.data.access_token)
