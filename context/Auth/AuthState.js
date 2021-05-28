@@ -61,11 +61,9 @@ const AuthState = (props) => {
         })
         dispatch({ type: ON_VERIFYING, payload: false })
         dispatch({ type: CREATED_USER, payload: true })
-        dispatch({ type: IS_EMAIL_IN_USE, payload: false })
         console.log(data)
       } catch (error) {
         console.log(error)
-        dispatch({ type: CREATED_USER, payload: false })
         dispatch({ type: IS_EMAIL_IN_USE, payload: true })
         dispatch({ type: ON_VERIFYING, payload: false })
       }

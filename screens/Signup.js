@@ -15,8 +15,7 @@ import IconCheck from '../components/Icons/IconCheck'
 const Signup = (props) => {
   //  context
   const { signUp, isEmailInUse, createdUser, onVerifying } = useContext(AuthContext)
-  console.log('isEmailInUse', isEmailInUse)
-  console.log('createdUser', createdUser)
+
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
 
