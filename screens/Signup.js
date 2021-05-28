@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Pressable } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Pressable, Alert, ActivityIndicator } from 'react-native'
 import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -14,13 +14,13 @@ import IconCheck from '../components/Icons/IconCheck'
 
 const Signup = (props) => {
   //  context
-  const { signUp } = useContext(AuthContext)
-
+  const { signUp, isEmailInUse, createdUser, onVerifying } = useContext(AuthContext)
+  console.log('isEmailInUse', isEmailInUse)
+  console.log('createdUser', createdUser)
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
 
-  //  state
-  const [data, setData] = useState({
+  const initialState = {
     name: '',
     lastName: '',
     email: '',
@@ -28,8 +28,19 @@ const Signup = (props) => {
     checked: false,
     secureTextEntry: true,
     iconEye: 'EyeOffBlack',
-    activateButton: false
-  })
+    activateButton: false,
+    isValidName: true,
+    nameEmpty: false,
+    isValidLastName: true,
+    lastNameEmpty: false,
+    isValidEmail: true,
+    emailEmpty: false,
+    isValidPassword: true,
+    passwordEmpty: false
+  }
+
+  //  state
+  const [data, setData] = useState(initialState)
 
   //  show password
   const showPassword = () => {
@@ -49,20 +60,133 @@ const Signup = (props) => {
     }
   }
 
-  //  inputs handler
-  const handleNameInput = (value) => setData({ ...data, name: value })
-  const handleLastNameInput = (value) => setData({ ...data, lastName: value })
-  const handleEmailInput = (value) => setData({ ...data, email: value.trim() })
-  const handlePasswordInput = (value) => setData({ ...data, password: value })
+  //  input handler name
+  const handleNameInput = (value) => {
+    if (value.length >= 3) {
+      setData({
+        ...data,
+        name: value,
+        isValidName: true,
+        nameEmpty: false
+      })
+    }
 
-  //  validating inputs
-  const handleValidName = (event) => {
-    console.log(event.nativeEvent.text)
+    if (value.length === 0) {
+      setData({
+        ...data,
+        name: value,
+        nameEmpty: true
+      })
+    }
+
+    if (value.length < 3 && value.length > 0) {
+      setData({
+        ...data,
+        name: value,
+        isValidName: false,
+        nameEmpty: false
+      })
+    }
+  }
+
+  //  input handler lastName
+  const handleLastNameInput = (value) => {
+    if (value.length >= 3) {
+      setData({
+        ...data,
+        lastName: value,
+        isValidLastName: true,
+        lastNameEmpty: false
+      })
+    }
+
+    if (value.length === 0) {
+      setData({
+        ...data,
+        lastName: value,
+        lastNameEmpty: true
+      })
+    }
+
+    if (value.length < 3 && value.length > 0) {
+      setData({
+        ...data,
+        lastName: value,
+        isValidLastName: false,
+        lastNameEmpty: false
+      })
+    }
+  }
+
+  //   input handler Email
+  const handleEmailInput = (value) => {
+    const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i
+
+    if (emailRegex.test(value)) {
+      setData({
+        ...data,
+        email: value.trim(),
+        isValidEmail: true,
+        emailEmpty: false
+      })
+    } else if (value.length === 0) {
+      setData({
+        ...data,
+        email: value,
+        emailEmpty: true
+      })
+    } else {
+      setData({
+        ...data,
+        email: value,
+        isValidEmail: false,
+        emailEmpty: false
+      })
+    }
+  }
+
+  //   input handler Password
+  const handlePasswordInput = (value) => {
+    if (value.length >= 6) {
+      setData({
+        ...data,
+        password: value,
+        isValidPassword: true,
+        passwordEmpty: false
+      })
+    } else if (value.length === 0) {
+      setData({
+        ...data,
+        password: value,
+        passwordEmpty: true
+      })
+    } else {
+      setData({
+        ...data,
+        password: value,
+        isValidPassword: false,
+        passwordEmpty: false
+      })
+    }
   }
 
   //  activation of the button
   useEffect(() => {
-    if (data.name && data.lastName && data.email && data.password && data.checked) {
+    if (
+      data.name &&
+      data.lastName &&
+      data.email &&
+      data.password &&
+      data.checked &&
+      data.isValidName &&
+      data.isValidLastName &&
+      data.isValidEmail &&
+      data.isValidPassword &&
+      !data.nameEmpty &&
+      !data.lastNameEmpty &&
+      !data.emailEmpty &&
+      !data.passwordEmpty
+    ) {
       if (data.activateButton === false) {
         setData({ ...data, activateButton: true })
       }
@@ -81,17 +205,33 @@ const Signup = (props) => {
       email: data.email,
       password: data.password
     })
-    setData({
-      name: '',
-      lastName: '',
-      email: '',
-      password: '',
-      checked: false,
-      secureTextEntry: true,
-      iconEye: 'EyeOffBlack',
-      activateButton: false
-    })
+
+    // setData(initialState)
   }
+
+  useEffect(() => {
+    if (isEmailInUse) {
+      Alert.alert(
+        'Error',
+        'Este email ya esta en uso!',
+        [
+          { text: 'Ok' }
+        ],
+        { cancelable: false }
+      )
+    }
+
+    if (createdUser) {
+      Alert.alert(
+        '',
+        '¡Usuario creado satisfactoriamente!',
+        [
+          { text: 'OK' }
+        ],
+        { cancelable: false }
+      )
+    }
+  }, [isEmailInUse, createdUser])
 
   //  on waiting for the fonts
   if (!fontsLoaded) {
@@ -99,7 +239,13 @@ const Signup = (props) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
+      {
+        onVerifying
+          ? <ActivityIndicator size='large' color='#00000050' style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, zIndex: 100 }} />
+          : null
+      }
+
       {/* header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.header_icon}>
@@ -122,8 +268,8 @@ const Signup = (props) => {
         style={styles.textInput}
         value={data.name}
         onChangeText={handleNameInput}
-        onEndEditing={handleValidName}
       />
+      {data.isValidName ? null : (data.nameEmpty ? <Text style={styles.errorMessage}>El Nombre es Requerido!</Text> : <Text style={styles.errorMessage}>El Nombre debe tener al menos 3 caracteres</Text>)}
 
       {/* lastName input */}
       <TextInput
@@ -133,6 +279,7 @@ const Signup = (props) => {
         value={data.lastName}
         onChangeText={handleLastNameInput}
       />
+      {data.isValidLastName ? null : (data.lastNameEmpty ? <Text style={styles.errorMessage}>El Apellido es Requerido!</Text> : <Text style={styles.errorMessage}>El Apellido debe tener al menos 3 caracteres</Text>)}
 
       {/* email input */}
       <TextInput
@@ -144,6 +291,7 @@ const Signup = (props) => {
         value={data.email}
         onChangeText={handleEmailInput}
       />
+      {data.isValidEmail ? null : (data.emailEmpty ? <Text style={styles.errorMessage}>El Email es Requerido!</Text> : <Text style={styles.errorMessage}>Ingrese un Email Valido</Text>)}
 
       {/* Password Input */}
       <View style={styles.passwordInputContainer}>
@@ -159,6 +307,7 @@ const Signup = (props) => {
         <TouchableOpacity onPress={showPassword} style={styles.iconEyeContainer}>
           <IconSwitch name={data.iconEye} style={styles.iconEye} />
         </TouchableOpacity>
+        {data.isValidPassword ? null : (data.passwordEmpty ? <Text style={styles.errorMessage}>La Contraseña es Requerida!</Text> : <Text style={styles.errorMessage}>Debe tener al menos 6 caracteres</Text>)}
       </View>
 
       {/* CheckBox */}
@@ -305,6 +454,14 @@ const styles = StyleSheet.create({
 
   buttonTextBase: {
     color: '#fff'
+  },
+
+  errorMessage: {
+    textAlign: 'center',
+    fontSize: hp('1.7%'), //  11~~
+    color: '#DD4C4C',
+    marginTop: hp('-2%'), //  -13~~
+    marginBottom: hp('1.2%') // 8~~
   }
 })
 

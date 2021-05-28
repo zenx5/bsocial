@@ -3,7 +3,7 @@ import AuthContext from './AuthContext'
 import AuthReducers from './AuthReducers'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { SIGNIN, SIGNOUT, LOADING } from '../types'
+import { SIGNIN, SIGNOUT, GET_USERS, LOADING, IS_EMAIL_IN_USE, ON_VERIFYING, CREATED_USER } from '../types'
 
 const AuthState = (props) => {
   const initialState = {
@@ -13,15 +13,21 @@ const AuthState = (props) => {
     photo_url: null,
     email: null,
     password: null,
-    userToken: null
+    userToken: null,
+    createdUser: null,
+    isEmailInUse: null,
+    onVerifying: false
   }
 
+  //  api urls
   const API_LOGIN = 'https://bsocial-app.herokuapp.com/api/auth/login'
   const API_SIGNUP = 'https://bsocial-app.herokuapp.com/api/auth/register'
+  const API_GET_USERS = 'https://bsocial-app.herokuapp.com/api/users'
 
   const [state, dispatch] = useReducer(AuthReducers, initialState)
 
   const authContext = useMemo(() => ({
+    //  login
     signIn: async (data) => {
       const res = await axios.post(API_LOGIN, {
         email: data.email,
@@ -41,16 +47,32 @@ const AuthState = (props) => {
       dispatch({ type: LOADING, payload: false })
     },
 
+    //  register
     signUp: async (data) => {
-      const res = await axios.post(API_SIGNUP, {
-        name: data.name,
-        lastName: data.lastName,
-        email: data.email,
-        password: data.password
-      })
-      console.log(res.data)
+      dispatch({ type: ON_VERIFYING, payload: true })
+      dispatch({ type: CREATED_USER, payload: null })
+      dispatch({ type: IS_EMAIL_IN_USE, payload: null })
+      try {
+        await axios.post(API_SIGNUP, {
+          name: data.name,
+          lastname: data.lastName,
+          email: data.email,
+          password: data.password
+        })
+        dispatch({ type: ON_VERIFYING, payload: false })
+        dispatch({ type: CREATED_USER, payload: true })
+        dispatch({ type: IS_EMAIL_IN_USE, payload: false })
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+        dispatch({ type: CREATED_USER, payload: false })
+        dispatch({ type: IS_EMAIL_IN_USE, payload: true })
+        dispatch({ type: ON_VERIFYING, payload: false })
+      }
+      dispatch({ type: ON_VERIFYING, payload: false })
     },
 
+    //  logout
     signOut: async () => {
       try {
         await AsyncStorage.removeItem('userToken')
@@ -58,6 +80,15 @@ const AuthState = (props) => {
         console.log(err)
       }
       dispatch({ type: SIGNOUT, payload: null })
+    },
+
+    getUsers: async () => {
+      try {
+        const users = await axios.get(API_GET_USERS)
+        dispatch({ type: GET_USERS, payload: users })
+      } catch (err) {
+        console.log(err)
+      }
     }
   }))
 
@@ -70,7 +101,10 @@ const AuthState = (props) => {
         isLoading: state.isLoading,
         email: state.email,
         password: state.password,
-        userToken: state.userToken
+        userToken: state.userToken,
+        isEmailInUse: state.isEmailInUse,
+        createdUser: state.createdUser,
+        onVerifying: state.onVerifying
       }}
     >
       {props.children}
