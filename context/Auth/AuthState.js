@@ -3,7 +3,7 @@ import AuthContext from './AuthContext'
 import AuthReducers from './AuthReducers'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { SIGNIN, SIGNOUT, GET_USERS, LOADING, IS_EMAIL_IN_USE, ON_VERIFYING, CREATED_USER } from '../types'
+import { SIGNIN, SIGNOUT, GET_USERS, IS_EMAIL_IN_USE, ON_VERIFYING, IS_VALID_USER, CREATED_USER } from '../types'
 
 const AuthState = (props) => {
   const initialState = {
@@ -16,7 +16,8 @@ const AuthState = (props) => {
     userToken: null,
     createdUser: null,
     isEmailInUse: null,
-    onVerifying: false
+    onVerifying: false,
+    isValidUser: null
   }
 
   //  api urls
@@ -29,22 +30,22 @@ const AuthState = (props) => {
   const authContext = useMemo(() => ({
     //  login
     signIn: async (data) => {
-      const res = await axios.post(API_LOGIN, {
-        email: data.email,
-        password: data.password
-      })
-      console.log(res.data)
-
-      if (res) {
-        try {
-          await AsyncStorage.setItem('userToken', res.data.access_token)
-        } catch (err) {
-          console.log(err)
-        }
-        dispatch({ type: LOADING, payload: false })
+      dispatch({ type: ON_VERIFYING, payload: true })
+      dispatch({ type: IS_VALID_USER, payload: null })
+      try {
+        const res = await axios.post(API_LOGIN, {
+          email: data.email,
+          password: data.password
+        })
+        await AsyncStorage.setItem('userToken', res.data.access_token)
         dispatch({ type: SIGNIN, payload: res.data.access_token })
+        dispatch({ type: IS_VALID_USER, payload: true })
+        dispatch({ type: ON_VERIFYING, payload: false })
+      } catch (error) {
+        dispatch({ type: IS_VALID_USER, payload: false })
+        dispatch({ type: ON_VERIFYING, payload: false })
       }
-      dispatch({ type: LOADING, payload: false })
+      dispatch({ type: ON_VERIFYING, payload: false })
     },
 
     //  register
@@ -102,7 +103,8 @@ const AuthState = (props) => {
         userToken: state.userToken,
         isEmailInUse: state.isEmailInUse,
         createdUser: state.createdUser,
-        onVerifying: state.onVerifying
+        onVerifying: state.onVerifying,
+        isValidUser: state.isValidUser
       }}
     >
       {props.children}

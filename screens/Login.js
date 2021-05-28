@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, Alert, ActivityIndicator } from 'react-native'
 import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import AppLoading from 'expo-app-loading'
@@ -15,7 +15,7 @@ import IconsSwitching from '../components/Icons/IconsSwitching'
 
 const Login = (props) => {
   //  context
-  const { signIn } = useContext(AuthContext)
+  const { signIn, isValidUser, onVerifying } = useContext(AuthContext)
 
   //  state
   const [data, setData] = useState({
@@ -119,12 +119,30 @@ const Login = (props) => {
     signIn(data)
   }
 
+  useEffect(() => {
+    if (isValidUser === false) {
+      Alert.alert(
+        'Error',
+        'Correo o Contraseña Invalidos.',
+        [
+          { text: 'Ok' }
+        ],
+        { cancelable: false }
+      )
+    }
+  }, [isValidUser])
+
   if (!fontsLoaded) {
     return <AppLoading />
   }
 
   return (
     <View style={styles.container}>
+      {
+        onVerifying
+          ? <ActivityIndicator size='large' color='#00000050' style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, zIndex: 100 }} />
+          : null
+      }
       <LogoBSocialBienvenida style={styles.logo} />
 
       <Text style={styles.text}>Iniciar Sesión con</Text>

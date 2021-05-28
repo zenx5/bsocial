@@ -1,4 +1,4 @@
-import { SIGNIN, SIGNOUT, ON_VERIFYING, GET_USERS, LOADING, IS_EMAIL_IN_USE, CREATED_USER } from '../types'
+import { SIGNIN, SIGNOUT, ON_VERIFYING, GET_USERS, LOADING, IS_EMAIL_IN_USE, CREATED_USER, IS_VALID_USER } from '../types'
 
 const AuthReducers = (state, action) => {
   const { payload, type } = action
@@ -26,6 +26,12 @@ const AuthReducers = (state, action) => {
       return {
         ...state,
         onVerifying: payload
+      }
+
+    case IS_VALID_USER:
+      return {
+        ...state,
+        onVerifyingUser: payload
       }
 
     case SIGNOUT:

@@ -13,6 +13,7 @@ export const GET_USERS = 'GET_USERS'
 export const ON_VERIFYING = 'ON_VERIFYING'
 export const IS_EMAIL_IN_USE = 'IS_EMAIL_IN_USE'
 export const CREATED_USER = 'CREATED_USER'
+export const IS_VALID_USER = 'IS_VALID_USER'
 
 //  user experiencie
 export const LOADING = 'LOADING'
