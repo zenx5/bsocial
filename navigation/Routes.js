@@ -1,25 +1,25 @@
-import React, { useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { ActivityIndicator, ImageBackground, View } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
-import AuthStack from './AuthStack'
-import HomeTabs from './HomeTabs'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import AuthContext from '../context/Auth/AuthContext'
 
-const Routes = () => {
-  const { isLoading, userToken } = useContext(AuthContext)
+//  screens
+import AuthStack from './AuthStack'
+import HomeTabs from './HomeTabs'
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1 }}>
-        <ImageBackground source={require('../assets/splash.png')} style={{ flex: 1, resizeMode: 'cover', justifyContent: 'center' }}>
-          <ActivityIndicator size='large' color='#ffffff50' />
-        </ImageBackground>
-      </View>
-    )
-  }
+
+const Routes = () => {
+  const { userToken, isAlreadyAuthenticatedUser } = useContext(AuthContext)
+
+  useEffect(() => {
+    isAlreadyAuthenticatedUser()
+    console.log('router use effect')
+  }, [])
+
   return (
     <NavigationContainer>
-      {userToken !== null ? <HomeTabs /> : <AuthStack />}
+      { userToken !== null ? <HomeTabs /> : <AuthStack /> }
     </NavigationContainer>
   )
 }

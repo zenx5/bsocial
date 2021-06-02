@@ -88,13 +88,6 @@ const styles = StyleSheet.create({
     borderColor: '#00000014'
   },
 
-  separatorBlank: {
-    width: 350,
-    borderWidth: 1,
-    borderColor: '#fff',
-    marginTop: -1
-  },
-
   item: {
     width: '100%',
     height: 53,

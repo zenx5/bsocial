@@ -1,13 +1,16 @@
-import { SIGNIN, SIGNOUT, ON_VERIFYING, GET_USERS, LOADING, IS_EMAIL_IN_USE, CREATED_USER, IS_VALID_USER } from '../types'
+import { ADD_USER_DATA, USER_TOKEN, GET_USERS, LOADING, IS_EMAIL_IN_USE, CREATED_USER, IS_VALID_USER } from '../types'
 
 const AuthReducers = (state, action) => {
   const { payload, type } = action
 
   switch (type) {
-    case SIGNIN:
+    case ADD_USER_DATA:
       return {
         ...state,
-        userToken: payload
+        name: payload.name,
+        lastName: payload.lastName,
+        photo: payload.photo,
+        email: payload.email
       }
 
     case IS_EMAIL_IN_USE:
@@ -22,34 +25,22 @@ const AuthReducers = (state, action) => {
         createdUser: payload
       }
 
-    case ON_VERIFYING:
-      return {
-        ...state,
-        onVerifying: payload
-      }
-
     case IS_VALID_USER:
       return {
         ...state,
-        onVerifyingUser: payload
+        isValidUser: payload
       }
 
-    case SIGNOUT:
+    case USER_TOKEN:
       return {
         ...state,
         userToken: payload
       }
 
-    case GET_USERS:
-      return {
-        ...state,
-        users: payload
-      }
-
     case LOADING:
       return {
         ...state,
-        isLoading: payload
+        loading: payload
       }
 
     default:

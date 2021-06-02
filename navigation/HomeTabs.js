@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import AuthContext from '../context/Auth/AuthContext'
 
 // screens
 import Home from '../screens/Home'
@@ -13,6 +14,13 @@ import IconsSwitching from '../components/Icons/IconsSwitching'
 const Tab = createBottomTabNavigator()
 
 const HomeTabs = () => {
+  const { getAuthenticatedUserData } = useContext(AuthContext)
+
+  useEffect(() => {
+    getAuthenticatedUserData()
+  }, [])
+
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => (

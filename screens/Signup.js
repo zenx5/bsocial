@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Pressable, Alert, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Image, Platform, TouchableOpacity, TextInput, Pressable, Alert, ActivityIndicator } from 'react-native'
 import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -14,12 +14,13 @@ import IconCheck from '../components/Icons/IconCheck'
 
 const Signup = (props) => {
   //  context
-  const { signUp, isEmailInUse, createdUser, onVerifying } = useContext(AuthContext)
+  const { signUp, isEmailInUse, createdUser, loading } = useContext(AuthContext)
 
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
 
   const initialState = {
+    image: null,
     name: '',
     lastName: '',
     email: '',
@@ -50,7 +51,7 @@ const Signup = (props) => {
     }
   }
 
-  //  checkbox
+  //  checkbox[]
   const onCheckmarkPress = () => {
     if (data.checked === false) {
       setData({ ...data, checked: true })
@@ -58,6 +59,26 @@ const Signup = (props) => {
       setData({ ...data, checked: false })
     }
   }
+
+  //  input handler image
+  const inputHanlderImage = async () => {
+    // permissions
+    if (Platform.OS !== 'web') {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+      if (status !== 'granted') {
+        alert('Se requiere acceso a la galeria de imagenes!')
+        return
+      } else {
+        const result = await ImagePicker.launchImageLibraryAsync({
+          quality: 0.5
+        })
+        if (!result.cancelled) {
+          setData({ ...data, image: result.uri })
+        }
+      }
+    }
+  }
+
 
   //  input handler name
   const handleNameInput = (value) => {
@@ -199,6 +220,7 @@ const Signup = (props) => {
   //  submit
   const onSignUp = () => {
     signUp({
+      image: data.image,
       name: data.name,
       lastName: data.lastName,
       email: data.email,
@@ -240,7 +262,7 @@ const Signup = (props) => {
   return (
     <View style={[styles.container]}>
       {
-        onVerifying
+        loading
           ? <ActivityIndicator size='large' color='#00000050' style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, zIndex: 100 }} />
           : null
       }
@@ -256,8 +278,8 @@ const Signup = (props) => {
       <Text style={styles.text}>Ingresa los siguientes datos para crear tu usuario</Text>
 
       {/* image input */}
-      <TouchableOpacity style={styles.imageInput}>
-        <IconCamera style={styles.iconCamera} />
+      <TouchableOpacity style={styles.imageInput} onPress={inputHanlderImage}>
+        {data.image ? <Image style={styles.image} source={{ uri: data.image }} /> : <IconCamera style={styles.iconCamera} />}
       </TouchableOpacity>
 
       {/* name input */}
@@ -370,6 +392,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: hp('2.5%') // 18~
+  },
+
+  image: {
+    borderRadius: 20,
+    resizeMode: 'cover',
+    width: wp('26%'), //  102~
+    height: wp('26%'), //  102~
   },
 
   iconCamera: {

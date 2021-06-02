@@ -1,148 +1,147 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, Alert, ActivityIndicator } from 'react-native'
-import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import AppLoading from 'expo-app-loading'
-import AuthContext from '../context/Auth/AuthContext'
+import React, { useState, useContext, useEffect } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
+import {
+  useFonts,
+  Poppins_300Light,
+  Poppins_400Regular,
+  Poppins_700Bold,
+} from '@expo-google-fonts/poppins'; // eslint-disable-line
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import AppLoading from 'expo-app-loading';
+import AuthContext from '../context/Auth/AuthContext';
 
 //  icons / logos
-import LogoBSocialBienvenida from '../components/Icons/LogoBsocialBienvenida'
-import IconFacebook from '../components/Icons/IconFacebook'
-import IconGoogle from '../components/Icons/IconGoogle'
-import IconEmail from '../components/Icons/IconEmail'
-import IconPassword from '../components/Icons/IconPassword'
-import IconsSwitching from '../components/Icons/IconsSwitching'
+import LogoBSocialBienvenida from '../components/Icons/LogoBsocialBienvenida';
+import IconFacebook from '../components/Icons/IconFacebook';
+import IconGoogle from '../components/Icons/IconGoogle';
+import IconEmail from '../components/Icons/IconEmail';
+import IconPassword from '../components/Icons/IconPassword';
+import IconsSwitching from '../components/Icons/IconsSwitching';
 
 const Login = (props) => {
   //  context
-  const { signIn, isValidUser, onVerifying } = useContext(AuthContext)
-
+  const { signIn, isValidUser, loading, getAuthenticatedUser } = useContext(AuthContext);
   //  state
   const [data, setData] = useState({
     email: '',
     password: '',
     secureTextEntry: true,
     iconEye: 'EyeOff',
-    isValidEmail: true,
-    emailEmpty: false,
-    isValidPassword: true,
-    passwordEmpty: false,
-    activateButton: false
-  })
+    isValidEmail: false,
+  });
 
-  const goSignup = () => props.navigation.navigate('Signup')
+  const goSignup = () => props.navigation.navigate('Signup');
 
-  const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
+  const [fontsLoaded] = useFonts({
+    Poppins_300Light,
+    Poppins_400Regular,
+    Poppins_700Bold,
+  });
 
   //  show password
   const showPassword = () => {
     if (data.secureTextEntry === true) {
-      setData({ ...data, secureTextEntry: false, iconEye: 'Eye' })
+      setData({ ...data, secureTextEntry: false, iconEye: 'Eye' });
     } else {
-      setData({ ...data, secureTextEntry: true, iconEye: 'EyeOff' })
+      setData({ ...data, secureTextEntry: true, iconEye: 'EyeOff' });
     }
-  }
+  };
 
-  //  validating inputs
-  const hanldeEmailInput = (value) => {
-    const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i
+  //  input handler email
+  const inputHandlerEmail = (value) => {
+    const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 
     if (emailRegex.test(value)) {
-      setData({
-        ...data,
-        email: value.trim(),
-        isValidEmail: true,
-        emailEmpty: false
-      })
-    } else if (value.length === 0) {
-      setData({
-        ...data,
-        email: value,
-        emailEmpty: true
-      })
+      setData({ ...data, email: value.trim(), isValidEmail: true });
     } else {
-      setData({
-        ...data,
-        email: value,
-        isValidEmail: false,
-        emailEmpty: false
-      })
+      setData({ ...data, email: value.trim(), isValidEmail: false });
     }
-  }
+  };
 
-  const handlePasswordInput = (value) => {
-    if (value.length >= 6) {
-      setData({
-        ...data,
-        password: value,
-        isValidPassword: true,
-        passwordEmpty: false
-      })
-    } else if (value.length === 0) {
-      setData({
-        ...data,
-        password: value,
-        passwordEmpty: true
-      })
-    } else {
-      setData({
-        ...data,
-        password: value,
-        isValidPassword: false,
-        passwordEmpty: false
-      })
-    }
-  }
-
-  //  activation of the button
-  useEffect(() => {
-    if (
-      data.email &&
-      data.password &&
-      data.isValidEmail &&
-      data.isValidPassword &&
-      !data.emailEmpty &&
-      !data.passwordEmpty
-    ) {
-      if (data.activateButton === false) {
-        setData({ ...data, activateButton: true })
-      }
-    } else {
-      if (data.activateButton === true) {
-        setData({ ...data, activateButton: false })
-      }
-    }
-  }, [data.email, data.password])
+  //  input handler password
+  const inputHandlerPassword = (value) => {
+    setData({ ...data, password: value });
+  };
 
   //  on submit
   const onSignIn = () => {
-    signIn(data)
-  }
+    if (data.isValidEmail && data.password !== '') {
+      signIn(data);
+    } else {
+      if (data.email === '' && data.password === '') {
+        return Alert.alert(
+          'Error',
+          'Introduzca un Email y Contraseña',
+          [{ text: 'OK' }],
+          { cancelable: false }
+        );
+      }
+
+      if (data.email === '') {
+        return Alert.alert('Error', 'Introduzca un Email', [{ text: 'OK' }], {
+          cancelable: false,
+        });
+      }
+
+      if (data.isValidEmail === false) {
+        return Alert.alert(
+          'Error',
+          'Ingrese un Email valido!',
+          [{ text: 'OK' }],
+          { cancelable: false }
+        );
+      }
+
+      if (data.password === '') {
+        return Alert.alert(
+          'Error',
+          'Introduzca una Contraseña',
+          [{ text: 'OK' }],
+          { cancelable: false }
+        );
+      }
+    }
+  };
 
   useEffect(() => {
     if (isValidUser === false) {
-      Alert.alert(
-        'Error',
-        'Correo o Contraseña Invalidos.',
-        [
-          { text: 'Ok' }
-        ],
-        { cancelable: false }
-      )
+      Alert.alert('Error', 'Correo o Contraseña Invalidos.', [{ text: 'Ok' }], {
+        cancelable: false,
+      });
     }
-  }, [isValidUser])
+  }, [isValidUser]);
 
   if (!fontsLoaded) {
-    return <AppLoading />
+    return <AppLoading />;
   }
 
   return (
     <View style={styles.container}>
-      {
-        onVerifying
-          ? <ActivityIndicator size='large' color='#00000050' style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, zIndex: 100 }} />
-          : null
-      }
+      {loading ? (
+        <ActivityIndicator
+          size="large"
+          color="#00000050"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            zIndex: 100,
+          }}
+        />
+      ) : null}
       <LogoBSocialBienvenida style={styles.logo} />
 
       <Text style={styles.text}>Iniciar Sesión con</Text>
@@ -154,7 +153,9 @@ const Login = (props) => {
 
       {/* separator */}
       <View style={styles.containerSeparator}>
-        <View style={styles.separator} /><Text style={styles.separator_center}>o</Text><View style={styles.separator} />
+        <View style={styles.separator} />
+        <Text style={styles.separator_center}>o</Text>
+        <View style={styles.separator} />
       </View>
 
       {/* email */}
@@ -164,14 +165,13 @@ const Login = (props) => {
         </View>
 
         <TextInput
-          placeholder='Email'
-          placeholderTextColor='#000'
-          keyboardType='email-address'
+          placeholder="Email"
+          placeholderTextColor="#000"
+          keyboardType="email-address"
+          autoCapitalize="none"
           style={styles.input}
-          onChangeText={hanldeEmailInput}
+          onChangeText={inputHandlerEmail}
         />
-        {data.isValidEmail ? null : (data.emailEmpty ? <View style={styles.errorMessageContainer}><Text style={styles.errorMessage}>El Email es Requerido!</Text></View> : <View style={styles.errorMessageContainer}><Text style={styles.errorMessage}>Ingrese un Email Valido</Text></View>)}
-
       </View>
 
       {/* password */}
@@ -181,37 +181,40 @@ const Login = (props) => {
         </View>
         <TextInput
           secureTextEntry={data.secureTextEntry}
-          placeholder='Contraseña'
-          placeholderTextColor='#000'
+          placeholder="Contraseña"
+          placeholderTextColor="#000"
           style={styles.input}
-          onChangeText={handlePasswordInput}
+          onChangeText={inputHandlerPassword}
         />
-        <TouchableOpacity onPress={showPassword} style={styles.iconEyeContainer}>
+        <TouchableOpacity
+          onPress={showPassword}
+          style={styles.iconEyeContainer}>
           <IconsSwitching name={data.iconEye} style={styles.iconEye} />
         </TouchableOpacity>
-        {data.isValidPassword ? null : (data.passwordEmpty ? <View style={styles.errorMessageContainer}><Text style={styles.errorMessage}>La Contraseña es Requerida!</Text></View> : <View style={styles.errorMessageContainer}><Text style={styles.errorMessage}>Debe tener al menos 6 caracteres</Text></View>)}
       </View>
 
-      <TouchableOpacity disabled={!data.activateButton} onPress={onSignIn} style={[styles.button, styles.loginButton]}>
+      <TouchableOpacity
+        onPress={onSignIn}
+        style={[styles.button, styles.loginButton]}>
         <Text style={[styles.buttonTextBase, styles.buttonTextLogin]}>
           Entrar
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.forgotPasswordContainer}>
-        <Text style={styles.forgotPassword}>
-          Olvidaste tu Contraseña?
-        </Text>
+      <TouchableOpacity onPress={getAuthenticatedUser} style={styles.forgotPasswordContainer}>
+        <Text style={styles.forgotPassword}>Olvidaste tu Contraseña?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={goSignup} style={[styles.button, styles.signupButton]}>
+      <TouchableOpacity
+        onPress={goSignup}
+        style={[styles.button, styles.signupButton]}>
         <Text style={[styles.buttonTextBase, styles.buttonTextSignup]}>
           Registrate
         </Text>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -220,54 +223,54 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     paddingVertical: hp('3%'), // ~22.9
-    paddingHorizontal: wp('5%')
+    paddingHorizontal: wp('5%'),
   },
 
   logo: {
     width: hp('18.3%'),
-    height: hp('25%')
+    height: hp('25%'),
   },
 
   text: {
     fontSize: hp('1.8%'),
     marginTop: hp('3%'),
     marginBottom: hp('2.23%'),
-    fontFamily: 'Poppins_400Regular'
+    fontFamily: 'Poppins_400Regular',
   },
 
   otherLogin: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: hp('2.3%')
+    marginBottom: hp('2.3%'),
   },
 
   iconFacebook: {
     width: hp('6%'),
     height: hp('6%'),
-    marginRight: wp('16%')
+    marginRight: wp('16%'),
   },
 
   iconGoogle: {
     width: hp('6%'),
-    height: hp('6%')
+    height: hp('6%'),
   },
 
   containerSeparator: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: hp('2%')
+    marginBottom: hp('2%'),
   },
 
   separator: {
     borderBottomWidth: 1,
     borderBottomColor: '#EBEBEB',
-    width: wp('35%')
+    width: wp('35%'),
   },
 
   separator_center: {
     paddingHorizontal: 12.5,
-    fontFamily: 'Poppins_400Regular'
+    fontFamily: 'Poppins_400Regular',
   },
 
   inputContainer: {
@@ -275,13 +278,13 @@ const styles = StyleSheet.create({
     width: wp('71%'),
     borderBottomWidth: 1,
     borderBottomColor: '#70707016',
-    marginBottom: hp('4.5%')
+    marginBottom: hp('4.5%'),
   },
 
   inputIcon: {
     position: 'absolute',
     left: 0,
-    bottom: 5
+    bottom: 5,
   },
 
   input: {
@@ -289,18 +292,18 @@ const styles = StyleSheet.create({
     fontSize: hp('1.8%'),
     paddingBottom: hp('1%'),
     paddingLeft: wp('10%'),
-    fontFamily: 'Poppins_300Light'
+    fontFamily: 'Poppins_300Light',
   },
 
   iconEyeContainer: {
     position: 'absolute',
     top: 0,
-    right: 0
+    right: 0,
   },
 
   iconEye: {
     width: hp('3.2%'), // 21~~
-    height: hp('2.7%') //  18~~
+    height: hp('2.7%'), //  18~~
   },
 
   button: {
@@ -308,56 +311,43 @@ const styles = StyleSheet.create({
     width: wp('71%'),
     height: hp('7.5%'),
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   buttonTextBase: {
     fontSize: hp('2.4%'), //  ~18
     textTransform: 'uppercase',
-    fontFamily: 'Poppins_700Bold'
+    fontFamily: 'Poppins_700Bold',
   },
 
   buttonTextLogin: {
-    color: '#FFFFFF'
+    color: '#FFFFFF',
   },
 
   buttonTextSignup: {
-    color: '#000'
+    color: '#000',
   },
 
   loginButton: {
     backgroundColor: '#E1B21C',
-    marginBottom: hp('3.2%')
+    marginBottom: hp('3.2%'),
   },
 
   signupButton: {
     borderWidth: 1,
     backgroundColor: '#fff',
-    borderColor: '#707070'
+    borderColor: '#707070',
   },
 
   forgotPasswordContainer: {
-    marginBottom: hp('2.5%')
+    marginBottom: hp('2.5%'),
   },
 
   forgotPassword: {
     fontSize: hp('2%'),
     color: '#E1B21C',
-    fontFamily: 'Poppins_300Light'
+    fontFamily: 'Poppins_300Light',
   },
+});
 
-  errorMessageContainer: {
-    position: 'absolute',
-    width: '100%',
-    right: '0%',
-    bottom: '-50%'
-  },
-
-  errorMessage: {
-    textAlign: 'center',
-    fontSize: hp('1.7%'),
-    color: '#DD4C4C'
-  }
-})
-
-export default Login
+export default Login;

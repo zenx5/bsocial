@@ -2,6 +2,9 @@ import React from 'react'
 import { View, Text, ImageBackground, Image, StyleSheet } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { useFonts, Poppins_200ExtraLight, Poppins_500Medium } from '@expo-google-fonts/poppins'  // eslint-disable-line
+import AppLoading from 'expo-app-loading'
+
 
 //  icons
 import IconNext from '../components/Icons/IconNext'
@@ -55,6 +58,13 @@ const DoneButtom = () => {
 }
 
 const OnboardingScreen = ({ navigation }) => {
+  //  fonts
+const [fontsLoaded] = useFonts({ Poppins_200ExtraLight, Poppins_500Medium })
+
+if (!fontsLoaded) {
+  return <AppLoading />
+}
+
   return (
     <AppIntroSlider
       data={slides}
@@ -83,7 +93,7 @@ const styles = StyleSheet.create({
   },
 
   container_title: {
-    width: '65%'
+    width: '70%'
   },
 
   container_text: {
@@ -96,14 +106,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#fff',
     marginBottom: hp('3.4%'), //  25~~
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    fontFamily: 'Poppins_500Medium'    
   },
 
   text: {
     fontSize: hp('1.9%'), //  14~~
     textAlign: 'center',
     color: '#F8E8B0',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    fontFamily: 'Poppins_200ExtraLight'
 
   },
 

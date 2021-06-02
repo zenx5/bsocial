@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native'
 import { useFonts, Poppins_300Light, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import AppLoading from 'expo-app-loading'
 import AuthContext from '../context/Auth/AuthContext'
 
@@ -10,7 +11,7 @@ import AuthContext from '../context/Auth/AuthContext'
 import IconNext from '../components/Icons/IconNext'
 
 const Settings = () => {
-  const { signOut } = useContext(AuthContext)
+  const { signOut, photo, name, lastName, email } = useContext(AuthContext)
 
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_500Medium, Poppins_700Bold })
 
@@ -38,7 +39,7 @@ const Settings = () => {
       <View style={styles.section}>
         <Text style={styles.sectionName}>Cuenta</Text>
         <View style={styles.sectionContent}>
-          <Text style={styles.contentSectionText}>johnywill@gmail.com</Text>
+          <Text style={styles.contentSectionText}>{email}</Text>
           <IconNext stroke='#00000029' />
         </View>
       </View>
@@ -50,7 +51,7 @@ const Settings = () => {
       <View style={styles.section}>
         <Text style={styles.sectionName}>Nombre</Text>
         <View style={styles.sectionContent}>
-          <Text style={styles.contentSectionText}>John William</Text>
+          <Text style={styles.contentSectionText}>{name} {lastName}</Text>
           <IconNext stroke='#00000029' />
         </View>
       </View>
@@ -90,9 +91,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingTop: 35,
-    paddingBottom: 20,
-    paddingHorizontal: 30
+    paddingVertical: hp('3%') // ~22.9
   },
 
   header: {
