@@ -66,8 +66,7 @@ const Signup = (props) => {
     if (Platform.OS !== 'web') {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
       if (status !== 'granted') {
-        alert('Se requiere acceso a la galeria de imagenes!')
-        return
+        Alert('Se requiere acceso a la galeria de imagenes!')
       } else {
         const result = await ImagePicker.launchImageLibraryAsync({
           quality: 0.5
@@ -78,7 +77,6 @@ const Signup = (props) => {
       }
     }
   }
-
 
   //  input handler name
   const handleNameInput = (value) => {
@@ -398,7 +396,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     resizeMode: 'cover',
     width: wp('26%'), //  102~
-    height: wp('26%'), //  102~
+    height: wp('26%') //  102~
   },
 
   iconCamera: {

@@ -40,7 +40,6 @@ const AuthState = (props) => {
         dispatch({ type: USER_TOKEN, payload: res.data.access_token })
         dispatch({ type: IS_VALID_USER, payload: true })
         dispatch({ type: LOADING, payload: false })
-
       } catch (error) {
         dispatch({ type: IS_VALID_USER, payload: false })
         dispatch({ type: LOADING, payload: false })
@@ -96,14 +95,14 @@ const AuthState = (props) => {
     getAuthenticatedUserData: async () => {
       try {
         const { data } = await axios.get(API_GET_AUTH_USER, {
-          headers: {Authorization: 'Bearer ' + state.userToken}
+          headers: { Authorization: 'Bearer ' + state.userToken }
         })
         dispatch({
           type: ADD_USER_DATA,
           payload: {
             name: data.name,
             lastName: data.lastname,
-            photo: data.photo,
+            photo: data.photo.publicURL,
             email: data.email
           }
         })

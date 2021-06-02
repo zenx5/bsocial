@@ -12,6 +12,7 @@ import IconNext from '../components/Icons/IconNext'
 
 const Settings = () => {
   const { signOut, photo, name, lastName, email } = useContext(AuthContext)
+  console.log(photo)
 
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_500Medium, Poppins_700Bold })
 
@@ -21,13 +22,17 @@ const Settings = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Ajustes</Text>
+
+      {/* header */}
+      <View style={styles.header}>
+        <Text style={styles.header_text}>Ajustes</Text>
+      </View>
 
       {/* foto de perfil */}
       <View style={styles.section}>
-        <Text style={styles.sectionName}>Foto de perfil</Text>
-        <View style={styles.sectionContent}>
-          <Image style={styles.contentSectionImage} />
+        <Text style={styles.section_title}>Foto de perfil</Text>
+        <View style={styles.section_body}>
+          <Image style={styles.image} source={{ uri: photo }} />
           <IconNext stroke='#00000029' />
         </View>
       </View>
@@ -37,9 +42,9 @@ const Settings = () => {
 
       {/* account */}
       <View style={styles.section}>
-        <Text style={styles.sectionName}>Cuenta</Text>
-        <View style={styles.sectionContent}>
-          <Text style={styles.contentSectionText}>{email}</Text>
+        <Text style={styles.section_title}>Cuenta</Text>
+        <View style={styles.section_body}>
+          <Text style={styles.text}>{email}</Text>
           <IconNext stroke='#00000029' />
         </View>
       </View>
@@ -49,9 +54,9 @@ const Settings = () => {
 
       {/* name */}
       <View style={styles.section}>
-        <Text style={styles.sectionName}>Nombre</Text>
-        <View style={styles.sectionContent}>
-          <Text style={styles.contentSectionText}>{name} {lastName}</Text>
+        <Text style={styles.section_title}>Nombre</Text>
+        <View style={styles.section_body}>
+          <Text style={styles.text}>{name} {lastName}</Text>
           <IconNext stroke='#00000029' />
         </View>
       </View>
@@ -61,8 +66,8 @@ const Settings = () => {
 
       {/* actualizar contraseña */}
       <View style={styles.section}>
-        <Text style={styles.sectionName}>Actualizar Contraseña</Text>
-        <View style={styles.sectionContent}>
+        <Text style={styles.section_title}>Actualizar Contraseña</Text>
+        <View style={styles.section_body}>
           <IconNext stroke='#00000029' />
         </View>
       </View>
@@ -72,8 +77,8 @@ const Settings = () => {
 
       {/* Intereses */}
       <View style={styles.section}>
-        <Text style={styles.sectionName}>Intereses</Text>
-        <View style={styles.sectionContent}>
+        <Text style={styles.section_title}>Intereses</Text>
+        <View style={styles.section_body}>
           <IconNext stroke='#00000029' />
         </View>
       </View>
@@ -88,77 +93,80 @@ const Settings = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingVertical: hp('3%') // ~22.9
+    paddingVertical: hp('3%'), // ~22.9
+    paddingHorizontal: wp('7.2%') // ~27
   },
 
   header: {
-    fontSize: 20,
-    fontFamily: 'Poppins_700Bold',
+    flexDirection: 'row',
     alignSelf: 'flex-start',
-    marginBottom: 26
+    alignItems: 'center',
+    marginBottom: hp('3.5%') // ~26
+  },
+
+  header_text: {
+    fontSize: hp('2.7%'), // ~20
+    fontFamily: 'Poppins_700Bold'
   },
 
   section: {
     width: '100%',
-    height: 62,
+    height: hp('7.7%'), //  ~62
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingRight: 30
+    alignItems: 'center'
   },
 
-  sectionName: {
-    fontSize: 12,
+  section_title: {
+    fontSize: hp('1.5%'), //  12~
     color: '#000',
-    fontFamily: 'Poppins_500Medium',
-    paddingLeft: 30
+    fontFamily: 'Poppins_500Medium'
   },
 
-  sectionContent: {
+  section_body: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
   },
 
-  contentSectionText: {
-    fontSize: 12,
-    color: '#000',
-    fontFamily: 'Poppins_300Light',
-    paddingRight: 30
-  },
-
-  contentSectionImage: {
-    width: 53,
-    height: 53,
+  image: {
+    width: wp('15%'), //  ~54
+    height: wp('15%'), //  ~54
     borderRadius: 10,
     backgroundColor: '#00000029',
-    marginRight: 30
+    marginRight: wp('8%') // 30
+  },
+
+  text: {
+    fontSize: hp('1.5%'), //  12
+    color: '#000',
+    fontFamily: 'Poppins_300Light',
+    marginRight: wp('8%') // 30
   },
 
   separator: {
     width: '100%',
     borderBottomWidth: 1,
     borderColor: '#00000014',
-    marginVertical: 7.5
+    marginVertical: hp('0.8%') //  6.5
   },
 
   button: {
-    width: 291,
-    height: 36,
+    width: wp('77.7%'), //  291~
+    height: hp('4.5%'), //  36~
     backgroundColor: '#fff',
     borderWidth: 1,
     borderRadius: 16,
     borderColor: '#EC6666',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 175
+    marginTop: hp('21%') // 170~
   },
 
   buttonText: {
-    fontSize: 14,
+    fontSize: hp('1.7%'), //  14
     color: '#EC6666',
     fontFamily: 'Poppins_500Medium'
   }
