@@ -20,7 +20,6 @@ const HomeTabs = () => {
     getAuthenticatedUserData()
   }, [])
 
-
   return (
     <Tab.Navigator
       screenOptions={({ route }) => (

@@ -30,11 +30,11 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#fff',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingTop: 40,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-    marginBottom: 7
+    justifyContent: 'space-between'
+    // paddingTop: 40,
+    // paddingBottom: 20,
+    // paddingHorizontal: 20,
+    // marginBottom: 7
   },
 
   button: {
