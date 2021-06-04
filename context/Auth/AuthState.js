@@ -82,7 +82,7 @@ const AuthState = (props) => {
     isAlreadyAuthenticatedUser: async () => {
       try {
         const token = await AsyncStorage.getItem('userToken')
-        if (token.length !== 0) {
+        if (token) {
           dispatch({ type: USER_TOKEN, payload: token })
         } else {
           dispatch({ type: USER_TOKEN, payload: null })

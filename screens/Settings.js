@@ -5,8 +5,6 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import AppLoading from 'expo-app-loading'
 import AuthContext from '../context/Auth/AuthContext'
 
-//  components
-
 //  icons / logos
 import IconNext from '../components/Icons/IconNext'
 

@@ -13,19 +13,25 @@ const AuthStack = () => {
   const [isFirstLaunch, setIsFirstLaunch] = useState(null)
   let routeName
 
-  useEffect(() => {
-    const getDataLaunch = async () => {
-      const value = await AsyncStorage.getItem('alreadyLaunched')
+  const getDataLaunch = async () => {
+    const value = await AsyncStorage.getItem('alreadyLaunched')
 
-      if (value === null) {
-        await AsyncStorage.setItem('alreadyLaunched', 'true')
-        setIsFirstLaunch(true)
-      } else {
-        setIsFirstLaunch(false)
-      }
+    if (value === null) {
+      await AsyncStorage.setItem('alreadyLaunched', 'true')
+      setIsFirstLaunch(true)
+    } else {
+      setIsFirstLaunch(false)
     }
+  }
 
-    getDataLaunch()
+  useEffect(() => {
+    let start = true
+    if (start === true) {
+      getDataLaunch()
+    }
+    console.log('auth stack')
+
+    return () => { start = false }
   }, [])
 
   if (isFirstLaunch === null) {

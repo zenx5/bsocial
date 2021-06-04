@@ -8,11 +8,18 @@ import HomeTabs from './HomeTabs'
 
 const Routes = () => {
   const { userToken, isAlreadyAuthenticatedUser } = useContext(AuthContext)
-
   useEffect(() => {
-    isAlreadyAuthenticatedUser()
+    let mounted = true
+
+    if (mounted) {
+      isAlreadyAuthenticatedUser()
+    }
     console.log('router use effect')
-  }, [])
+
+    return () => function cleanup () {
+      mounted = false
+    }
+  }, [userToken])
 
   return (
     <NavigationContainer>

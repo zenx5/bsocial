@@ -5,7 +5,6 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { useFonts, Poppins_200ExtraLight, Poppins_500Medium } from '@expo-google-fonts/poppins'  // eslint-disable-line
 import AppLoading from 'expo-app-loading'
 
-
 //  icons
 import IconNext from '../components/Icons/IconNext'
 
@@ -59,11 +58,11 @@ const DoneButtom = () => {
 
 const OnboardingScreen = ({ navigation }) => {
   //  fonts
-const [fontsLoaded] = useFonts({ Poppins_200ExtraLight, Poppins_500Medium })
+  const [fontsLoaded] = useFonts({ Poppins_200ExtraLight, Poppins_500Medium })
 
-if (!fontsLoaded) {
-  return <AppLoading />
-}
+  if (!fontsLoaded) {
+    return <AppLoading />
+  }
 
   return (
     <AppIntroSlider
@@ -93,11 +92,11 @@ const styles = StyleSheet.create({
   },
 
   container_title: {
-    width: '70%'
+    width: wp('70%')
   },
 
   container_text: {
-    width: '65%'
+    width: wp('65%')
   },
 
   title: {
@@ -107,7 +106,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginBottom: hp('3.4%'), //  25~~
     flexWrap: 'wrap',
-    fontFamily: 'Poppins_500Medium'    
+    fontFamily: 'Poppins_500Medium'
   },
 
   text: {

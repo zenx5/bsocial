@@ -1,10 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { StyleSheet, Text, View, Image, Platform, TouchableOpacity, TextInput, Pressable, Alert, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Image, Platform, TouchableOpacity, TextInput, Pressable, Alert } from 'react-native'
 import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import * as ImagePicker from 'expo-image-picker'
 import AuthContext from '../context/Auth/AuthContext'
+
+//  components
+import Loading from '../components/Loading'
 
 //  icon
 import IconBack from '../components/Icons/IconBack'
@@ -259,11 +262,7 @@ const Signup = (props) => {
 
   return (
     <View style={[styles.container]}>
-      {
-        loading
-          ? <ActivityIndicator size='large' color='#00000050' style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, zIndex: 100 }} />
-          : null
-      }
+      {loading ? <Loading /> : null}
 
       {/* header */}
       <View style={styles.header}>
