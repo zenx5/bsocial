@@ -1,19 +1,52 @@
-import React, { useContext } from 'react'
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import React, { useContext, useState, useEffect } from 'react'
+import { View, Text, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native'
 import AuthContext from '../context/Auth/AuthContext'
+import * as Location from 'expo-location'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 //  icons
 import IconSettings from '../components/Icons/IconSettings'
 
+import FeaturedEvents from './casa/FeaturedEvents'
+
 const Home = (props) => {
   const { photo } = useContext(AuthContext)
+  const [location, setLocation] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null)
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync()
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied')
+        Alert.alert(
+          'Error',
+          'Se requiere persmisos a la ubicacion',
+          [{ text: 'OK' }],
+          { cancelable: false }
+        )
+        return
+      }
+
+      const location = await Location.getCurrentPositionAsync({})
+      setLocation(location)
+    })()
+  }, [])
+
+  let text = 'Waiting..'
+  if (errorMsg) {
+    text = errorMsg
+  } else if (location) {
+    text = JSON.stringify(location)
+  }
+
+  console.log(location)
 
   return (
     <View>
       {/* header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Create Event Step 1')} style={styles.button}>
+        <TouchableOpacity onPress={() => console.log('press')} style={styles.button}>
           <Text style={styles.buttonText}>Crear Evento</Text>
         </TouchableOpacity>
         <View>
@@ -27,8 +60,12 @@ const Home = (props) => {
           <Text style={styles.text}>Proximos Eventos</Text>
           <IconSettings />
         </View>
-        <View style={styles.map} />
+        <View style={styles.map}>
+          <Text style={styles.paragraph}>{text}</Text>
+        </View>
       </View>
+
+      <FeaturedEvents />
 
     </View>
   )
@@ -74,20 +111,36 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingTop: hp('1.6%'), //  13
     paddingBottom: hp('1.85%'), // 15
-    marginBottom: hp('1.5%') // 12
+    marginBottom: hp('1.5%'), // 12,
+    justifyContent: 'center'
   },
 
   upcomingEvents_header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingLeft: wp('3.4%'), //  13
-    paddingRight: wp('11.5%') // 43
+    paddingRight: wp('11.5%'), // 43
+    marginBottom: hp('1.4%') // 11.5
   },
 
   text: {
     fontSize: hp('1.95%'), //  16
     fontFamily: 'Poppins_700Bold',
     textTransform: 'uppercase'
+  },
+
+  map: {
+    width: wp('95%'), //  356~
+    height: hp('30%'), // 243~
+    borderRadius: 5,
+    backgroundColor: '#00000020',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center'
+  },
+
+  paragraph: {
+    flexWrap: 'wrap'
   }
 })
 
