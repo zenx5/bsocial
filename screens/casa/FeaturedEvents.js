@@ -70,7 +70,6 @@ const FeatureEvents = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     paddingVertical: 17,
