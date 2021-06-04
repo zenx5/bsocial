@@ -1,6 +1,7 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import AuthContext from '../context/Auth/AuthContext'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 //  screens
 import AuthStack from './AuthStack'
@@ -8,22 +9,27 @@ import HomeTabs from './HomeTabs'
 
 const Routes = () => {
   const { userToken, isAlreadyAuthenticatedUser } = useContext(AuthContext)
+  const [isFirstLaunch, setIsFirstLaunch] = useState(null)
+  let routeName
+
   useEffect(() => {
-    let mounted = true
+    (async () => {
+      await isAlreadyAuthenticatedUser()
 
-    if (mounted) {
-      isAlreadyAuthenticatedUser()
-    }
-    console.log('router use effect')
+      const value = await AsyncStorage.getItem('alreadyLaunched')
 
-    return () => function cleanup () {
-      mounted = false
-    }
+      if (value === null) {
+        await AsyncStorage.setItem('alreadyLaunched', 'true')
+        setIsFirstLaunch(true)
+      } else {
+        setIsFirstLaunch(false)
+      }
+    })()
   }, [userToken])
 
   return (
     <NavigationContainer>
-      {userToken !== null ? <HomeTabs /> : <AuthStack />}
+      {userToken !== null ? <HomeTabs /> : <AuthStack isFirstLaunch={isFirstLaunch} routeName={routeName} />}
     </NavigationContainer>
   )
 }

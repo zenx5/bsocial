@@ -30,6 +30,7 @@ const Home = (props) => {
 
       const location = await Location.getCurrentPositionAsync({})
       setLocation(location)
+      console.log(location.coords)
     })()
   }, [])
 
@@ -39,8 +40,6 @@ const Home = (props) => {
   } else if (location) {
     text = JSON.stringify(location)
   }
-
-  console.log(location)
 
   return (
     <View>
@@ -76,7 +75,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: hp('3%'), //  22.9~
+    paddingTop: hp('7.2%'),
     paddingHorizontal: wp('7.2%'), // 27~
     paddingBottom: hp('2.2%'), // 18~
     marginBottom: hp('0.9%') // 7~

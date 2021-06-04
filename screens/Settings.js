@@ -93,7 +93,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingVertical: hp('3%'), // ~22.9
+    paddingTop: hp('7.2%'),
+    paddingBottom: hp('3%'), // ~22.9
     paddingHorizontal: wp('7.2%') // ~27
   },
 

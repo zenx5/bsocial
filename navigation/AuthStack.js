@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 //  screens
 import Login from '../screens/Login'
@@ -9,30 +8,23 @@ import OnboardingScreen from '../screens/OnboardingScreen'
 
 const Stack = createStackNavigator()
 
-const AuthStack = () => {
-  const [isFirstLaunch, setIsFirstLaunch] = useState(null)
-  let routeName
+const AuthStack = ({ isFirstLaunch, routeName }) => {
+  // const [isFirstLaunch, setIsFirstLaunch] = useState(null)
+  // let routeName
+  // let value
 
-  const getDataLaunch = async () => {
-    const value = await AsyncStorage.getItem('alreadyLaunched')
+  // useEffect(() => {
+  //   (async () => {
+  //     value = await AsyncStorage.getItem('alreadyLaunched')
 
-    if (value === null) {
-      await AsyncStorage.setItem('alreadyLaunched', 'true')
-      setIsFirstLaunch(true)
-    } else {
-      setIsFirstLaunch(false)
-    }
-  }
-
-  useEffect(() => {
-    let start = true
-    if (start === true) {
-      getDataLaunch()
-    }
-    console.log('auth stack')
-
-    return () => { start = false }
-  }, [])
+  //     if (value === null) {
+  //       await AsyncStorage.setItem('alreadyLaunched', 'true')
+  //       setIsFirstLaunch(true)
+  //     } else {
+  //       setIsFirstLaunch(false)
+  //     }
+  //   })()
+  // }, [])
 
   if (isFirstLaunch === null) {
     return null
