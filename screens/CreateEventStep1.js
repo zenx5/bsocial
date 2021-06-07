@@ -4,6 +4,7 @@ import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from 
 import AppLoading from 'expo-app-loading'
 import Constants from 'expo-constants'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 //  icon
 import IconClose from '../components/Icons/IconClose'
@@ -16,6 +17,27 @@ import IconImage from '../components/Icons/IconImage'
 const CreateEventStep1 = (props) => {
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
+
+  //  date && time
+  const [showDate, setShowDate] = useState(false)
+  const [date, setDate] = useState(new Date())
+
+  const showDatePicker = () => {
+    console.log('show date picker')
+    setShowDate(true)
+  }
+
+  const closeDatePicker = () => {
+    console.log('close date picker')
+    setShowDate(false)
+  }
+
+  const onChangeDate = (event, selectedDate) => {
+    console.log(selectedDate)
+    const currentDate = selectedDate || date
+    setDate(currentDate)
+    setShowDate(false)
+  }
 
   //  button
   const [completeInfo, setCompleteInfo] = useState(true)  // eslint-disable-line
@@ -50,10 +72,19 @@ const CreateEventStep1 = (props) => {
 
         <View style={styles.dateTimeContainer}>
           {/* Date */}
-          <View style={styles.dateTime}>
+          <TouchableOpacity onPress={showDatePicker} style={styles.dateTime}>
             <IconDate />
             <Text style={styles.dateTimeText}>Fecha</Text>
-          </View>
+            {showDate && (
+              <DateTimePicker
+                value={date}
+                mode='date'
+                display='default'
+                onChange={onChangeDate}
+              />
+            )}
+
+          </TouchableOpacity>
 
           {/* Time */}
           <View style={styles.dateTime}>
