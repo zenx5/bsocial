@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createStackNavigator } from '@react-navigation/stack'
 import AuthContext from '../context/Auth/AuthContext'
 
 // screens
@@ -7,19 +8,15 @@ import Home from '../screens/Home'
 import Contacts from '../screens/Contacts'
 import ListEvents from '../screens/ListEvents'
 import Settings from '../screens/Settings'
+import CreateEventStep1 from '../screens/CreateEventStep1'
 
 //  icons
 import IconsSwitching from '../components/Icons/IconsSwitching'
 
 const Tab = createBottomTabNavigator()
+const Stack = createStackNavigator()
 
-const HomeTabs = () => {
-  const { getAuthenticatedUserData } = useContext(AuthContext)
-
-  useEffect(() => {
-    getAuthenticatedUserData()
-  }, [])
-
+const MainTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => (
@@ -46,6 +43,21 @@ const HomeTabs = () => {
       <Tab.Screen name='List' component={ListEvents} options={{ tabBarLabel: () => null }} />
       <Tab.Screen name='Settings' component={Settings} options={{ tabBarLabel: () => null }} />
     </Tab.Navigator>
+  )
+}
+
+const HomeTabs = () => {
+  const { getAuthenticatedUserData } = useContext(AuthContext)
+
+  useEffect(() => {
+    getAuthenticatedUserData()
+  }, [])
+
+  return (
+    <Stack.Navigator headerMode='none'>
+      <Stack.Screen name='Home' component={MainTabs} />
+      <Stack.Screen name='Create Event Screens' component={CreateEventStep1} />
+    </Stack.Navigator>
   )
 }
 export default HomeTabs

@@ -1,154 +1,175 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native'
-import AuthContext from '../context/Auth/AuthContext'
-import * as Location from 'expo-location'
-import MapView from 'react-native-maps'
+import React, { useContext } from 'react'
+import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native'
+import { useFonts, Poppins_300Light, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import AppLoading from 'expo-app-loading'
+import AuthContext from '../context/Auth/AuthContext'
+import Constants from 'expo-constants'
 
-//  icons
-import IconSettings from '../components/Icons/IconSettings'
+//  icons / logos
+import IconNext from '../components/Icons/IconNext'
 
-import FeaturedEvents from './casa/FeaturedEvents'
+const Settings = () => {
+  const { signOut, photo, name, lastName, email } = useContext(AuthContext)
 
-const Home = (props) => {
-  const { photo } = useContext(AuthContext)
-  const [location, setLocation] = useState(null)
-  const [errorMsg, setErrorMsg] = useState(null)
+  const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_500Medium, Poppins_700Bold })
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync()
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied')
-        Alert.alert(
-          'Error',
-          'Se requiere persmisos a la ubicacion',
-          [{ text: 'OK' }],
-          { cancelable: false }
-        )
-        return
-      }
-
-      const location = await Location.getCurrentPositionAsync({})
-      setLocation(location)
-      console.log(location.coords)
-    })()
-  }, [])
-
-  let text = 'Waiting..'
-  if (errorMsg) {
-    text = errorMsg
-  } else if (location) {
-    text = JSON.stringify(location)
+  if (!fontsLoaded) {
+    return <AppLoading />
   }
 
   return (
-    <View>
+    <View style={styles.container}>
+
       {/* header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => console.log('press')} style={styles.button}>
-          <Text style={styles.buttonText}>Crear Evento</Text>
-        </TouchableOpacity>
-        <View>
+        <Text style={styles.header_text}>Ajustes</Text>
+      </View>
+
+      {/* foto de perfil */}
+      <View style={styles.section}>
+        <Text style={styles.section_title}>Foto de perfil</Text>
+        <View style={styles.section_body}>
           <Image style={styles.image} source={{ uri: photo }} />
+          <IconNext stroke='#00000029' />
         </View>
       </View>
 
-      {/* upcoming events */}
-      <View style={styles.upcomingEvents}>
-        <View style={styles.upcomingEvents_header}>
-          <Text style={styles.text}>Proximos Eventos</Text>
-          <IconSettings />
+      {/* separator */}
+      <View style={styles.separator} />
+
+      {/* account */}
+      <View style={styles.section}>
+        <Text style={styles.section_title}>Cuenta</Text>
+        <View style={styles.section_body}>
+          <Text style={styles.text}>{email}</Text>
+          <IconNext stroke='#00000029' />
         </View>
-        <View>
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421
-            }}
-          />
-        </View>
-        <Text style={styles.paragraph}>{text}</Text>
       </View>
 
-      <FeaturedEvents />
+      {/* separator */}
+      <View style={styles.separator} />
 
+      {/* name */}
+      <View style={styles.section}>
+        <Text style={styles.section_title}>Nombre</Text>
+        <View style={styles.section_body}>
+          <Text style={styles.text}>{name} {lastName}</Text>
+          <IconNext stroke='#00000029' />
+        </View>
+      </View>
+
+      {/* separator */}
+      <View style={styles.separator} />
+
+      {/* actualizar contraseña */}
+      <View style={styles.section}>
+        <Text style={styles.section_title}>Actualizar Contraseña</Text>
+        <View style={styles.section_body}>
+          <IconNext stroke='#00000029' />
+        </View>
+      </View>
+
+      {/* separator */}
+      <View style={styles.separator} />
+
+      {/* Intereses */}
+      <View style={styles.section}>
+        <Text style={styles.section_title}>Intereses</Text>
+        <View style={styles.section_body}>
+          <IconNext stroke='#00000029' />
+        </View>
+      </View>
+
+      <TouchableOpacity onPress={signOut} style={styles.button}>
+        <Text style={styles.buttonText}>Cerrar Sesión</Text>
+      </TouchableOpacity>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  header: {
+  container: {
+    flex: 1,
+    alignItems: 'center',
     backgroundColor: '#fff',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingTop: hp('7.2%'),
-    paddingHorizontal: wp('7.2%'), // 27~
-    paddingBottom: hp('2.2%'), // 18~
-    marginBottom: hp('0.9%') // 7~
+    paddingTop: Constants.statusBarHeight,
+    paddingBottom: hp('3%'), // ~22.9
+    paddingHorizontal: wp('7.2%') // ~27
   },
 
-  button: {
-    width: wp('63%'), //  236~
-    height: hp('6.2%'), //  50~
-    backgroundColor: '#E1B21C',
-    borderRadius: 27,
+  header: {
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    alignItems: 'center',
+    marginTop: hp('3.5%'), // ~26
+    marginBottom: hp('3.5%') // ~26
+  },
+
+  header_text: {
+    fontSize: hp('2.7%'), // ~20
+    fontFamily: 'Poppins_700Bold'
+  },
+
+  section: {
+    width: '100%',
+    height: hp('7.7%'), //  ~62
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+
+  section_title: {
+    fontSize: hp('1.5%'), //  12~
+    color: '#000',
+    fontFamily: 'Poppins_500Medium'
+  },
+
+  section_body: {
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
   },
 
-  buttonText: {
-    color: '#FFFFFF',
-    textAlign: 'center',
-    fontSize: hp('2%'), // 16~
-    fontFamily: 'Poppins_700Bold',
-    textTransform: 'uppercase'
-  },
-
   image: {
-    width: hp('6.5%'), //  53~
-    height: hp('6.5%'), //  53~
-    borderRadius: 6,
-    backgroundColor: '#00000029'
-  },
-
-  upcomingEvents: {
-    backgroundColor: '#fff',
-    flexDirection: 'column',
-    paddingTop: hp('1.6%'), //  13
-    paddingBottom: hp('1.85%'), // 15
-    marginBottom: hp('1.5%'), // 12,
-    justifyContent: 'center'
-  },
-
-  upcomingEvents_header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingLeft: wp('3.4%'), //  13
-    paddingRight: wp('11.5%'), // 43
-    marginBottom: hp('1.4%') // 11.5
+    width: wp('15%'), //  ~54
+    height: wp('15%'), //  ~54
+    borderRadius: 10,
+    backgroundColor: '#00000029',
+    marginRight: wp('8%') // 30
   },
 
   text: {
-    fontSize: hp('1.95%'), //  16
-    fontFamily: 'Poppins_700Bold',
-    textTransform: 'uppercase'
+    fontSize: hp('1.5%'), //  12
+    color: '#000',
+    fontFamily: 'Poppins_300Light',
+    marginRight: wp('8%') // 30
   },
 
-  map: {
-    width: wp('95%'), //  356~
-    height: hp('30%'), // 243~
-    borderRadius: 5,
-    backgroundColor: '#00000020',
-    alignSelf: 'center'
+  separator: {
+    width: '100%',
+    borderBottomWidth: 1,
+    borderColor: '#00000014',
+    marginVertical: hp('0.8%') //  6.5
   },
 
-  paragraph: {
-    flexWrap: 'wrap'
+  button: {
+    width: wp('77.7%'), //  291~
+    height: hp('4.5%'), //  36~
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderRadius: 16,
+    borderColor: '#EC6666',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: hp('21%') // 170~
+  },
+
+  buttonText: {
+    fontSize: hp('1.7%'), //  14
+    color: '#EC6666',
+    fontFamily: 'Poppins_500Medium'
   }
 })
 
-export default Home
+export default Settings

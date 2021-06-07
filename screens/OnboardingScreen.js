@@ -3,6 +3,7 @@ import { View, Text, ImageBackground, Image, StyleSheet } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { useFonts, Poppins_200ExtraLight, Poppins_500Medium } from '@expo-google-fonts/poppins'  // eslint-disable-line
+import { StatusBar } from 'expo-status-bar'
 import AppLoading from 'expo-app-loading'
 
 //  icons
@@ -65,15 +66,18 @@ const OnboardingScreen = ({ navigation }) => {
   }
 
   return (
-    <AppIntroSlider
-      data={slides}
-      renderItem={renderItem}
-      dotStyle={{ backgroundColor: '#FFFFFF66' }}
-      activeDotStyle={{ backgroundColor: '#D6BB5A' }}
-      showNextButton={false}
-      renderDoneButton={DoneButtom}
-      onDone={() => navigation.navigate('Login')}
-    />
+    <View>
+      <StatusBar hidden />
+      <AppIntroSlider
+        data={slides}
+        renderItem={renderItem}
+        dotStyle={{ backgroundColor: '#FFFFFF66' }}
+        activeDotStyle={{ backgroundColor: '#D6BB5A' }}
+        showNextButton={false}
+        renderDoneButton={DoneButtom}
+        onDone={() => navigation.navigate('Login')}
+      />
+    </View>
   )
 }
 

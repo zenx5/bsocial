@@ -3,13 +3,12 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 
 import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 
-import CreateEventStep1Header from './CreateEventStep1Header'
-
 //  icon
-import IconGeolocalizador from '../../components/Icons/IconGeolocalizador'
-import IconDate from '../../components/Icons/IconDate'
-import IconTime from '../../components/Icons/IconTime'
-import IconImage from '../../components/Icons/IconImage'
+import IconClose from '../components/Icons/IconClose'
+import IconGeolocalizador from '../components/Icons/IconGeolocalizador'
+import IconDate from '../components/Icons/IconDate'
+import IconTime from '../components/Icons/IconTime'
+import IconImage from '../components/Icons/IconImage'
 
 const CreateEventStep1 = (props) => {
   //  fonts
@@ -25,7 +24,13 @@ const CreateEventStep1 = (props) => {
 
   return (
     <View style={styles.container}>
-      <CreateEventStep1Header />
+      <View style={styles.container}>
+        <Text style={{ fontSize: 18, fontFamily: 'Poppins_700Bold' }}>Crear evento</Text>
+
+        <TouchableOpacity onPress={() => props.navigation.goBack()}>
+          <IconClose />
+        </TouchableOpacity>
+      </View>
       <ScrollView>
 
         {/* Geolocalizador Input */}

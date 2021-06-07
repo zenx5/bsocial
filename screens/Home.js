@@ -2,7 +2,12 @@ import React, { useContext, useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native'
 import AuthContext from '../context/Auth/AuthContext'
 import * as Location from 'expo-location'
+import MapView, { Marker } from 'react-native-maps'
+import { useFonts, Poppins_300Light, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import AppLoading from 'expo-app-loading'
+import Constants from 'expo-constants'
+import { StatusBar } from 'expo-status-bar'
 
 //  icons
 import IconSettings from '../components/Icons/IconSettings'
@@ -11,14 +16,21 @@ import FeaturedEvents from './casa/FeaturedEvents'
 
 const Home = (props) => {
   const { photo } = useContext(AuthContext)
-  const [location, setLocation] = useState(null)
-  const [errorMsg, setErrorMsg] = useState(null)
+  const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_500Medium, Poppins_700Bold })
+
+  const initialRegion = {
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0.0122,
+    longitudeDelta: 0.0121
+  }
+
+  const [location, setLocation] = useState(initialRegion)
 
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync()
       if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied')
         Alert.alert(
           'Error',
           'Se requiere persmisos a la ubicacion',
@@ -29,23 +41,23 @@ const Home = (props) => {
       }
 
       const location = await Location.getCurrentPositionAsync({})
-      setLocation(location)
-      console.log(location.coords)
+      setLocation(location.coords)
+      console.log(location.coords.latitude)
+      console.log(location.coords.longitude)
     })()
   }, [])
 
-  let text = 'Waiting..'
-  if (errorMsg) {
-    text = errorMsg
-  } else if (location) {
-    text = JSON.stringify(location)
+  if (!fontsLoaded) {
+    return <AppLoading />
   }
 
   return (
-    <View>
+    <View style={styles.container}>
+      <StatusBar backgroundColor='#fff' />
+
       {/* header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => console.log('press')} style={styles.button}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Create Event Screens')} style={styles.button}>
           <Text style={styles.buttonText}>Crear Evento</Text>
         </TouchableOpacity>
         <View>
@@ -59,11 +71,28 @@ const Home = (props) => {
           <Text style={styles.text}>Proximos Eventos</Text>
           <IconSettings />
         </View>
-        <View style={styles.map}>
-          <Text style={styles.paragraph}>{text}</Text>
+        <View>
+          <MapView
+            style={styles.map}
+            region={{
+              latitude: location.latitude,
+              longitude: location.longitude,
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.01
+            }}
+            showsUserLocation
+          >
+            <Marker
+              coordinate={{
+                latitude: location.latitude,
+                longitude: location.longitude
+              }}
+            />
+          </MapView>
         </View>
       </View>
 
+      {/* featured Events */}
       <FeaturedEvents />
 
     </View>
@@ -71,11 +100,15 @@ const Home = (props) => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: Constants.statusBarHeight
+  },
+
   header: {
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: hp('7.2%'),
+    paddingTop: hp('2.2%'),
     paddingHorizontal: wp('7.2%'), // 27~
     paddingBottom: hp('2.2%'), // 18~
     marginBottom: hp('0.9%') // 7~
@@ -118,7 +151,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingLeft: wp('3.4%'), //  13
-    paddingRight: wp('11.5%'), // 43
+    paddingRight: wp('10%'), // 43
     marginBottom: hp('1.4%') // 11.5
   },
 
@@ -133,8 +166,6 @@ const styles = StyleSheet.create({
     height: hp('30%'), // 243~
     borderRadius: 5,
     backgroundColor: '#00000020',
-    justifyContent: 'center',
-    alignItems: 'center',
     alignSelf: 'center'
   },
 

@@ -5,13 +5,16 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Alert,
-  ActivityIndicator
+  Alert
 } from 'react-native'
 import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'; // eslint-disable-line
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import AppLoading from 'expo-app-loading'
 import AuthContext from '../context/Auth/AuthContext'
+import { StatusBar } from 'expo-status-bar'
+
+//  components
+import Loading from '../components/Loading'
 
 //  icons / logos
 import LogoBSocialBienvenida from '../components/Icons/LogoBsocialBienvenida'
@@ -120,20 +123,10 @@ const Login = (props) => {
 
   return (
     <View style={styles.container}>
-      {loading
-        ? <ActivityIndicator
-            size='large'
-            color='#00000050'
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              zIndex: 100
-            }}
-          />
-        : null}
+      {loading ? <Loading /> : null}
+
+      <StatusBar hidden />
+
       <LogoBSocialBienvenida style={styles.logo} />
 
       <Text style={styles.text}>Iniciar Sesión con</Text>
