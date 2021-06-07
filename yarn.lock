@@ -2534,6 +2534,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/datetimepicker@npm:3.2.0":
+  version: 3.2.0
+  resolution: "@react-native-community/datetimepicker@npm:3.2.0"
+  dependencies:
+    invariant: ^2.2.4
+  peerDependencies:
+    react: ">=16.8.3"
+    react-native: ">=0.60"
+    react-native-windows: ">=0.62"
+  checksum: 15eba1e081efa5c52cde53980110e77a636572953e4eb61700b2ec7f580789bd31a7ecb2706ef6a8a4be792cfa1f4755b480b2b3a2a11489975f98abd775e69d
+  languageName: node
+  linkType: hard
+
 "@react-native-community/masked-view@npm:0.1.10":
   version: 0.1.10
   resolution: "@react-native-community/masked-view@npm:0.1.10"
@@ -9628,6 +9641,7 @@ fsevents@^1.2.7:
     "@babel/core": ^7.9.0
     "@expo-google-fonts/poppins": ^0.1.0
     "@react-native-async-storage/async-storage": ^1.13.0
+    "@react-native-community/datetimepicker": 3.2.0
     "@react-native-community/masked-view": 0.1.10
     "@react-navigation/bottom-tabs": ^5.11.11
     "@react-navigation/native": ^5.9.4

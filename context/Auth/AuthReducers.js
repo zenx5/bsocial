@@ -1,4 +1,4 @@
-import { ADD_USER_DATA, USER_TOKEN, GET_USERS, LOADING, IS_EMAIL_IN_USE, CREATED_USER, IS_VALID_USER } from '../types'
+import { ADD_USER_DATA, USER_TOKEN, LOADING, IS_EMAIL_IN_USE, CREATED_USER, IS_VALID_USER } from '../types'
 
 const AuthReducers = (state, action) => {
   const { payload, type } = action

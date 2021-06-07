@@ -110,7 +110,7 @@ const AuthState = (props) => {
         console.log(err)
       }
     }
-  }))
+  }), [state])
 
   return (
     <AuthContext.Provider

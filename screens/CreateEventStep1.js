@@ -2,10 +2,13 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native'
 import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
+import Constants from 'expo-constants'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 //  icon
 import IconClose from '../components/Icons/IconClose'
 import IconGeolocalizador from '../components/Icons/IconGeolocalizador'
+import IconTimeZone from '../components/Icons/IconTimeZone'
 import IconDate from '../components/Icons/IconDate'
 import IconTime from '../components/Icons/IconTime'
 import IconImage from '../components/Icons/IconImage'
@@ -24,22 +27,25 @@ const CreateEventStep1 = (props) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.container}>
-        <Text style={{ fontSize: 18, fontFamily: 'Poppins_700Bold' }}>Crear evento</Text>
-
+      {/* header */}
+      <View style={styles.header}>
+        <Text style={styles.header_title}>Crear evento</Text>
         <TouchableOpacity onPress={() => props.navigation.goBack()}>
           <IconClose />
         </TouchableOpacity>
       </View>
-      <ScrollView>
 
-        {/* Geolocalizador Input */}
+      <ScrollView>
+        {/*  location Input */}
         <View style={styles.location}>
-          <TouchableOpacity style={styles.geolocalizadorInput}>
-            <Text style={styles.geolocalizadorText}>Ubicación</Text>
-            <IconGeolocalizador style={styles.geolocalizadorIcon} />
+          <TouchableOpacity style={styles.locationInput}>
+            <Text style={styles.inputText}>Ubicación</Text>
+            <IconGeolocalizador style={styles.iconGeolocalizador} />
           </TouchableOpacity>
-          <Text style={{ fontSize: 11, fontFamily: 'Poppins_300Light', color: '#00000050' }}>Zona horaria determinada por ubicación</Text>
+          <View style={styles.location_footer}>
+            <IconTimeZone style={styles.iconTimeZone} />
+            <Text style={styles.text}>Zona horaria determinada por ubicación</Text>
+          </View>
         </View>
 
         <View style={styles.dateTimeContainer}>
@@ -85,22 +91,32 @@ const CreateEventStep1 = (props) => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: Constants.statusBarHeight,
     backgroundColor: '#fff',
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 30,
-    paddingHorizontal: 20
+    paddingHorizontal: wp('6.6%') //  27~
+  },
+
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: hp('3.95%') // 27~
+  },
+
+  header_title: {
+    fontFamily: 'Poppins_700Bold',
+    fontSize: hp('2.61%') // 18~
   },
 
   location: {
     width: '100%',
-    marginBottom: 25
+    marginTop: hp('3.5%'), //  24
+    marginBottom: hp('3.69%') // 25
   },
 
-  geolocalizadorInput: {
-    height: 60,
+  locationInput: {
+    height: hp('8.82%'), //  60~
     backgroundColor: '#00000014',
     borderRadius: 10,
     flexDirection: 'row',
@@ -108,20 +124,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#00000011',
-    marginBottom: 7
+    paddingLeft: wp('4.18%'), // 17~
+    marginBottom: hp('1.1%') // 7.6~
   },
 
-  geolocalizadorText: {
-    fontSize: 16,
-    color: '#000',
-    fontFamily: 'Poppins_400Regular',
-    paddingLeft: 17
-  },
-
-  geolocalizadorIcon: {
-    paddingRight: 7,
+  iconGeolocalizador: {
+    marginRight: wp('1.75%'), //  7.2
     width: 43.12,
     height: 37.73
+  },
+
+  location_footer: {
+    flexDirection: 'row'
+  },
+
+  iconTimeZone: {
+    marginRight: wp('1.5%') //  6
+  },
+
+  text: {
+    fontSize: hp('1.7%'), //  11~~
+    fontFamily: 'Poppins_300Light',
+    color: '#00000050'
   },
 
   dateTimeContainer: {
@@ -190,6 +214,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Poppins_400Regular',
     marginTop: 15.5
+  },
+
+  inputText: {
+    fontSize: hp('2.35%'), //  16
+    color: '#000',
+    fontFamily: 'Poppins_400Regular'
   },
 
   categoryContainer: {
