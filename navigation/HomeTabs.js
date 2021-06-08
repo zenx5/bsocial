@@ -9,6 +9,7 @@ import Contacts from '../screens/Contacts'
 import ListEvents from '../screens/ListEvents'
 import Settings from '../screens/Settings'
 import CreateEventStep1 from '../screens/CreateEventStep1'
+import CreateEventStep2 from '../screens/CreateEventStep2'
 
 //  icons
 import IconsSwitching from '../components/Icons/IconsSwitching'
@@ -56,7 +57,8 @@ const HomeTabs = () => {
   return (
     <Stack.Navigator headerMode='none'>
       <Stack.Screen name='Home' component={MainTabs} />
-      <Stack.Screen name='Create Event Screens' component={CreateEventStep1} />
+      <Stack.Screen name='Create Event Step 1' component={CreateEventStep1} />
+      <Stack.Screen name='Create Event Step 2' component={CreateEventStep2} />
     </Stack.Navigator>
   )
 }

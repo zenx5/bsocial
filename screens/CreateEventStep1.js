@@ -126,7 +126,7 @@ const CreateEventStep1 = (props) => {
           {/* Time */}
           <TouchableOpacity onPress={showTimePicker} style={styles.dateTime}>
             <IconTime />
-            <Text style={styles.inputText}>{eventData.time ? eventData.time.toLocaleTimeString() : 'Hora'}</Text>
+            <Text style={styles.inputText}>{eventData.time ? eventData.time.toLocaleTimeString().slice(0, 5) : 'Hora'}</Text>
             <DateTimePickerModal
               isVisible={showDateTime.time}
               mode='time'

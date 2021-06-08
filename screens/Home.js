@@ -57,7 +57,7 @@ const Home = (props) => {
 
       {/* header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Create Event Screens')} style={styles.button}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Create Event Step 1')} style={styles.button}>
           <Text style={styles.buttonText}>Crear Evento</Text>
         </TouchableOpacity>
         <View>
