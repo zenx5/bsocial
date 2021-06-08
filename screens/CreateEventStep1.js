@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Image, Platform, Alert } from 'react-native'
 import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import Constants from 'expo-constants'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import DateTimePicker from '@react-native-community/datetimepicker'
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
+import * as ImagePicker from 'expo-image-picker'
 
 //  icon
 import IconClose from '../components/Icons/IconClose'
@@ -18,25 +19,62 @@ const CreateEventStep1 = (props) => {
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
 
+  //  create event data
+  const [eventData, setEventData] = useState({
+    date: null,
+    time: null,
+    eventName: '',
+    description: '',
+    image: null
+  })
+
   //  date && time
-  const [showDate, setShowDate] = useState(false)
-  const [date, setDate] = useState(new Date())
+  const [showDateTime, setShowDateTime] = useState({ date: false, time: false })
 
-  const showDatePicker = () => {
-    console.log('show date picker')
-    setShowDate(true)
+  const showDatePicker = () => setShowDateTime({ ...showDateTime, date: true })
+
+  const onCancelDate = () => setShowDateTime({ ...showDateTime, date: false })
+
+  const onConfirmDate = (date) => {
+    setEventData({ ...eventData, date })
+    onCancelDate()
   }
 
-  const closeDatePicker = () => {
-    console.log('close date picker')
-    setShowDate(false)
+  const showTimePicker = () => setShowDateTime({ ...showDateTime, time: true })
+
+  const onCancelTime = () => setShowDateTime({ ...showDateTime, time: false })
+
+  const onConfirmTime = (time) => {
+    setEventData({ ...eventData, time })
+    onCancelTime()
   }
 
-  const onChangeDate = (event, selectedDate) => {
-    console.log(selectedDate)
-    const currentDate = selectedDate || date
-    setDate(currentDate)
-    setShowDate(false)
+  //  event name handler
+  const handleEventName = (value) => {
+    setEventData({ ...eventData, eventName: value })
+  }
+
+  //  description handler
+  const handleDescription = (value) => {
+    setEventData({ ...eventData, description: value })
+  }
+
+  //  input handler image
+  const handleImage = async () => {
+    // permissions
+    if (Platform.OS !== 'web') {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+      if (status !== 'granted') {
+        Alert('Se requiere acceso a la galeria de imagenes!')
+      } else {
+        const result = await ImagePicker.launchImageLibraryAsync({
+          quality: 0.5
+        })
+        if (!result.cancelled) {
+          setEventData({ ...eventData, image: result.uri })
+        }
+      }
+    }
   }
 
   //  button
@@ -66,7 +104,7 @@ const CreateEventStep1 = (props) => {
           </TouchableOpacity>
           <View style={styles.location_footer}>
             <IconTimeZone style={styles.iconTimeZone} />
-            <Text style={styles.text}>Zona horaria determinada por ubicación</Text>
+            <Text style={styles.location_footerText}>Zona horaria determinada por ubicación</Text>
           </View>
         </View>
 
@@ -74,35 +112,62 @@ const CreateEventStep1 = (props) => {
           {/* Date */}
           <TouchableOpacity onPress={showDatePicker} style={styles.dateTime}>
             <IconDate />
-            <Text style={styles.dateTimeText}>Fecha</Text>
-            {showDate && (
-              <DateTimePicker
-                value={date}
-                mode='date'
-                display='default'
-                onChange={onChangeDate}
-              />
-            )}
+            <Text style={styles.inputText}>{eventData.date ? eventData.date.toLocaleDateString() : 'Fecha'}</Text>
+            <DateTimePickerModal
+              isVisible={showDateTime.date}
+              mode='date'
+              display='default'
+              onConfirm={onConfirmDate}
+              onCancel={onCancelDate}
+            />
 
           </TouchableOpacity>
 
           {/* Time */}
-          <View style={styles.dateTime}>
+          <TouchableOpacity onPress={showTimePicker} style={styles.dateTime}>
             <IconTime />
-            <Text style={styles.dateTimeText}>Hora</Text>
-          </View>
+            <Text style={styles.inputText}>{eventData.time ? eventData.time.toLocaleTimeString() : 'Hora'}</Text>
+            <DateTimePickerModal
+              isVisible={showDateTime.time}
+              mode='time'
+              display='default'
+              onConfirm={onConfirmTime}
+              onCancel={onCancelTime}
+            />
+          </TouchableOpacity>
         </View>
 
         {/* event name */}
-        <TextInput placeholder='Nombre del evento' placeholderTextColor='#000' style={styles.eventName} />
+        <TextInput
+          placeholder='Nombre del evento'
+          placeholderTextColor='#000'
+          style={styles.eventName}
+          value={eventData.eventName}
+          onChangeText={handleEventName}
+        />
 
         {/* description */}
-        <TextInput placeholder='Descripcion' multiline placeholderTextColor='#000' style={styles.description} />
+        <TextInput
+          placeholder='Descripcion'
+          multiline placeholderTextColor='#000'
+          style={styles.description}
+          value={eventData.description}
+          onChangeText={handleDescription}
+        />
 
         {/* image upload */}
-        <TouchableOpacity style={styles.imageInput}>
-          <IconImage />
-          <Text style={styles.imageText}>Subir Foto</Text>
+        <TouchableOpacity onPress={handleImage} style={styles.imageInput}>
+          {
+            eventData.image
+              ? <Image style={styles.image} source={{ uri: eventData.image }} />
+              : (
+                <>
+                  <IconImage style={styles.iconImage} />
+                  <Text style={styles.inputText}>Subir Foto</Text>
+                </>
+                )
+          }
+
         </TouchableOpacity>
 
         {/* category */}
@@ -160,9 +225,7 @@ const styles = StyleSheet.create({
   },
 
   iconGeolocalizador: {
-    marginRight: wp('1.75%'), //  7.2
-    width: 43.12,
-    height: 37.73
+    marginRight: wp('1.75%') //  7.2
   },
 
   location_footer: {
@@ -173,7 +236,7 @@ const styles = StyleSheet.create({
     marginRight: wp('1.5%') //  6
   },
 
-  text: {
+  location_footerText: {
     fontSize: hp('1.7%'), //  11~~
     fontFamily: 'Poppins_300Light',
     color: '#00000050'
@@ -181,70 +244,66 @@ const styles = StyleSheet.create({
 
   dateTimeContainer: {
     width: '100%',
-    height: 60,
+    height: hp('8.82%'), //  60~
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 25
+    marginBottom: hp('3.69%') // 25
   },
 
   dateTime: {
     width: '49%',
-    height: 60,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#00000014',
     borderRadius: 10,
-    paddingLeft: 17.5
-  },
-
-  dateTimeText: {
-    fontSize: 16,
-    fontFamily: 'Poppins_400Regular',
-    color: '#000',
-    marginLeft: 13.2
+    paddingLeft: wp('4.18%'), // 17~
+    paddingRight: wp('13%')
   },
 
   eventName: {
     width: '100%',
-    height: 60,
-    color: '#000000',
-    fontSize: 16,
+    height: hp('8.82%'), //  60~
+    fontSize: hp('2.35%'), //  16
+    color: '#000',
     fontFamily: 'Poppins_400Regular',
-    paddingLeft: 17,
-    paddingVertical: 19,
+    paddingLeft: wp('4.18%'), // 17~
     backgroundColor: '#00000014',
     borderRadius: 10,
-    marginBottom: 24
+    marginBottom: hp('3.69%') // 25
   },
 
   description: {
     width: '100%',
-    height: 117,
-    paddingTop: 16,
-    paddingLeft: 16,
+    height: hp('17%'), //  117
     color: '#000',
-    fontSize: 16,
+    fontSize: hp('2.35%'), //  16
     fontFamily: 'Poppins_400Regular',
     backgroundColor: '#00000014',
     borderRadius: 10,
-    marginBottom: 25
+    paddingLeft: wp('4.18%'), // 17~
+    marginBottom: hp('3.69%') // 25
   },
 
   imageInput: {
     width: '100%',
-    height: 140,
+    height: hp('20.5%'), // 140 ~
     backgroundColor: '#00000014',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20
+    marginBottom: hp('2.95%') // 20~
   },
 
-  imageText: {
-    color: '#000',
-    fontSize: 16,
-    fontFamily: 'Poppins_400Regular',
-    marginTop: 15.5
+  iconImage: {
+    marginBottom: hp('2.21%') // 15~
+  },
+
+  image: {
+    resizeMode: 'cover',
+    borderRadius: 10,
+    width: '100%',
+    height: hp('20.5%') // 140 ~
   },
 
   inputText: {
@@ -276,10 +335,14 @@ const styles = StyleSheet.create({
 
   buttonDisable: {
     backgroundColor: '#EBEBEB',
-    width: 291,
-    height: 57,
+    width: '100%',
+    height: hp('7.5%'), //  57
     borderWidth: 0,
-    borderRadius: 29
+    borderRadius: 29,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginBottom: wp('6.6%') //  27~
   },
 
   buttonBase: {
@@ -287,12 +350,10 @@ const styles = StyleSheet.create({
   },
 
   buttonTextDisable: {
-    color: '#00000040',
-    textAlign: 'center',
-    fontSize: 18,
+    color: '#00000020',
+    fontSize: hp('2.4%'), //  ~18
     fontFamily: 'Poppins_700Bold',
-    textTransform: 'uppercase',
-    paddingVertical: 16
+    textTransform: 'uppercase'
   },
 
   buttonTextBase: {

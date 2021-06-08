@@ -9153,6 +9153,17 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"react-native-modal-datetime-picker@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "react-native-modal-datetime-picker@npm:10.0.0"
+  dependencies:
+    prop-types: ^15.7.2
+  peerDependencies:
+    "@react-native-community/datetimepicker": ">=3.0.0"
+  checksum: dc01e71aec43fa2f99827de7e1122c4631333f6603faaed5388975721e3b4451ad2811c76bf1092cbdf236d57e6b2ccb1e60c3ca21d40e6500deb61af2dadbcf
+  languageName: node
+  linkType: hard
+
 "react-native-reanimated@npm:~2.1.0":
   version: 2.1.0
   resolution: "react-native-reanimated@npm:2.1.0"
@@ -9660,6 +9671,7 @@ fsevents@^1.2.7:
     react-native-app-intro-slider: ^4.0.4
     react-native-gesture-handler: ~1.10.2
     react-native-maps: 0.27.1
+    react-native-modal-datetime-picker: ^10.0.0
     react-native-reanimated: ~2.1.0
     react-native-responsive-screen: ^1.4.2
     react-native-safe-area-context: 3.2.0
