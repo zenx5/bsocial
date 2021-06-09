@@ -7,10 +7,11 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import * as ImagePicker from 'expo-image-picker'
 
+//  components
+import LocationPicker from '../components/LocationPicker'
+
 //  icon
 import IconClose from '../components/Icons/IconClose'
-import IconGeolocalizador from '../components/Icons/IconGeolocalizador'
-import IconTimeZone from '../components/Icons/IconTimeZone'
 import IconDate from '../components/Icons/IconDate'
 import IconTime from '../components/Icons/IconTime'
 import IconImage from '../components/Icons/IconImage'
@@ -96,17 +97,8 @@ const CreateEventStep1 = (props) => {
       </View>
 
       <ScrollView>
-        {/*  location Input */}
-        <View style={styles.location}>
-          <TouchableOpacity style={styles.locationInput}>
-            <Text style={styles.inputText}>Ubicación</Text>
-            <IconGeolocalizador style={styles.iconGeolocalizador} />
-          </TouchableOpacity>
-          <View style={styles.location_footer}>
-            <IconTimeZone style={styles.iconTimeZone} />
-            <Text style={styles.location_footerText}>Zona horaria determinada por ubicación</Text>
-          </View>
-        </View>
+        {/*  location picker */}
+        <LocationPicker />
 
         <View style={styles.dateTimeContainer}>
           {/* Date */}
@@ -203,12 +195,6 @@ const styles = StyleSheet.create({
   header_title: {
     fontFamily: 'Poppins_700Bold',
     fontSize: hp('2.61%') // 18~
-  },
-
-  location: {
-    width: '100%',
-    marginTop: hp('3.5%'), //  24
-    marginBottom: hp('3.69%') // 25
   },
 
   locationInput: {
