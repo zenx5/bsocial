@@ -24,12 +24,12 @@ const LocationPicker = () => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    marginTop: hp('3.5%'), //  24
-    marginBottom: hp('3.69%') // 25
+    marginBottom: hp('2.5%'), // 17.1
+    paddingHorizontal: wp('6.6%') //  27~
   },
 
   locationInput: {
-    height: hp('8.82%'), //  60~
+    height: hp('7%'), //  48
     backgroundColor: '#00000014',
     borderRadius: 10,
     flexDirection: 'row',

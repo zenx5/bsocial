@@ -1,17 +1,16 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Image, Platform, Alert } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Platform, Alert } from 'react-native'
 import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
-import Constants from 'expo-constants'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import * as ImagePicker from 'expo-image-picker'
 
 //  components
 import LocationPicker from '../components/LocationPicker'
+import CategoryPicker from '../components/CategoryPicker'
 
 //  icon
-import IconClose from '../components/Icons/IconClose'
 import IconDate from '../components/Icons/IconDate'
 import IconTime from '../components/Icons/IconTime'
 import IconImage from '../components/Icons/IconImage'
@@ -87,16 +86,8 @@ const CreateEventStep1 = (props) => {
   }
 
   return (
-    <View style={styles.container}>
-      {/* header */}
-      <View style={styles.header}>
-        <Text style={styles.header_title}>Crear evento</Text>
-        <TouchableOpacity onPress={() => props.navigation.goBack()}>
-          <IconClose />
-        </TouchableOpacity>
-      </View>
-
-      <ScrollView>
+    <>
+      <View style={styles.container}>
         {/*  location picker */}
         <LocationPicker />
 
@@ -159,81 +150,35 @@ const CreateEventStep1 = (props) => {
                 </>
                 )
           }
-
         </TouchableOpacity>
-
-        {/* category */}
-        <View style={styles.categoryContainer}>
-          <TouchableOpacity style={styles.categoryDisabled} />
-          <Text style={styles.categoriText}>Selecciona una categoria</Text>
-        </View>
 
         {/* Button */}
         <TouchableOpacity disabled={!completeInfo} onPress={goStep2} style={[styles.buttonDisable, completeInfo && styles.buttonBase]}>
           <Text style={[styles.buttonTextDisable, completeInfo && styles.buttonTextBase]}>Continuar</Text>
         </TouchableOpacity>
-      </ScrollView>
-    </View>
+      </View>
+      {/* category picker */}
+      <CategoryPicker />
+    </>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Constants.statusBarHeight,
     backgroundColor: '#fff',
     flex: 1,
-    flexDirection: 'column',
-    paddingHorizontal: wp('6.6%') //  27~
-  },
-
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: hp('3.95%') // 27~
-  },
-
-  header_title: {
-    fontFamily: 'Poppins_700Bold',
-    fontSize: hp('2.61%') // 18~
-  },
-
-  locationInput: {
-    height: hp('8.82%'), //  60~
-    backgroundColor: '#00000014',
-    borderRadius: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#00000011',
-    paddingLeft: wp('4.18%'), // 17~
-    marginBottom: hp('1.1%') // 7.6~
-  },
-
-  iconGeolocalizador: {
-    marginRight: wp('1.75%') //  7.2
-  },
-
-  location_footer: {
-    flexDirection: 'row'
-  },
-
-  iconTimeZone: {
-    marginRight: wp('1.5%') //  6
-  },
-
-  location_footerText: {
-    fontSize: hp('1.7%'), //  11~~
-    fontFamily: 'Poppins_300Light',
-    color: '#00000050'
+    flexDirection: 'column'
+    // paddingHorizontal: wp('6.6%') //  27~
   },
 
   dateTimeContainer: {
     width: '100%',
-    height: hp('8.82%'), //  60~
+    height: hp('7%'), //  48
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: hp('3.69%') // 25
+    paddingHorizontal: wp('6.6%'), //  27~
+    marginBottom: hp('2.5%') // 17.1
+
   },
 
   dateTime: {
@@ -249,36 +194,36 @@ const styles = StyleSheet.create({
 
   eventName: {
     width: '100%',
-    height: hp('8.82%'), //  60~
+    height: hp('7%'), //  48
     fontSize: hp('2.35%'), //  16
     color: '#000',
     fontFamily: 'Poppins_400Regular',
     paddingLeft: wp('4.18%'), // 17~
     backgroundColor: '#00000014',
     borderRadius: 10,
-    marginBottom: hp('3.69%') // 25
+    marginBottom: hp('2.5%') // 17.1
   },
 
   description: {
     width: '100%',
-    height: hp('17%'), //  117
+    height: hp('14%'), //  95.6
     color: '#000',
     fontSize: hp('2.35%'), //  16
     fontFamily: 'Poppins_400Regular',
     backgroundColor: '#00000014',
     borderRadius: 10,
     paddingLeft: wp('4.18%'), // 17~
-    marginBottom: hp('3.69%') // 25
+    marginBottom: hp('2.5%') // 17.1
   },
 
   imageInput: {
     width: '100%',
-    height: hp('20.5%'), // 140 ~
+    height: hp('15%'), // 102.4~
     backgroundColor: '#00000014',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: hp('2.95%') // 20~
+    marginBottom: hp('1.2%') // 20~
   },
 
   iconImage: {
@@ -298,27 +243,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_400Regular'
   },
 
-  categoryContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    marginBottom: 15
-  },
-
-  categoryDisabled: {
-    backgroundColor: '#00000014',
-    borderRadius: 30,
-    width: 22,
-    height: 22,
-    marginRight: 12
-  },
-
-  categoriText: {
-    color: '#000',
-    fontSize: 16,
-    fontFamily: 'Poppins_400Regular',
-    textAlign: 'left'
-  },
-
   buttonDisable: {
     backgroundColor: '#EBEBEB',
     width: '100%',
@@ -327,8 +251,7 @@ const styles = StyleSheet.create({
     borderRadius: 29,
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'center',
-    marginBottom: wp('6.6%') //  27~
+    alignSelf: 'center'
   },
 
   buttonBase: {

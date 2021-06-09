@@ -11,6 +11,8 @@ import Settings from '../screens/Settings'
 import CreateEventStep1 from '../screens/CreateEventStep1'
 import CreateEventStep2 from '../screens/CreateEventStep2'
 
+//  headers
+import CreateEventStep1Header from '../components/CreateEventStep1/Header'
 //  icons
 import IconsSwitching from '../components/Icons/IconsSwitching'
 
@@ -55,9 +57,13 @@ const HomeTabs = () => {
   }, [])
 
   return (
-    <Stack.Navigator headerMode='none'>
-      <Stack.Screen name='Home' component={MainTabs} />
-      <Stack.Screen name='Create Event Step 1' component={CreateEventStep1} />
+    <Stack.Navigator>
+      <Stack.Screen name='Home' component={MainTabs} options={{ header: () => null }} />
+      <Stack.Screen
+        name='Create Event Step 1'
+        component={CreateEventStep1}
+        options={{ header: props => <CreateEventStep1Header {...props} /> }}
+      />
       <Stack.Screen name='Create Event Step 2' component={CreateEventStep2} />
     </Stack.Navigator>
   )
