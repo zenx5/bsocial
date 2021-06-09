@@ -23,7 +23,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "permissions": ["MEDIA_LIBRARY", "LOCATION"],
+      "permissions": ["MEDIA_LIBRARY", "LOCATION", "CONTACTS"],
       "package": "com.bsocial.v002",
       "versionCode": 2
     },

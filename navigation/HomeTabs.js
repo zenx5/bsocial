@@ -5,7 +5,7 @@ import AuthContext from '../context/Auth/AuthContext'
 
 // screens
 import Home from '../screens/Home'
-import Contacts from '../screens/Contacts'
+import ContactsList from '../screens/ContactsList'
 import ListEvents from '../screens/ListEvents'
 import Settings from '../screens/Settings'
 import CreateEventStep1 from '../screens/CreateEventStep1'
@@ -26,7 +26,7 @@ const MainTabs = () => {
             let iconName
             if (route.name === 'Home') {
               iconName = focused ? 'HomeOn' : 'HomeOff'
-            } else if (route.name === 'Contacts') {
+            } else if (route.name === 'ContactsList') {
               iconName = focused ? 'ContactOn' : 'ContactOff'
             } else if (route.name === 'List') {
               iconName = focused ? 'ListOn' : 'ListOff'
@@ -40,7 +40,7 @@ const MainTabs = () => {
       )}
     >
       <Tab.Screen name='Home' component={Home} options={{ tabBarLabel: () => null }} />
-      <Tab.Screen name='Contacts' component={Contacts} options={{ tabBarLabel: () => null }} />
+      <Tab.Screen name='ContactsList' component={ContactsList} options={{ tabBarLabel: () => null }} />
       <Tab.Screen name='List' component={ListEvents} options={{ tabBarLabel: () => null }} />
       <Tab.Screen name='Settings' component={Settings} options={{ tabBarLabel: () => null }} />
     </Tab.Navigator>
