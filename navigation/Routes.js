@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 //  screens
 import AuthStack from './AuthStack'
-import HomeTabs from './HomeTabs'
+import MainTabs from './MainTabs'
 
 const Routes = () => {
   const { userToken, isAlreadyAuthenticatedUser } = useContext(AuthContext)
@@ -29,7 +29,7 @@ const Routes = () => {
 
   return (
     <NavigationContainer>
-      {userToken !== null ? <HomeTabs /> : <AuthStack isFirstLaunch={isFirstLaunch} routeName={routeName} />}
+      {userToken !== null ? <MainTabs /> : <AuthStack isFirstLaunch={isFirstLaunch} routeName={routeName} />}
     </NavigationContainer>
   )
 }

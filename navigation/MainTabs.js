@@ -19,7 +19,7 @@ import IconsSwitching from '../components/Icons/IconsSwitching'
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
-const MainTabs = () => {
+const HomeTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => (
@@ -49,7 +49,7 @@ const MainTabs = () => {
   )
 }
 
-const HomeTabs = () => {
+const MainTabs = () => {
   const { getAuthenticatedUserData } = useContext(AuthContext)
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const HomeTabs = () => {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name='Home' component={MainTabs} options={{ header: () => null }} />
+      <Stack.Screen name='Home' component={HomeTabs} options={{ header: () => null }} />
       <Stack.Screen
         name='Create Event Step 1'
         component={CreateEventStep1}
@@ -68,4 +68,4 @@ const HomeTabs = () => {
     </Stack.Navigator>
   )
 }
-export default HomeTabs
+export default MainTabs

@@ -1,6 +1,7 @@
 import React, { useReducer, useMemo } from 'react'
 import CreateEventContext from './CreateEventContext'
 import CreateEventReducer from './CreateEventReducer'
+import { SET_CATEGORY } from '../types'
 
 const CreateEventState = (props) => {
   const initialState = {
@@ -11,23 +12,21 @@ const CreateEventState = (props) => {
     eventName: '',
     eventDescription: '',
     eventImage: null,
-    eventCategory: '',
+    category: '',
     contacts: []
   }
 
   const [state, dispatch] = useReducer(CreateEventReducer, initialState)
 
   const createEventState = useMemo(() => ({
-    setDate: () => {
-      console.log('create date!')
-    }
+    setCategory: (category) => dispatch({ type: SET_CATEGORY, payload: category })
   }), [state])
 
   return (
     <CreateEventContext.Provider
       value={{
-        date: state.date,
-        setDate: createEventState.setDate
+        category: state.category,
+        setCategory: createEventState.setCategory
       }}
     >
       {props.children}

@@ -11,5 +11,8 @@ export const IS_EMAIL_IN_USE = 'IS_EMAIL_IN_USE'
 export const CREATED_USER = 'CREATED_USER'
 export const IS_VALID_USER = 'IS_VALID_USER'
 
+//  create event
+export const SET_CATEGORY = 'SET_CATEGORY'
+
 //  user experiencie
 export const LOADING = 'LOADING'

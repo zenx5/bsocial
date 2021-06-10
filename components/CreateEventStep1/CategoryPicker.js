@@ -1,20 +1,21 @@
-import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet } from 'react-native'
+import React, { useState, useContext } from 'react'
+import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet, Modal } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import CreateEventContext from '../../context/CreateEvent/CreateEventContext'
 
 const DATA_TEST = [
   { id: '1', title: 'Discotecas' },
   { id: '2', title: 'Swingers' },
   { id: '3', title: 'Fiesta privada en casa' },
   { id: '4', title: 'Evento empresarial' },
-  { id: '5', title: 'Despedida de soltero' }
-
+  { id: '5', title: 'Despedida de soltero' },
+  { id: '42', title: 'Evento empresarial' }
 ]
 
 const Item = ({ item, onSelect }) => {
   return (
-    <View>
-      <TouchableOpacity style={styles.item} onPress={onSelect}>
+    <View style={styles.item}>
+      <TouchableOpacity onPress={onSelect}>
         <Text>{item.title}</Text>
       </TouchableOpacity>
     </View>
@@ -23,40 +24,54 @@ const Item = ({ item, onSelect }) => {
 }
 
 const CategoryPicker = () => {
-  const [isVisible, setIsVisible] = useState(false)
+  //  contexts
+  const { setCategory } = useContext(CreateEventContext)
+  const [modalVisible, setModalVisible] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState(null)
 
   const showCategoryList = () => {
-    setIsVisible(true)
-  }
-
-  const onSelect = () => {
-    setIsVisible(false)
+    setModalVisible(true)
   }
 
   //  list
-  const renderItem = ({ item }) => <Item item={item} onSelect={onSelect} />
+  const renderItem = ({ item }) => {
+    const onSelect = () => {
+      setCategory(item.title)
+      setSelectedCategory(item.title)
+      setModalVisible(false)
+    }
+    return (
+      <Item item={item} onSelect={onSelect} />
+    )
+  }
 
   return (
-    <TouchableOpacity onPress={showCategoryList} style={styles.container}>
-      {
-        isVisible
-          ? (
-            <View style={styles.list}>
+    <View style={styles.container}>
+      <View>
+        <Modal
+          animationType='slide'
+          transparent
+          visible={modalVisible}
+        >
+          <View style={styles.modal}>
+            <View style={styles.modalView}>
               <FlatList
                 data={DATA_TEST}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
               />
             </View>
-            )
-          : (
-            <View style={styles.selectCategory}>
-              <Image style={styles.selectCategory_image} />
-              <Text style={styles.selectCategory_text}>Selecciona una categoria</Text>
-            </View>
-            )
-      }
-    </TouchableOpacity>
+          </View>
+        </Modal>
+
+      </View>
+      <TouchableOpacity style={styles.selectCategory} onPress={showCategoryList}>
+        <Image style={styles.selectCategory_image} />
+
+        <Text style={styles.selectCategory_text}>{selectedCategory || 'Selecciona una categoria'}</Text>
+      </TouchableOpacity>
+
+    </View>
   )
 }
 
@@ -64,8 +79,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     flexDirection: 'row',
-    paddingHorizontal: wp('6.6%'), //  27~
-    zIndex: 10
+    paddingHorizontal: wp('6.6%') //  27~
   },
 
   selectCategory: {
@@ -89,25 +103,40 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
 
-  list: {
-    // backgroundColor: '#00000050',
-    backgroundColor: '#ffffffe0',
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: hp('45%')
+  },
+
+  modalView: {
+    backgroundColor: '#fff',
     borderTopLeftRadius: 27,
     borderTopRightRadius: 27,
-    borderWidth: 0.5,
-    borderColor: '#00000030',
-    width: wp('100%'),
-    height: hp('55%'),
-    position: 'absolute',
-    bottom: hp('-20%') //  57
-    // marginTop: hp('3%')
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 3.84,
+    elevation: 5,
+    width: '100%',
+    height: hp('45%'),
+    paddingTop: hp('5%') // 34.28
   },
 
   item: {
-    width: '100%',
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: hp('1.7%')
   }
 })
 

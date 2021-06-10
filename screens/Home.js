@@ -1,13 +1,14 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native'
-import AuthContext from '../context/Auth/AuthContext'
+import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, Alert } from 'react-native'
 import * as Location from 'expo-location'
 import MapView, { Marker } from 'react-native-maps'
 import { useFonts, Poppins_300Light, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import AppLoading from 'expo-app-loading'
-import Constants from 'expo-constants'
 import { StatusBar } from 'expo-status-bar'
+
+//  header
+import Header from '../components/Home/Header'
 
 //  icons
 import IconSettings from '../components/Icons/IconSettings'
@@ -15,7 +16,6 @@ import IconSettings from '../components/Icons/IconSettings'
 import FeaturedEvents from './casa/FeaturedEvents'
 
 const Home = (props) => {
-  const { photo } = useContext(AuthContext)
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_500Medium, Poppins_700Bold })
 
   const initialRegion = {
@@ -52,18 +52,11 @@ const Home = (props) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View>
       <StatusBar backgroundColor='#fff' />
 
       {/* header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Create Event Step 1')} style={styles.button}>
-          <Text style={styles.buttonText}>Crear Evento</Text>
-        </TouchableOpacity>
-        <View>
-          <Image style={styles.image} source={{ uri: photo }} />
-        </View>
-      </View>
+      <Header {...props} />
 
       {/* upcoming events */}
       <View style={styles.upcomingEvents}>
@@ -100,44 +93,6 @@ const Home = (props) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: Constants.statusBarHeight
-  },
-
-  header: {
-    backgroundColor: '#ffffff',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingTop: hp('2.2%'),
-    paddingHorizontal: wp('7.2%'), // 27~
-    paddingBottom: hp('2.2%'), // 18~
-    marginBottom: hp('0.9%') // 7~
-  },
-
-  button: {
-    width: wp('63%'), //  236~
-    height: hp('6.2%'), //  50~
-    backgroundColor: '#E1B21C',
-    borderRadius: 27,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-
-  buttonText: {
-    color: '#FFFFFF',
-    textAlign: 'center',
-    fontSize: hp('2%'), // 16~
-    fontFamily: 'Poppins_700Bold',
-    textTransform: 'uppercase'
-  },
-
-  image: {
-    width: hp('6.5%'), //  53~
-    height: hp('6.5%'), //  53~
-    borderRadius: 6,
-    backgroundColor: '#00000029'
-  },
-
   upcomingEvents: {
     backgroundColor: '#fff',
     flexDirection: 'column',
