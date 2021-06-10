@@ -7,8 +7,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import * as ImagePicker from 'expo-image-picker'
 
 //  components
-import LocationPicker from '../components/CreateEventStep1/LocationPicker'
-import CategoryPicker from '../components/CreateEventStep1/CategoryPicker'
+import LocationPicker from '../components/CreateEvent/LocationPicker'
+import CategoryPicker from '../components/CreateEvent/CategoryPicker'
 
 //  icon
 import IconDate from '../components/Icons/IconDate'

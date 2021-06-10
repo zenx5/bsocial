@@ -12,7 +12,9 @@ import CreateEventStep1 from '../screens/CreateEventStep1'
 import CreateEventStep2 from '../screens/CreateEventStep2'
 
 //  headers
-import CreateEventStep1Header from '../components/CreateEventStep1/Header'
+import CreateEventHeaderOne from '../components/CreateEvent/HeaderOne'
+import CreateEventHeaderTwo from '../components/CreateEvent/HeaderTwo'
+
 //  icons
 import IconsSwitching from '../components/Icons/IconsSwitching'
 
@@ -58,13 +60,21 @@ const MainTabs = () => {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name='Home' component={HomeTabs} options={{ header: () => null }} />
+      <Stack.Screen
+        name='Home'
+        component={HomeTabs}
+        options={{ header: () => null }}
+      />
       <Stack.Screen
         name='Create Event Step 1'
         component={CreateEventStep1}
-        options={{ header: props => <CreateEventStep1Header {...props} /> }}
+        options={{ header: props => <CreateEventHeaderOne {...props} /> }}
       />
-      <Stack.Screen name='Create Event Step 2' component={CreateEventStep2} />
+      <Stack.Screen
+        name='Create Event Step 2'
+        component={CreateEventStep2}
+        options={{ header: props => <CreateEventHeaderTwo {...props} /> }}
+      />
     </Stack.Navigator>
   )
 }
