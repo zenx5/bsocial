@@ -11,11 +11,14 @@ const DATA_TEST = [
 
 ]
 
-const Item = ({ item }) => {
+const Item = ({ item, onSelect }) => {
   return (
-    <TouchableOpacity>
-      <Text>{item.title}</Text>
-    </TouchableOpacity>
+    <View>
+      <TouchableOpacity style={styles.item} onPress={onSelect}>
+        <Text>{item.title}</Text>
+      </TouchableOpacity>
+    </View>
+
   )
 }
 
@@ -26,8 +29,12 @@ const CategoryPicker = () => {
     setIsVisible(true)
   }
 
+  const onSelect = () => {
+    setIsVisible(false)
+  }
+
   //  list
-  const renderItem = ({ item }) => <Item item={item} />
+  const renderItem = ({ item }) => <Item item={item} onSelect={onSelect} />
 
   return (
     <TouchableOpacity onPress={showCategoryList} style={styles.container}>
@@ -57,22 +64,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     flexDirection: 'row',
-    zIndex: 10
-  },
-
-  list: {
-    backgroundColor: '#00000050',
-    // backgroundColor: '#ffffffe0',
-    borderTopLeftRadius: 27,
-    borderTopRightRadius: 27,
-    borderWidth: 0.5,
-    borderColor: '#00000030',
-    width: wp('100%'),
-    height: hp('45%'),
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: hp('-19.5%'), //  57
+    paddingHorizontal: wp('6.6%'), //  27~
     zIndex: 10
   },
 
@@ -95,6 +87,27 @@ const styles = StyleSheet.create({
     fontSize: hp('2.4%'), //  16.3~
     fontFamily: 'Poppins_400Regular',
     textAlign: 'left'
+  },
+
+  list: {
+    // backgroundColor: '#00000050',
+    backgroundColor: '#ffffffe0',
+    borderTopLeftRadius: 27,
+    borderTopRightRadius: 27,
+    borderWidth: 0.5,
+    borderColor: '#00000030',
+    width: wp('100%'),
+    height: hp('55%'),
+    position: 'absolute',
+    bottom: hp('-20%') //  57
+    // marginTop: hp('3%')
+  },
+
+  item: {
+    width: '100%',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 

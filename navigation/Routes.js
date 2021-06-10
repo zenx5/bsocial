@@ -25,7 +25,7 @@ const Routes = () => {
         setIsFirstLaunch(false)
       }
     })()
-  }, [userToken])
+  }, [userToken, isFirstLaunch])
 
   return (
     <NavigationContainer>

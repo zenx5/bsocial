@@ -1,8 +1,8 @@
 import React from 'react'
-import Providers from './navigation/index'
+import Navigation from './navigation'
 
 export default function App () {
-  return <Providers />
+  return <Navigation />
 }
 
 /*

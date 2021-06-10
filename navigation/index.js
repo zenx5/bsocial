@@ -2,7 +2,7 @@ import React from 'react'
 import Routes from './Routes'
 import AuthState from '../context/Auth/AuthState'
 
-const Providers = () => {
+const Navigation = () => {
   return (
     <AuthState>
       <Routes />
@@ -10,4 +10,4 @@ const Providers = () => {
   )
 }
 
-export default Providers
+export default Navigation

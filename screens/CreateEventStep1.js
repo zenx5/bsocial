@@ -7,8 +7,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import * as ImagePicker from 'expo-image-picker'
 
 //  components
-import LocationPicker from '../components/LocationPicker'
-import CategoryPicker from '../components/CategoryPicker'
+import LocationPicker from '../components/CreateEventStep1/LocationPicker'
+import CategoryPicker from '../components/CreateEventStep1/CategoryPicker'
 
 //  icon
 import IconDate from '../components/Icons/IconDate'
@@ -86,40 +86,40 @@ const CreateEventStep1 = (props) => {
   }
 
   return (
-    <>
-      <View style={styles.container}>
-        {/*  location picker */}
-        <LocationPicker />
+    <View style={styles.container}>
+      {/*  location picker */}
+      <LocationPicker />
 
-        <View style={styles.dateTimeContainer}>
-          {/* Date */}
-          <TouchableOpacity onPress={showDatePicker} style={styles.dateTime}>
-            <IconDate />
-            <Text style={styles.inputText}>{eventData.date ? eventData.date.toLocaleDateString() : 'Fecha'}</Text>
-            <DateTimePickerModal
-              isVisible={showDateTime.date}
-              mode='date'
-              display='default'
-              onConfirm={onConfirmDate}
-              onCancel={onCancelDate}
-            />
+      <View style={styles.dateTimeContainer}>
+        {/* Date */}
+        <TouchableOpacity onPress={showDatePicker} style={styles.dateTime}>
+          <IconDate />
+          <Text style={styles.inputText}>{eventData.date ? eventData.date.toLocaleDateString() : 'Fecha'}</Text>
+          <DateTimePickerModal
+            isVisible={showDateTime.date}
+            mode='date'
+            display='default'
+            onConfirm={onConfirmDate}
+            onCancel={onCancelDate}
+          />
 
-          </TouchableOpacity>
+        </TouchableOpacity>
 
-          {/* Time */}
-          <TouchableOpacity onPress={showTimePicker} style={styles.dateTime}>
-            <IconTime />
-            <Text style={styles.inputText}>{eventData.time ? eventData.time.toLocaleTimeString().slice(0, 5) : 'Hora'}</Text>
-            <DateTimePickerModal
-              isVisible={showDateTime.time}
-              mode='time'
-              display='default'
-              onConfirm={onConfirmTime}
-              onCancel={onCancelTime}
-            />
-          </TouchableOpacity>
-        </View>
+        {/* Time */}
+        <TouchableOpacity onPress={showTimePicker} style={styles.dateTime}>
+          <IconTime />
+          <Text style={styles.inputText}>{eventData.time ? eventData.time.toLocaleTimeString().slice(0, 5) : 'Hora'}</Text>
+          <DateTimePickerModal
+            isVisible={showDateTime.time}
+            mode='time'
+            display='default'
+            onConfirm={onConfirmTime}
+            onCancel={onCancelTime}
+          />
+        </TouchableOpacity>
+      </View>
 
+      <View style={styles.inputContainer}>
         {/* event name */}
         <TextInput
           placeholder='Nombre del evento'
@@ -151,15 +151,18 @@ const CreateEventStep1 = (props) => {
                 )
           }
         </TouchableOpacity>
+      </View>
 
-        {/* Button */}
+      {/* category picker */}
+      <CategoryPicker />
+
+      {/* Button */}
+      <View style={styles.inputContainer}>
         <TouchableOpacity disabled={!completeInfo} onPress={goStep2} style={[styles.buttonDisable, completeInfo && styles.buttonBase]}>
           <Text style={[styles.buttonTextDisable, completeInfo && styles.buttonTextBase]}>Continuar</Text>
         </TouchableOpacity>
       </View>
-      {/* category picker */}
-      <CategoryPicker />
-    </>
+    </View>
   )
 }
 
@@ -190,6 +193,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingLeft: wp('4.18%'), // 17~
     paddingRight: wp('13%')
+  },
+
+  inputContainer: {
+    paddingHorizontal: wp('6.6%') //  27~
   },
 
   eventName: {
