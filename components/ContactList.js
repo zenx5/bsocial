@@ -6,8 +6,8 @@ import Constants from 'expo-constants'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import * as Contacts from 'expo-contacts'
 
-const Item = ({ item }) => (
-  <TouchableOpacity style={[styles.item]}>
+const Item = ({ item, onSelectedContact }) => (
+  <TouchableOpacity onPress={onSelectedContact} style={[styles.item]}>
     <View style={styles.item_image}>
       <Image />
     </View>
@@ -36,10 +36,12 @@ const ContactsList = () => {
       }
     })()
   }, [])
-
   //  list item
   const renderItem = ({ item }) => {
-    return <Item item={item} />
+    const onSelectedContact = () => {
+      console.log(item.id)
+    }
+    return <Item item={item} onSelectedContact={onSelectedContact} />
   }
 
   if (!fontsLoaded) {
@@ -52,7 +54,7 @@ const ContactsList = () => {
         data={contactsList}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        style={styles.flatList}
+        style={styles.list}
       />
     </View>
   )
@@ -65,15 +67,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
 
-  flatList: {
-    backgroundColor: '#fff',
-    paddingHorizontal: 20
+  list: {
+    paddingLeft: wp('6.6%') //  27~
   },
 
   item: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 15
+    marginBottom: hp('2%') //  20
   },
 
   item_image: {
