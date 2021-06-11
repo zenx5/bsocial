@@ -6,12 +6,16 @@ import Constants from 'expo-constants'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import * as Contacts from 'expo-contacts'
 
+//  icons
+import IconCheck from '../components/Icons/IconCheck'
+
 const Item = ({ item, onSelectedContact }) => (
   <TouchableOpacity onPress={onSelectedContact} style={[styles.item]}>
     <View style={styles.item_image}>
       <Image />
     </View>
     <Text style={styles.item_text}>{item.name}</Text>
+    {item.selected ? <IconCheck style={styles.iconCheck} /> : null}
   </TouchableOpacity>
 )
 
@@ -19,9 +23,7 @@ const ContactsList = () => {
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
 
-  // header swiching
-
-  const [contactsList, setContactsList] = useState()
+  const [contactList, setContactList] = useState([])
 
   useEffect(() => {
     (async () => {
@@ -31,15 +33,24 @@ const ContactsList = () => {
           fields: [Contacts.Fields.PhoneNumbers]
         })
         if (data.length > 0) {
-          setContactsList(data)
+          const contacts = []
+          data.map((contact) => contacts.push({ id: contact.id, name: contact.name, selected: false }))
+          setContactList(contacts)
         }
       }
     })()
   }, [])
+
   //  list item
   const renderItem = ({ item }) => {
     const onSelectedContact = () => {
-      console.log(item.id)
+      if (item.selected === false) {
+        const setTrue = contactList.map(contact => (contact.id === item.id) ? { id: item.id, name: item.name, selected: true } : contact)
+        setContactList(setTrue)
+      } else {
+        const setFalse = contactList.map(contact => (contact.id === item.id) ? { id: item.id, name: item.name, selected: false } : contact)
+        setContactList(setFalse)
+      }
     }
     return <Item item={item} onSelectedContact={onSelectedContact} />
   }
@@ -48,10 +59,12 @@ const ContactsList = () => {
     return <AppLoading />
   }
 
+  console.log(contactList)
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={contactsList}
+        data={contactList}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         style={styles.list}
@@ -68,7 +81,8 @@ const styles = StyleSheet.create({
   },
 
   list: {
-    paddingLeft: wp('6.6%') //  27~
+    paddingLeft: wp('6.6%'), //  27~
+    paddingRight: wp('12.2%') //  50.28~
   },
 
   item: {
@@ -88,6 +102,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Poppins_400Regular',
     marginLeft: 22
+  },
+
+  iconCheck: {
+    width: wp('4.5%'), //  18.57
+    height: hp('1.7%'), // 13.14
+    marginLeft: 'auto'
   }
 })
 

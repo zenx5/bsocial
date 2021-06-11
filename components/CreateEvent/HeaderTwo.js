@@ -12,7 +12,7 @@ const Header = (props) => {
       <TouchableOpacity onPress={() => props.navigation.goBack()}>
         <IconBack />
       </TouchableOpacity>
-      <Text style={styles.title}>Crear evento</Text>
+      <Text style={styles.title}>Invitar Contactos</Text>
     </View>
   )
 }
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Constants.statusBarHeight,
     paddingTop: hp('4%'), //  27.4
-    paddingBottom: hp('3%'), //  20.5
+    // paddingBottom: hp('3%'), //  20.5
     paddingHorizontal: wp('6.6%') //  27~
   },
 
