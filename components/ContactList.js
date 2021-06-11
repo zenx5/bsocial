@@ -15,11 +15,11 @@ const Item = ({ item, onSelectedContact }) => (
       <Image />
     </View>
     <Text style={styles.item_text}>{item.name}</Text>
-    {item.selected ? <IconCheck style={styles.iconCheck} /> : null}
+    {item.selected ? <IconCheck style={styles.iconCheck} fill='#E1B21C' /> : null}
   </TouchableOpacity>
 )
 
-const ContactsList = () => {
+const ContactsList = (props) => {
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
 
@@ -60,13 +60,13 @@ const ContactsList = () => {
   useEffect(() => {
     const isSelected = contactList.find(element => element.selected !== false)
     if (isSelected !== undefined) {
-      console.log('boton activado')
       setButtonActive(true)
     } else {
-      console.log('boton desactivado')
       setButtonActive(false)
     }
   }, [contactList])
+
+  const goToStep3 = () => props.navigation.navigate('Create Event Step 3')
 
   if (!fontsLoaded) {
     return <AppLoading />
@@ -81,7 +81,11 @@ const ContactsList = () => {
         style={styles.list}
       />
       <View style={styles.buttonContainer}>
-        <TouchableOpacity disabled={!buttonActive} style={[styles.button, buttonActive && styles.buttonVisible]}>
+        <TouchableOpacity
+          onPress={goToStep3}
+          disabled={!buttonActive}
+          style={[styles.button, buttonActive && styles.buttonVisible]}
+        >
           <Text style={styles.button_text}>Continuar</Text>
         </TouchableOpacity>
       </View>

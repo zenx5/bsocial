@@ -10,6 +10,7 @@ import ListEvents from '../screens/ListEvents'
 import Settings from '../screens/Settings'
 import CreateEventStep1 from '../screens/CreateEventStep1'
 import CreateEventStep2 from '../screens/CreateEventStep2'
+import CreateEventStep3 from '../screens/CreateEvenStep3'
 
 //  headers
 import CreateEventHeaderOne from '../components/CreateEvent/HeaderOne'
@@ -74,6 +75,12 @@ const MainTabs = () => {
         name='Create Event Step 2'
         component={CreateEventStep2}
         options={{ header: props => <CreateEventHeaderTwo {...props} /> }}
+      />
+
+      <Stack.Screen
+        name='Create Event Step 3'
+        component={CreateEventStep3}
+        options={{ header: () => null }}
       />
     </Stack.Navigator>
   )

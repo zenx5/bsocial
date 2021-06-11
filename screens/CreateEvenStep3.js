@@ -2,9 +2,11 @@ import React from 'react'
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native'
 import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins' // eslint-disable-line
 import AppLoading from 'expo-app-loading'
+import { StatusBar } from 'expo-status-bar'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 //  icons
-import IconCheck from '../../components/Icons/IconCheck'
+import IconCheck from '../components/Icons/IconCheck'
 
 const CreateEventStep3 = (props) => {
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
@@ -16,23 +18,21 @@ const CreateEventStep3 = (props) => {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={require('../../assets/backgroundStep3.png')} style={styles.image}>
+      <StatusBar hidden />
+      <ImageBackground source={require('../assets/backgroundStep3.png')} style={styles.image}>
         <View style={styles.message}>
-          <IconCheck />
-
+          <IconCheck style={styles.iconCheck} fill='#fff' />
           <View style={styles.text1Container}>
-            <Text style={styles.text1}>Tu evento fue creado con éxito!</Text>
+            <Text style={styles.title}>Tu evento fue creado con éxito!</Text>
           </View>
-
           <View style={styles.text2Container}>
-            <Text style={styles.text2}>Felicidades tu evento fue creado, se les enviará una notificación a todos tus invitados</Text>
+            <Text style={styles.subTitle}>Felicidades tu evento fue creado, se les enviará una notificación a todos tus invitados</Text>
           </View>
 
           <TouchableOpacity onPress={goHome} style={styles.buttom}>
             <Text style={styles.buttonText}>Continuar</Text>
           </TouchableOpacity>
         </View>
-
       </ImageBackground>
     </View>
   )
@@ -51,49 +51,46 @@ const styles = StyleSheet.create({
   },
 
   message: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    paddingHorizontal: 25
+    alignItems: 'center'
   },
 
-  text1Container: {
-    width: 246,
-    marginTop: 23,
-    marginBottom: 12
+  iconCheck: {
+    width: wp('12.7%'), // 52.19
+    height: hp('5.6%') // 38.09
   },
 
-  text1: {
+  title: {
     color: '#fff',
     fontSize: 22,
     fontFamily: 'Poppins_700Bold',
     textAlign: 'center',
-    width: 246,
-    height: 55
+    width: wp('60%'), //  246.85
+    marginTop: hp('3.4%'), // 23.23
+    marginBottom: hp('1.8%') //  12.19
   },
 
-  text2Container: {
-    width: 330,
-    marginBottom: 25
-  },
-
-  text2: {
+  subTitle: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: hp('1.8%'), //  12.19
     fontFamily: 'Poppins_400Regular',
-    textAlign: 'center'
+    textAlign: 'center',
+    width: wp('75%'), //  308.57
+    marginBottom: hp('3.7%') // 25.14
   },
 
   buttom: {
     backgroundColor: '#231F20',
+    width: wp('69%'), //  283.80
+    height: hp('8.4%'), //  57.52
     borderRadius: 29,
-    paddingVertical: 16,
-    width: 283
+    justifyContent: 'center',
+    alignContent: 'center'
   },
 
   buttonText: {
     color: '#FFFFFF',
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: hp('2.7%'), //  18.28
     textTransform: 'uppercase',
     fontFamily: 'Poppins_700Bold'
   }
