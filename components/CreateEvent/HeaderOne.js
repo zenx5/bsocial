@@ -11,7 +11,7 @@ const Header = (props) => {
     <View style={styles.container}>
       <Text style={styles.title}>Crear evento</Text>
       <TouchableOpacity onPress={() => props.navigation.goBack()}>
-        <IconClose />
+        <IconClose style={styles.iconClose} />
       </TouchableOpacity>
     </View>
   )
@@ -31,8 +31,12 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Poppins_700Bold',
     fontSize: hp('2.7%') // 18.2~
-  }
+  },
 
+  iconClose: {
+    width: wp('5%'), // 20.57
+    height: hp('3%') // 20.57
+  }
 })
 
 export default Header

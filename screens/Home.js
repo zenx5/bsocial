@@ -122,10 +122,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: '#00000020',
     alignSelf: 'center'
-  },
-
-  paragraph: {
-    flexWrap: 'wrap'
   }
 })
 
