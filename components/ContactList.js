@@ -24,6 +24,7 @@ const ContactsList = () => {
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
 
   const [contactList, setContactList] = useState([])
+  const [buttonActive, setButtonActive] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -55,11 +56,21 @@ const ContactsList = () => {
     return <Item item={item} onSelectedContact={onSelectedContact} />
   }
 
+  //  activate button
+  useEffect(() => {
+    const isSelected = contactList.find(element => element.selected !== false)
+    if (isSelected !== undefined) {
+      console.log('boton activado')
+      setButtonActive(true)
+    } else {
+      console.log('boton desactivado')
+      setButtonActive(false)
+    }
+  }, [contactList])
+
   if (!fontsLoaded) {
     return <AppLoading />
   }
-
-  console.log(contactList)
 
   return (
     <View style={styles.container}>
@@ -69,6 +80,11 @@ const ContactsList = () => {
         keyExtractor={item => item.id}
         style={styles.list}
       />
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity disabled={!buttonActive} style={[styles.button, buttonActive && styles.buttonVisible]}>
+          <Text style={styles.button_text}>Continuar</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
@@ -108,6 +124,36 @@ const styles = StyleSheet.create({
     width: wp('4.5%'), //  18.57
     height: hp('1.7%'), // 13.14
     marginLeft: 'auto'
+  },
+
+  buttonContainer: {
+    marginTop: 'auto',
+    marginBottom: hp('5%'),
+    paddingHorizontal: wp('6.6%') //  27~
+
+  },
+
+  button: {
+    backgroundColor: '#E1B21C',
+    width: '100%',
+    height: hp('7.5%'), //  57
+    borderWidth: 0,
+    borderRadius: 29,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    display: 'none'
+  },
+
+  button_text: {
+    color: '#fff',
+    fontSize: hp('2.4%'), //  ~18
+    fontFamily: 'Poppins_700Bold',
+    textTransform: 'uppercase'
+  },
+
+  buttonVisible: {
+    display: 'flex'
   }
 })
 

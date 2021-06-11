@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
 
   locationInput: {
-    height: hp('7%'), //  48
+    height: hp('8%'), //  48
     backgroundColor: '#00000014',
     borderRadius: 10,
     flexDirection: 'row',
