@@ -14,34 +14,31 @@ const slides = [
     key: 'one',
     title: 'Fiestas Privadas en casa',
     text: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    slide: require('../assets/onboarding-1.png'),
-    image: require('../assets/logobsocial.png')
+    background: require('../assets/onboarding-1.png')
   },
   {
     key: 'two',
     title: 'Eventos Empresariales',
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    slide: require('../assets/onboarding-2.png'),
-    image: require('../assets/logobsocial.png')
+    background: require('../assets/onboarding-2.png')
   },
   {
     key: 'three',
     title: 'DESPEDIDAS DE SOLTEROS',
     text: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-    slide: require('../assets/onboarding-3.png'),
-    image: require('../assets/logobsocial.png')
+    background: require('../assets/onboarding-3.png')
   }
 ]
 
-const renderItem = ({ item }) => {
+const Slide = ({ item }) => {
+  const logo = require('../assets/logobsocial.png')
   return (
-    <ImageBackground source={item.slide} style={styles.slide}>
-      <Image source={item.image} style={styles.image} />
-      <View>
-        <View style={styles.container_title}>
+    <ImageBackground style={styles.background} source={item.background}>
+      <StatusBar hidden />
+      <View style={styles.content}>
+        <Image source={logo} style={styles.logo} />
+        <View style={styles.textContainer}>
           <Text style={styles.title}>{item.title}</Text>
-        </View>
-        <View style={styles.container_text}>
           <Text style={styles.text}>{item.text}</Text>
         </View>
       </View>
@@ -66,44 +63,48 @@ const OnboardingScreen = ({ navigation }) => {
   }
 
   return (
-    <View>
-      <StatusBar hidden />
       <AppIntroSlider
         data={slides}
-        renderItem={renderItem}
+        renderItem={({ item }) => <Slide item={item} />}
+        style={styles.slides}
         dotStyle={{ backgroundColor: '#FFFFFF66' }}
         activeDotStyle={{ backgroundColor: '#D6BB5A' }}
         showNextButton={false}
         renderDoneButton={DoneButtom}
         onDone={() => navigation.navigate('Login')}
       />
-    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  slide: {
+  slides: {
     flex: 1,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    resizeMode: 'cover'
   },
 
-  image: {
+  background: {
+    resizeMode: 'cover',
+    width: '100%',
+    height: '100%'                                                         
+  },
+
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  },
+
+  logo: {
     resizeMode: 'center',
     width: '35%',
     height: hp('27%') // 199~~
   },
 
-  container_title: {
-    width: wp('70%')
-  },
-
-  container_text: {
-    width: wp('65%')
+  textContainer: {
+    alignItems: 'center'
   },
 
   title: {
+    width: wp('75%'),
     fontSize: hp('3.8%'), //  28
     textTransform: 'uppercase',
     textAlign: 'center',
@@ -114,6 +115,7 @@ const styles = StyleSheet.create({
   },
 
   text: {
+    width: wp('70%'),
     fontSize: hp('1.9%'), //  14~~
     textAlign: 'center',
     color: '#F8E8B0',
