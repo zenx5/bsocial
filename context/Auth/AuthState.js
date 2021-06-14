@@ -60,7 +60,6 @@ const AuthState = (props) => {
         })
         dispatch({ type: LOADING, payload: false })
         dispatch({ type: CREATED_USER, payload: true })
-        console.log(data)
       } catch (error) {
         console.log(error)
         dispatch({ type: IS_EMAIL_IN_USE, payload: true })

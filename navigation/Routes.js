@@ -9,27 +9,17 @@ import MainTabs from './MainTabs'
 
 const Routes = () => {
   const { userToken, isAlreadyAuthenticatedUser } = useContext(AuthContext)
-  const [isFirstLaunch, setIsFirstLaunch] = useState(null)
-  let routeName
 
   useEffect(() => {
     (async () => {
       await isAlreadyAuthenticatedUser()
-
-      const value = await AsyncStorage.getItem('alreadyLaunched')
-
-      if (value === null) {
-        await AsyncStorage.setItem('alreadyLaunched', 'true')
-        setIsFirstLaunch(true)
-      } else {
-        setIsFirstLaunch(false)
-      }
     })()
-  }, [userToken, isFirstLaunch, isAlreadyAuthenticatedUser])
+    console.log('render: routes.js')
+  }, [userToken])
 
   return (
     <NavigationContainer>
-      {userToken !== null ? <MainTabs /> : <AuthStack isFirstLaunch={isFirstLaunch} routeName={routeName} />}
+      {userToken !== null ? <MainTabs /> : <AuthStack />}
     </NavigationContainer>
   )
 }

@@ -18,7 +18,7 @@ const CreateEventStep3 = (props) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar hidden />
+      <StatusBar hidden={true} />
       <ImageBackground source={require('../assets/backgroundStep3.png')} style={styles.image}>
         <View style={styles.message}>
           <IconCheck style={styles.iconCheck} fill='#fff' />

@@ -216,7 +216,7 @@ const Signup = (props) => {
         setData({ ...data, activateButton: false })
       }
     }
-  }, [data.name, data.lastName, data.email, data.password, data.checked])
+  }, [data])
 
   //  submit
   const onSignUp = () => {
