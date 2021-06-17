@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 //  screens
 import Login from '../screens/Login'
-import Signup from '../screens/Signup'
+import Register from '../screens/Register'
 import OnboardingScreen from '../screens/OnboardingScreen'
 
 const Stack = createStackNavigator()
@@ -35,10 +35,10 @@ const AuthStack = ({ isFirstLaunch, routeName }) => {
   }
 
   return (
-    <Stack.Navigator initialRouteName={routeName} headerMode='none'>
-      <Stack.Screen name='Onboarding' component={OnboardingScreen} />
-      <Stack.Screen name='Login' component={Login} />
-      <Stack.Screen name='Signup' component={Signup} />
+    <Stack.Navigator initialRouteName={routeName}>
+      <Stack.Screen name='Onboarding' component={OnboardingScreen} options={{ header: () => null }} />
+      <Stack.Screen name='Login' component={Login} options={{ header: () => null }} />
+      <Stack.Screen name='Register' component={Register} options={{ header: () => null }} />
     </Stack.Navigator>
   )
 }

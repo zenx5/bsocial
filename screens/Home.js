@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Alert } from 'react-native'
 import * as Location from 'expo-location'
-import MapView, { Marker } from 'react-native-maps'
+// import MapView, { Marker } from 'react-native-maps'
 import { useFonts, Poppins_300Light, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import AppLoading from 'expo-app-loading'
@@ -65,7 +65,7 @@ const Home = (props) => {
           <IconSettings />
         </View>
         <View>
-          <MapView
+          {/* <MapView
             style={styles.map}
             region={{
               latitude: location.latitude,
@@ -81,7 +81,7 @@ const Home = (props) => {
                 longitude: location.longitude
               }}
             />
-          </MapView>
+          </MapView> */}
         </View>
       </View>
 
@@ -114,15 +114,15 @@ const styles = StyleSheet.create({
     fontSize: hp('1.95%'), //  16
     fontFamily: 'Poppins_700Bold',
     textTransform: 'uppercase'
-  },
-
-  map: {
-    width: wp('95%'), //  356~
-    height: hp('30%'), // 243~
-    borderRadius: 5,
-    backgroundColor: '#00000020',
-    alignSelf: 'center'
   }
+
+  // // map: {
+  // //   width: wp('95%'), //  356~
+  // //   height: hp('30%'), // 243~
+  // //   borderRadius: 5,
+  // //   backgroundColor: '#00000020',
+  // //   alignSelf: 'center'
+  // // }
 })
 
 export default Home

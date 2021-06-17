@@ -36,7 +36,7 @@ const Login = (props) => {
     isValidEmail: false
   })
 
-  const goSignup = () => props.navigation.navigate('Signup')
+  const goRegister = () => props.navigation.navigate('Register')
 
   const [fontsLoaded] = useFonts({
     Poppins_300Light,
@@ -193,7 +193,7 @@ const Login = (props) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={goSignup}
+        onPress={goRegister}
         style={[styles.button, styles.signupButton]}
       >
         <Text style={[styles.buttonTextBase, styles.buttonTextSignup]}>

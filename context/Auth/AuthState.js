@@ -20,8 +20,8 @@ const AuthState = (props) => {
   }
 
   //  api urls
-  const API_LOGIN = 'https://bsocial-app.herokuapp.com/api/auth/login'
-  const API_SIGNUP = 'https://bsocial-app.herokuapp.com/api/auth/register'
+  const API_LOGIN = ' https://bsocial.at/api/auth/login'
+  const API_REGISTER = ' https://bsocial.at/api/auth/register'
   const API_GET_AUTH_USER = 'https://bsocial-app.herokuapp.com/api/users/auth'
 
   const [state, dispatch] = useReducer(AuthReducers, initialState)
@@ -47,26 +47,33 @@ const AuthState = (props) => {
     },
 
     //  register
-    signUp: async (data) => {
+    register: async (userData) => {
       dispatch({ type: LOADING, payload: true })
       dispatch({ type: CREATED_USER, payload: null })
       dispatch({ type: IS_EMAIL_IN_USE, payload: null })
+
       try {
-        await axios.post(API_SIGNUP, {
-          name: data.name,
-          lastname: data.lastName,
-          email: data.email,
-          password: data.password
+        const { data } = await axios.post(API_REGISTER, {
+          photo: userData.photo,
+          name: userData.name,
+          lastname: userData.lastName,
+          username: userData.username,
+          email: userData.email,
+          password: userData.password,
+          password_confirmation: userData.confirmPassword
         })
-        dispatch({ type: LOADING, payload: false })
-        dispatch({ type: CREATED_USER, payload: true })
-        console.log(data)
+        console.log(data.status)
+
+        if (data.status) {
+          dispatch({ type: LOADING, payload: false })
+          dispatch({ type: CREATED_USER, payload: true })
+        } else {
+          dispatch({ type: IS_EMAIL_IN_USE, payload: true })
+          dispatch({ type: LOADING, payload: false })
+        }
       } catch (error) {
         console.log(error)
-        dispatch({ type: IS_EMAIL_IN_USE, payload: true })
-        dispatch({ type: LOADING, payload: false })
       }
-      dispatch({ type: LOADING, payload: false })
     },
 
     //  logout
@@ -116,7 +123,7 @@ const AuthState = (props) => {
     <AuthContext.Provider
       value={{
         signIn: authContext.signIn,
-        signUp: authContext.signUp,
+        register: authContext.register,
         signOut: authContext.signOut,
         isAlreadyAuthenticatedUser: authContext.isAlreadyAuthenticatedUser,
         getAuthenticatedUserData: authContext.getAuthenticatedUserData,

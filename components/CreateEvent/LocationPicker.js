@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Modal, Alert } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import MapView, { Marker } from 'react-native-maps'
+// import MapView, { Marker } from 'react-native-maps'
 import * as Location from 'expo-location'
 
 //  icons
@@ -63,7 +63,7 @@ const LocationPicker = () => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <MapView
+            {/* <MapView
               style={styles.map}
               region={{
                 latitude: location.latitude,
@@ -79,7 +79,7 @@ const LocationPicker = () => {
                   longitude: location.longitude
                 }}
               />
-            </MapView>
+            </MapView> */}
             <TouchableOpacity onPress={close} style={styles.iconContainer}>
               <IconClose style={styles.iconClose} />
             </TouchableOpacity>
