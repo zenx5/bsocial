@@ -28,16 +28,20 @@ const AuthState = (props) => {
 
   const authContext = useMemo(() => ({
     //  login
-    signIn: async (data) => {
+    signIn: async (userData) => {
+      console.log('login click')
       dispatch({ type: LOADING, payload: true })
       dispatch({ type: IS_VALID_USER, payload: null })
       try {
-        const res = await axios.post(API_LOGIN, {
-          email: data.email,
-          password: data.password
+        const { data } = await axios.post(API_LOGIN, {
+          email: userData.email,
+          password: userData.password
         })
-        await AsyncStorage.setItem('userToken', res.data.access_token)
-        dispatch({ type: USER_TOKEN, payload: res.data.access_token })
+        await AsyncStorage.setItem('userToken', data.data.api_token)
+        dispatch({ type: USER_TOKEN, payload: data.data.api_token })
+
+        console.log(data.data.api_token)
+
         dispatch({ type: IS_VALID_USER, payload: true })
         dispatch({ type: LOADING, payload: false })
       } catch (error) {

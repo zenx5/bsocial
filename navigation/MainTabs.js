@@ -56,7 +56,9 @@ const MainTabs = () => {
   const { getAuthenticatedUserData } = useContext(AuthContext)
 
   useEffect(() => {
-    getAuthenticatedUserData()
+    (async () => {
+      await getAuthenticatedUserData()
+    })()
   }, [])
 
   return (
