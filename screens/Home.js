@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Alert } from 'react-native'
-import * as Location from 'expo-location'
+import React, { useState, useEffect } from 'react' // eslint-disable-line
+import { View, Text, StyleSheet, Alert } from 'react-native' // eslint-disable-line
+// import * as Location from 'expo-location'
 // import MapView, { Marker } from 'react-native-maps'
 import { useFonts, Poppins_300Light, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -8,64 +8,66 @@ import AppLoading from 'expo-app-loading'
 import { StatusBar } from 'expo-status-bar'
 
 //  header
-import Header from '../components/Home/Header'
+//  import Header from '../components/Home/Header'
 
 //  icons
-import IconSettings from '../components/Icons/IconSettings'
+//  import IconSettings from '../components/Icons/IconSettings'
 
-import FeaturedEvents from './casa/FeaturedEvents'
+//  import FeaturedEvents from './casa/FeaturedEvents'
 
 const Home = (props) => {
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_500Medium, Poppins_700Bold })
 
-  const initialRegion = {
-    latitude: 0,
-    longitude: 0,
-    latitudeDelta: 0.0122,
-    longitudeDelta: 0.0121
-  }
+  // const initialRegion = {
+  //   latitude: 0,
+  //   longitude: 0,
+  //   latitudeDelta: 0.0122,
+  //   longitudeDelta: 0.0121
+  // }
 
-  const [location, setLocation] = useState(initialRegion)
+  // const [location, setLocation] = useState(initialRegion)
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync()
-      if (status !== 'granted') {
-        Alert.alert(
-          'Error',
-          'Se requiere persmisos a la ubicacion',
-          [{ text: 'OK' }],
-          { cancelable: false }
-        )
-        return
-      }
+  // useEffect(() => {
+  //   (async () => {
+  //     const { status } = await Location.requestForegroundPermissionsAsync()
+  //     if (status !== 'granted') {
+  //       Alert.alert(
+  //         'Error',
+  //         'Se requiere persmisos a la ubicacion',
+  //         [{ text: 'OK' }],
+  //         { cancelable: false }
+  //       )
+  //       return
+  //     }
 
-      const location = await Location.getCurrentPositionAsync({})
-      setLocation(location.coords)
-      console.log(location.coords.latitude)
-      console.log(location.coords.longitude)
-    })()
-  }, [])
+  //     const location = await Location.getCurrentPositionAsync({})
+  //     setLocation(location.coords)
+  //     console.log(location.coords.latitude)
+  //     console.log(location.coords.longitude)
+  //   })()
+  // }, [])
 
   if (!fontsLoaded) {
     return <AppLoading />
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <StatusBar backgroundColor='#fff' />
 
-      {/* header */}
-      <Header {...props} />
+      <Text>Home</Text>
 
-      {/* upcoming events */}
+      {/* header */}
+      {/* <Header {...props} /> */}
+
+      {/* upcoming events
       <View style={styles.upcomingEvents}>
         <View style={styles.upcomingEvents_header}>
           <Text style={styles.text}>Proximos Eventos</Text>
           <IconSettings />
-        </View>
-        <View>
-          {/* <MapView
+        </View> */}
+      {/* <View>
+          <MapView
             style={styles.map}
             region={{
               latitude: location.latitude,
@@ -81,18 +83,24 @@ const Home = (props) => {
                 longitude: location.longitude
               }}
             />
-          </MapView> */}
+          </MapView>
         </View>
-      </View>
+      </View> */}
 
-      {/* featured Events */}
-      <FeaturedEvents />
+      {/* featured Events
+      <FeaturedEvents /> */}
 
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
   upcomingEvents: {
     backgroundColor: '#fff',
     flexDirection: 'column',

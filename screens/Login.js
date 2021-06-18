@@ -7,7 +7,7 @@ import {
   TextInput,
   Alert
 } from 'react-native'
-import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'; // eslint-disable-line
+import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins' // eslint-disable-line
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import AppLoading from 'expo-app-loading'
 import AuthContext from '../context/Auth/AuthContext'
@@ -26,7 +26,7 @@ import IconsSwitching from '../components/Icons/IconsSwitching'
 
 const Login = (props) => {
   //  context
-  const { signIn, isValidUser, loading, getAuthenticatedUser } = useContext(AuthContext)
+  const { login, isValidUser, loading } = useContext(AuthContext)
   //  state
   const [data, setData] = useState({
     email: '',
@@ -72,7 +72,7 @@ const Login = (props) => {
   //  on submit
   const onSignIn = () => {
     if (data.isValidEmail && data.password !== '') {
-      signIn(data)
+      login(data)
     } else {
       if (data.email === '' && data.password === '') {
         return Alert.alert(
@@ -188,7 +188,7 @@ const Login = (props) => {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={getAuthenticatedUser} style={styles.forgotPasswordContainer}>
+      <TouchableOpacity style={styles.forgotPasswordContainer}>
         <Text style={styles.forgotPassword}>Olvidaste tu Contraseña?</Text>
       </TouchableOpacity>
 

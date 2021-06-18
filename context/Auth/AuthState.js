@@ -3,7 +3,7 @@ import AuthContext from './AuthContext'
 import AuthReducers from './AuthReducers'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { USER_TOKEN, IS_EMAIL_IN_USE, LOADING, IS_VALID_USER, CREATED_USER, ADD_USER_DATA } from '../types'
+import { USER_DATA, USER_AUTHENTICATED, USER_TOKEN, IS_EMAIL_IN_USE, LOADING, IS_VALID_USER, CREATED_USER } from '../types'
 
 const AuthState = (props) => {
   const initialState = {
@@ -16,38 +16,40 @@ const AuthState = (props) => {
     createdUser: null,
     isEmailInUse: null,
     onVerifying: false,
-    isValidUser: null
+    isValidUser: null,
+    userIsAuthenticated: null
   }
 
   //  api urls
   const API_LOGIN = ' https://bsocial.at/api/auth/login'
   const API_REGISTER = ' https://bsocial.at/api/auth/register'
-  const API_GET_AUTH_USER = 'https://bsocial-app.herokuapp.com/api/users/auth'
+  const API_AUTH = ' https://bsocial.at/api/customer'
 
   const [state, dispatch] = useReducer(AuthReducers, initialState)
 
   const authContext = useMemo(() => ({
     //  login
-    signIn: async (userData) => {
-      console.log('login click')
+    login: async (userData) => {
       dispatch({ type: LOADING, payload: true })
       dispatch({ type: IS_VALID_USER, payload: null })
-      try {
-        const { data } = await axios.post(API_LOGIN, {
-          email: userData.email,
-          password: userData.password
+
+      axios.post(API_LOGIN, {
+        email: userData.email,
+        password: userData.password
+      })
+        .then(({ data }) => {
+          if (data.status === true) {
+            AsyncStorage.setItem('userToken', data.data.api_token)
+            dispatch({ type: USER_TOKEN, payload: data.data.api_token })
+            dispatch({ type: IS_VALID_USER, payload: true })
+            dispatch({ type: LOADING, payload: false })
+          }
         })
-        await AsyncStorage.setItem('userToken', data.data.api_token)
-        dispatch({ type: USER_TOKEN, payload: data.data.api_token })
-
-        console.log(data.data.api_token)
-
-        dispatch({ type: IS_VALID_USER, payload: true })
-        dispatch({ type: LOADING, payload: false })
-      } catch (error) {
-        dispatch({ type: IS_VALID_USER, payload: false })
-        dispatch({ type: LOADING, payload: false })
-      }
+        .catch((error) => {
+          console.log(error)
+          dispatch({ type: IS_VALID_USER, payload: false })
+          dispatch({ type: LOADING, payload: false })
+        })
     },
 
     //  register
@@ -66,7 +68,6 @@ const AuthState = (props) => {
           password: userData.password,
           password_confirmation: userData.confirmPassword
         })
-        console.log(data.status)
 
         if (data.status) {
           dispatch({ type: LOADING, payload: false })
@@ -80,57 +81,49 @@ const AuthState = (props) => {
       }
     },
 
+    clientAuth: async () => {
+      try {
+        const token = await AsyncStorage.getItem('userToken')
+        const { data } = await axios.get(API_AUTH, { headers: { Authorization: 'Bearer ' + token } })
+
+        console.log(data)
+
+        dispatch({
+          type: USER_DATA,
+          payload: {
+            name: data.data.name,
+            lastName: data.data.lastname,
+            photo: data.data.photo,
+            email: data.data.email
+          }
+        })
+        dispatch({ type: USER_AUTHENTICATED, payload: true })
+      } catch (error) {
+        dispatch({ type: USER_AUTHENTICATED, payload: false })
+        console.log(error)
+      }
+    },
+
     //  logout
     signOut: async () => {
       try {
         await AsyncStorage.removeItem('userToken')
-      } catch (err) {
-        console.log(err)
-      }
-      dispatch({ type: USER_TOKEN, payload: null })
-    },
-
-    isAlreadyAuthenticatedUser: async () => {
-      try {
-        const token = await AsyncStorage.getItem('userToken')
-        if (token) {
-          dispatch({ type: USER_TOKEN, payload: token })
-        } else {
-          dispatch({ type: USER_TOKEN, payload: null })
-        }
-      } catch (err) {
-        console.log(err)
-      }
-    },
-
-    getAuthenticatedUserData: async () => {
-      try {
-        const { data } = await axios.get(API_GET_AUTH_USER, {
-          headers: { Authorization: 'Bearer ' + state.userToken }
-        })
-        dispatch({
-          type: ADD_USER_DATA,
-          payload: {
-            name: data.name,
-            lastName: data.lastname,
-            photo: data.photo.publicURL,
-            email: data.email
-          }
-        })
-      } catch (err) {
-        console.log(err)
+        dispatch({ type: USER_AUTHENTICATED, payload: false })
+      } catch (error) {
+        console.log(error)
       }
     }
+
   }), [state])
 
   return (
     <AuthContext.Provider
       value={{
-        signIn: authContext.signIn,
+        login: authContext.login,
         register: authContext.register,
         signOut: authContext.signOut,
+        clientAuth: authContext.clientAuth,
         isAlreadyAuthenticatedUser: authContext.isAlreadyAuthenticatedUser,
-        getAuthenticatedUserData: authContext.getAuthenticatedUserData,
         loading: state.loading,
         name: state.name,
         lastName: state.lastName,
@@ -140,7 +133,8 @@ const AuthState = (props) => {
         isEmailInUse: state.isEmailInUse,
         createdUser: state.createdUser,
         onVerifying: state.onVerifying,
-        isValidUser: state.isValidUser
+        isValidUser: state.isValidUser,
+        userIsAuthenticated: state.userIsAuthenticated
       }}
     >
       {props.children}

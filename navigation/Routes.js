@@ -1,23 +1,35 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import AuthContext from '../context/Auth/AuthContext'
+import AppLoading from 'expo-app-loading'
 
 //  screens
 import AuthStack from './AuthStack'
 import MainTabs from './MainTabs'
 
 const Routes = () => {
-  const { userToken, isAlreadyAuthenticatedUser } = useContext(AuthContext)
+  const { userIsAuthenticated, clientAuth, userToken } = useContext(AuthContext)
+
+  const [notReady, setNotReady] = useState(true)
 
   useEffect(() => {
     (async () => {
-      isAlreadyAuthenticatedUser()
+      try {
+        await clientAuth()
+        setNotReady(false)
+      } catch (error) {
+        console.log(error)
+      }
     })()
   }, [userToken])
 
+  if (notReady) {
+    return <AppLoading />
+  }
+
   return (
     <NavigationContainer>
-      {userToken !== null ? <MainTabs /> : <AuthStack />}
+      {userIsAuthenticated === true ? <MainTabs /> : <AuthStack />}
     </NavigationContainer>
   )
 }

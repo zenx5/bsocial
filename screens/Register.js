@@ -16,7 +16,7 @@ import IconCamera from '../components/Icons/IconCamera'
 import IconSwitch from '../components/Icons/IconsSwitching'
 import IconCheck from '../components/Icons/IconCheck'
 
-const Signup = (props) => {
+const Register = (props) => {
   //  context
   const { register, isEmailInUse, createdUser, loading } = useContext(AuthContext)
 
@@ -324,7 +324,6 @@ const Signup = (props) => {
   }
 
   useEffect(() => {
-    console.log('isEmailInUse:', isEmailInUse)
     if (isEmailInUse) {
       Alert.alert(
         'Error',
@@ -372,7 +371,7 @@ const Signup = (props) => {
 
       {/* image input */}
       <TouchableOpacity style={styles.imageInput} onPress={inputHanlderImage}>
-        {data.image ? <Image style={styles.image} source={{ uri: data.photo }} /> : <IconCamera style={styles.iconCamera} />}
+        {data.photo ? <Image style={styles.image} source={{ uri: data.photo }} /> : <IconCamera style={styles.iconCamera} />}
       </TouchableOpacity>
 
       {/* name */}
@@ -689,4 +688,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Signup
+export default Register

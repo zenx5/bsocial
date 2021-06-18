@@ -1,17 +1,18 @@
 import React from 'react'
-import { ScrollView, View } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 
 //  components
-import ListEventsHeader from './ListEvenstHeader'
-import Search from './Search'
-import Categories from './Categories'
-import DiscoverEvents from './DiscoverEvents'
-import MyUpcomingEvents from './MyUpcomingEvents'
+// import ListEventsHeader from './ListEvenstHeader'
+// import Search from './Search'
+// import Categories from './Categories'
+// import DiscoverEvents from './DiscoverEvents'
+// import MyUpcomingEvents from './MyUpcomingEvents'
 
 const ListEvents = (props) => {
   return (
-    <>
-      <View>
+    <View style={styles.container}>
+      <Text>List Event</Text>
+      {/* <View>
         <ListEventsHeader {...props} />
       </View>
 
@@ -20,9 +21,17 @@ const ListEvents = (props) => {
         <Categories />
         <DiscoverEvents />
         <MyUpcomingEvents />
-      </ScrollView>
-    </>
+      </ScrollView> */}
+    </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})
 
 export default ListEvents

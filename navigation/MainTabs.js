@@ -1,7 +1,6 @@
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
-import AuthContext from '../context/Auth/AuthContext'
 
 // screens
 import Home from '../screens/Home'
@@ -53,14 +52,6 @@ const HomeTabs = () => {
 }
 
 const MainTabs = () => {
-  const { getAuthenticatedUserData } = useContext(AuthContext)
-
-  useEffect(() => {
-    (async () => {
-      await getAuthenticatedUserData()
-    })()
-  }, [])
-
   return (
     <Stack.Navigator>
       <Stack.Screen

@@ -2,8 +2,9 @@
 export const GET_FONTS = 'GET_FONTS'
 
 //  auth
+export const USER_AUTHENTICATED = 'USER_AUTHENTICATED'
+export const USER_DATA = 'USER_DATA'
 export const USER_TOKEN = 'USER_TOKEN'
-export const ADD_USER_DATA = 'ADD_USER_DATA'
 
 //  users
 export const GET_USERS = 'GET_USERS'
