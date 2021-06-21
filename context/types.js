@@ -15,5 +15,8 @@ export const IS_VALID_USER = 'IS_VALID_USER'
 //  create event
 export const SET_CATEGORY = 'SET_CATEGORY'
 
+//  --> contacts
+export const CONTACT_ID = 'CONTACT_ID'
+
 //  user experiencie
 export const LOADING = 'LOADING'

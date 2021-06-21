@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 // screens
 import Home from '../screens/Home'
-import ContactsList from '../screens/ContactsList'
+import ContactList from '../screens/ContactList'
 import ListEvents from '../screens/ListEvents'
 import Settings from '../screens/Settings'
 import CreateEventStep1 from '../screens/CreateEventStep1'
@@ -30,7 +30,7 @@ const HomeTabs = () => {
             let iconName
             if (route.name === 'Home') {
               iconName = focused ? 'HomeOn' : 'HomeOff'
-            } else if (route.name === 'ContactsList') {
+            } else if (route.name === 'ContactList') {
               iconName = focused ? 'ContactOn' : 'ContactOff'
             } else if (route.name === 'List') {
               iconName = focused ? 'ListOn' : 'ListOff'
@@ -44,7 +44,7 @@ const HomeTabs = () => {
       )}
     >
       <Tab.Screen name='Home' component={Home} options={{ tabBarLabel: () => null }} />
-      <Tab.Screen name='ContactsList' component={ContactsList} options={{ tabBarLabel: () => null }} />
+      <Tab.Screen name='ContactList' component={ContactList} options={{ tabBarLabel: () => null }} />
       <Tab.Screen name='List' component={ListEvents} options={{ tabBarLabel: () => null }} />
       <Tab.Screen name='Settings' component={Settings} options={{ tabBarLabel: () => null }} />
     </Tab.Navigator>

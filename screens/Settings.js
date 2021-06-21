@@ -136,7 +136,8 @@ const styles = StyleSheet.create({
     height: wp('15%'), //  ~54
     borderRadius: 10,
     backgroundColor: '#00000029',
-    marginRight: wp('8%') // 30
+    marginRight: wp('8%'), // 30
+    marginBottom: hp('2%')
   },
 
   text: {

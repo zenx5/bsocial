@@ -59,15 +59,21 @@ const AuthState = (props) => {
       dispatch({ type: IS_EMAIL_IN_USE, payload: null })
 
       try {
+        console.log(userData.name)
         const { data } = await axios.post(API_REGISTER, {
-          photo: userData.photo,
-          name: userData.name,
-          lastname: userData.lastName,
-          username: userData.username,
-          email: userData.email,
-          password: userData.password,
-          password_confirmation: userData.confirmPassword
+          headers: { 'content-type': 'application/x-www-form-urlencoded' },
+          data: {
+            photo: userData.photo,
+            name: userData.name,
+            lastname: userData.lastName,
+            username: userData.username,
+            email: userData.email,
+            password: userData.password,
+            password_confirmation: userData.confirmPassword
+          }
         })
+
+        console.log(data)
 
         if (data.status) {
           dispatch({ type: LOADING, payload: false })
@@ -97,6 +103,7 @@ const AuthState = (props) => {
             email: data.data.email
           }
         })
+        dispatch({ type: USER_TOKEN, payload: data.data.api_token })
         dispatch({ type: USER_AUTHENTICATED, payload: true })
       } catch (error) {
         dispatch({ type: USER_AUTHENTICATED, payload: false })

@@ -276,6 +276,7 @@ const Register = (props) => {
   //  -->   activation of the button
   useEffect(() => {
     if (
+      data.photo &&
       data.name &&
       data.lastName &&
       data.username &&
@@ -299,6 +300,7 @@ const Register = (props) => {
       }
     }
   }, [
+    data.photo,
     data.isValidName,
     data.isValidLastName,
     data.isValidUsername,
@@ -327,7 +329,7 @@ const Register = (props) => {
     if (isEmailInUse) {
       Alert.alert(
         'Error',
-        'Este email ya esta en uso!',
+        'El email o numero celular ya esta en uso!',
         [
           { text: 'Ok' }
         ],
@@ -451,7 +453,7 @@ const Register = (props) => {
       {/* phone */}
       <TextInput
         placeholder='Numero de Telefono'
-        keyboardType='number-pad'
+        keyboardType='phone-pad'
         autoCapitalize='none'
         placeholderTextColor='#000'
         style={[styles.emptyInput, data.phone && styles.filledInput]}

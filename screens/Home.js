@@ -8,7 +8,7 @@ import AppLoading from 'expo-app-loading'
 import { StatusBar } from 'expo-status-bar'
 
 //  header
-//  import Header from '../components/Home/Header'
+import Header from '../components/Home/Header'
 
 //  icons
 //  import IconSettings from '../components/Icons/IconSettings'
@@ -55,10 +55,10 @@ const Home = (props) => {
     <View style={styles.container}>
       <StatusBar backgroundColor='#fff' />
 
-      <Text>Home</Text>
-
       {/* header */}
-      {/* <Header {...props} /> */}
+      <Header {...props} />
+
+      <Text>Home</Text>
 
       {/* upcoming events
       <View style={styles.upcomingEvents}>
@@ -96,9 +96,7 @@ const Home = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    flex: 1
   },
 
   upcomingEvents: {

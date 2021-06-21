@@ -5,38 +5,13 @@ import AppLoading from 'expo-app-loading'
 import Constants from 'expo-constants'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import * as Contacts from 'expo-contacts'
+import axios from 'axios'
 
 //  components
-import Search from '../components/Search'
+import Header from '../components/ContactsList/Header'
+import NewContact from '../components/ContactsList/NewContact'
 
 //  icons
-import IconSearch from '../components/Icons/IconSearch'
-import IconClose from '../components/Icons/IconClose'
-import IconContact from '../components/Icons/IconContact'
-
-const Header = ({ isSearch, openSearch, closeSearch, fadeAnimationSearch, fadeAnimationTitle, footerText }) => {
-  return (
-    <View style={styles.headerContainer}>
-      <Animated.View style={[styles.header, { opacity: fadeAnimationTitle }, isSearch && styles.disable]}>
-        <Text style={styles.header_title}>Contactos</Text>
-
-        <TouchableOpacity onPress={openSearch} style={styles.header_icon}>
-          <IconSearch />
-        </TouchableOpacity>
-      </Animated.View>
-
-      <Animated.View style={[styles.search, { opacity: fadeAnimationSearch }, !isSearch && styles.disable]}>
-        <View>
-          <Search />
-        </View>
-        <TouchableOpacity onPress={closeSearch} style={styles.search_icon}>
-          <IconClose />
-        </TouchableOpacity>
-      </Animated.View>
-      <Text style={styles.header_footer}>{footerText}</Text>
-    </View>
-  )
-}
 
 const Item = ({ item }) => (
   <TouchableOpacity style={[styles.item]}>
@@ -46,15 +21,6 @@ const Item = ({ item }) => (
     <Text style={styles.item_text}>{item.name}</Text>
   </TouchableOpacity>
 )
-
-const NewContact = () => {
-  return (
-    <TouchableOpacity style={styles.item}>
-      <IconContact />
-      <Text style={styles.item_text}>Agregar contacto</Text>
-    </TouchableOpacity>
-  )
-}
 
 const ContactsList = () => {
   //  fonts
@@ -71,28 +37,32 @@ const ContactsList = () => {
   const fadeInSearch = () => {
     Animated.timing(fadeAnimationSearch, {
       toValue: 1,
-      duration: 1000
+      duration: 1000,
+      useNativeDriver: true
     }).start()
   }
 
   const fadeOutSearch = () => {
     Animated.timing(fadeAnimationSearch, {
       toValue: 0,
-      duration: 1000
+      duration: 1000,
+      useNativeDriver: true
     }).start()
   }
 
   const fadeInTitle = () => {
     Animated.timing(fadeAnimationTitle, {
       toValue: 1,
-      duration: 1000
+      duration: 1000,
+      useNativeDriver: true
     }).start()
   }
 
   const fadeOutTitle = () => {
     Animated.timing(fadeAnimationTitle, {
       toValue: 0,
-      duration: 1000
+      duration: 1000,
+      useNativeDriver: true
     }).start()
   }
 
@@ -109,6 +79,7 @@ const ContactsList = () => {
   }
 
   const [contactsList, setContactsList] = useState()
+  const [newContactList, setNewContactList] = useState()
 
   useEffect(() => {
     (async () => {
@@ -124,14 +95,11 @@ const ContactsList = () => {
     })()
   }, [])
 
-  //  list item
-  const renderItem = ({ item }) => {
-    return <Item item={item} />
-  }
-
   if (!fontsLoaded) {
     return <AppLoading />
   }
+
+  console.log('render')
 
   return (
     <View style={styles.container}>
@@ -147,7 +115,7 @@ const ContactsList = () => {
 
       <FlatList
         data={contactsList}
-        renderItem={renderItem}
+        renderItem={({ item }) => <Item item={item} />}
         keyExtractor={item => item.id}
         style={styles.flatList}
         ListHeaderComponent={NewContact}
@@ -158,37 +126,9 @@ const ContactsList = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Constants.statusBarHeight,
     flex: 1,
+    paddingTop: Constants.statusBarHeight,
     backgroundColor: '#fff'
-  },
-
-  headerContainer: {
-    width: '100%',
-    backgroundColor: '#fff',
-    paddingTop: hp('4.4%'), //  30~
-    paddingBottom: hp('2.1%') // 14~
-  },
-
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingLeft: wp('6.6%'), // 27~
-    paddingRight: wp('8.8%'), //  36~
-    marginBottom: hp('4%') // 27~
-  },
-
-  header_title: {
-    fontSize: hp('3%'), //  20.5~~
-    fontFamily: 'Poppins_700Bold',
-    color: '#000'
-  },
-
-  header_footer: {
-    fontSize: hp('2.1%'), // 14.4~
-    fontFamily: 'Poppins_400Regular',
-    marginLeft: wp('4.4%') // 18.2~
   },
 
   flatList: {
@@ -199,7 +139,7 @@ const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 15
+    marginBottom: hp('2.3%') // 15.61
   },
 
   item_image: {
@@ -210,24 +150,9 @@ const styles = StyleSheet.create({
   },
 
   item_text: {
-    fontSize: 12,
+    fontSize: hp('1.8%'), //  12.19
     fontFamily: 'Poppins_400Regular',
-    marginLeft: 22
-  },
-  search: {
-    position: 'relative',
-    marginTop: -11,
-    marginBottom: 20
-  },
-
-  search_icon: {
-    position: 'absolute',
-    top: 15,
-    right: 19
-  },
-
-  disable: {
-    display: 'none'
+    marginLeft: wp('5.4%') //  22.09
   }
 })
 
