@@ -6,8 +6,7 @@ import { CONTACT_LIST } from '../types'
 
 const ContactsState = (props) => {
   const initialState = {
-    contactList: [],
-    contactId: ''
+    contactList: []
   }
 
   //  --> urls
