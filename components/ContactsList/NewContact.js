@@ -4,18 +4,18 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { useFonts, Poppins_600SemiBold, Poppins_700Bold } from '@expo-google-fonts/poppins' // eslint-disable-line
 import { StatusBar } from 'expo-status-bar'
 import AppLoading from 'expo-app-loading'
-import ContactsContext from '../../context/Contacts/ContactsContext'
 import Loading from '../Loading'
+import AuthContext from '../../context/Auth/AuthContext'
 
 //  components
 import IconContact from '../Icons/IconContact'
 import IconClose from '../Icons/IconClose'
 
 const NewContact = () => {
-  const { addNewContact, loading } = useContext(ContactsContext)
+  const { addNewContact, loading } = useContext(AuthContext)
 
   const initialState = {
-    name: '',
+    userName: '',
     phone: '',
     isValidNumbre: true,
     phoneEmpty: false,
@@ -30,14 +30,11 @@ const NewContact = () => {
   const close = () => setShowAddContact(false)
 
   //  --> name, input handler
-  const nameInputHandler = (value) => {
-    if (value.length >= 3) {
-      setData({
-        ...data,
-        name: value,
-        isValidName: null
-      })
-    }
+  const userNameInputHandler = (value) => {
+    setData({
+      ...data,
+      userName: value
+    })
   }
 
   // -->    phone, input handler
@@ -69,7 +66,7 @@ const NewContact = () => {
 
   //  -->   activation of the button
   useEffect(() => {
-    if (data.phone && data.isValidNumbre) {
+    if (data.phone && data.userName && data.isValidNumbre) {
       if (data.activateButton === false) {
         setData({ ...data, activateButton: true })
       }
@@ -78,7 +75,7 @@ const NewContact = () => {
         setData({ ...data, activateButton: false })
       }
     }
-  }, [data.phone && data.isValidNumbre])
+  }, [data.phone && data.userName && data.isValidNumbre])
 
   //  --> addContact
   const saveContact = () => {
@@ -112,10 +109,10 @@ const NewContact = () => {
             <Text style={styles.modalTitle}>Agregar contacto</Text>
             <View style={styles.inputContainer}>
               <TextInput
-                placeholder='Nombre'
-                style={[styles.emptyInput, data.name && styles.filledInput]}
-                value={data.name}
-                onChangeText={nameInputHandler}
+                placeholder='Nombre de Usuario'
+                style={[styles.emptyInput, data.userName && styles.filledInput]}
+                value={data.userName}
+                onChangeText={userNameInputHandler}
               />
 
               <TextInput

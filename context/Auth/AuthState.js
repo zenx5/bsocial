@@ -20,10 +20,12 @@ const AuthState = (props) => {
     userIsAuthenticated: null
   }
 
-  //  api urls
+  //  -->  api urls
   const API_LOGIN = ' https://bsocial.at/api/auth/login'
   const API_REGISTER = ' https://bsocial.at/api/auth/register'
   const API_AUTH = ' https://bsocial.at/api/customer'
+  const ALL_CONTACTS = 'https://bsocial.at/api/contacts'
+  const API_ADD_NEW_CONTACT = 'https://bsocial.at/api/contacts/store'
 
   const [state, dispatch] = useReducer(AuthReducers, initialState)
 
@@ -38,12 +40,10 @@ const AuthState = (props) => {
         password: userData.password
       })
         .then(({ data }) => {
-          if (data.status === true) {
-            AsyncStorage.setItem('userToken', data.data.api_token)
-            dispatch({ type: USER_TOKEN, payload: data.data.api_token })
-            dispatch({ type: IS_VALID_USER, payload: true })
-            dispatch({ type: LOADING, payload: false })
-          }
+          AsyncStorage.setItem('userToken', data.data.api_token)
+          dispatch({ type: USER_TOKEN, payload: data.data.api_token })
+          dispatch({ type: IS_VALID_USER, payload: true })
+          dispatch({ type: LOADING, payload: false })
         })
         .catch((error) => {
           console.log(error)
@@ -92,7 +92,7 @@ const AuthState = (props) => {
         const token = await AsyncStorage.getItem('userToken')
         const { data } = await axios.get(API_AUTH, { headers: { Authorization: 'Bearer ' + token } })
 
-        console.log(data)
+        console.log(data.data.api_token)
 
         dispatch({
           type: USER_DATA,
@@ -103,8 +103,12 @@ const AuthState = (props) => {
             email: data.data.email
           }
         })
+
         dispatch({ type: USER_TOKEN, payload: data.data.api_token })
+        console.log(state)
+
         dispatch({ type: USER_AUTHENTICATED, payload: true })
+        console.log(state.userIsAuthenticated)
       } catch (error) {
         dispatch({ type: USER_AUTHENTICATED, payload: false })
         console.log(error)
@@ -119,9 +123,28 @@ const AuthState = (props) => {
       } catch (error) {
         console.log(error)
       }
-    }
+    },
 
-  }), [state])
+    //  -->   add new contact
+    addNewContact: async (phone) => {
+      try {
+        dispatch({ type: LOADING, payload: true })
+        const { data } = await axios.get(ALL_CONTACTS, { headers: { Authorization: 'Bearer ' + state.userToken } })
+        const contactId = data.data.filter((contact) => contact.phone === phone || contact.username)
+        console.log(contactId)
+
+        // const res = await axios.post(API_ADD_NEW_CONTACT, {
+        //   headers: { Authorization: 'Bearer ' + userToken },
+        //   data: { id: contactId[0].id }
+        // })
+        // console.log(res.data)
+
+        dispatch({ type: LOADING, payload: false })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }), [])
 
   return (
     <AuthContext.Provider
@@ -131,6 +154,7 @@ const AuthState = (props) => {
         signOut: authContext.signOut,
         clientAuth: authContext.clientAuth,
         isAlreadyAuthenticatedUser: authContext.isAlreadyAuthenticatedUser,
+        addNewContact: authContext.addNewContact,
         loading: state.loading,
         name: state.name,
         lastName: state.lastName,

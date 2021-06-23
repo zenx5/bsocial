@@ -3,7 +3,7 @@ import AuthContext from '../Auth/AuthContext'
 import ContactsContext from './ContactsContext'
 import ContactsReducer from './ContactsReducer'
 import axios from 'axios'
-import { LOADING, CONTACT_ID } from '../types'
+import { LOADING } from '../types'
 
 const ContactsState = (props) => {
   const initialState = {
@@ -27,15 +27,14 @@ const ContactsState = (props) => {
 
         dispatch({ type: LOADING, payload: true })
         const { data } = await axios.get(ALL_CONTACTS, { headers: { Authorization: 'Bearer ' + userToken } })
-        const contactId = data.data.filter((contact) => contact.phone === phone)
+        const contactId = data.data.filter((contact) => contact.phone === phone || contact.username)
+        console.log(contactId[0])
 
-        console.log(contactId[0].id)
-
-        const res = await axios.post(API_ADD_NEW_CONTACT, {
-          headers: { Authorization: 'Bearer ' + userToken },
-          data: { id: contactId[0].id }
-        })
-        console.log(res.data)
+        // const res = await axios.post(API_ADD_NEW_CONTACT, {
+        //   headers: { Authorization: 'Bearer ' + userToken },
+        //   data: { id: contactId[0].id }
+        // })
+        // console.log(res.data)
 
         dispatch({ type: LOADING, payload: false })
       } catch (error) {

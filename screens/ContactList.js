@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext} from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList, Animated } from 'react-native'
 import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import Constants from 'expo-constants'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import * as Contacts from 'expo-contacts'
-import axios from 'axios'
+import AuthContext from '../context/Auth/AuthContext'
 
 //  components
 import Header from '../components/ContactsList/Header'
