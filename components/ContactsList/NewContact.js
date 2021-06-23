@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { TouchableOpacity, Text, StyleSheet, View, Modal, TextInput } from 'react-native'
+import { TouchableOpacity, Text, StyleSheet, View, Modal, TextInput, Alert } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { useFonts, Poppins_600SemiBold, Poppins_700Bold } from '@expo-google-fonts/poppins' // eslint-disable-line
 import { StatusBar } from 'expo-status-bar'
 import AppLoading from 'expo-app-loading'
 import Loading from '../Loading'
 import AuthContext from '../../context/Auth/AuthContext'
+import axios from 'axios'
 
 //  components
 import IconContact from '../Icons/IconContact'
 import IconClose from '../Icons/IconClose'
 
 const NewContact = () => {
-  const { addNewContact, loading } = useContext(AuthContext)
+  const { userToken } = useContext(AuthContext)
 
   const initialState = {
-    userName: '',
+    username: '',
     phone: '',
     isValidNumbre: true,
     phoneEmpty: false,
@@ -23,17 +24,22 @@ const NewContact = () => {
   }
 
   const [fontsLoaded] = useFonts({ Poppins_600SemiBold, Poppins_700Bold })
-  const [data, setData] = useState(initialState)
+  const [state, setState] = useState(initialState)
   const [showAddContact, setShowAddContact] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
+  //  --> apis
+  const API_ALL_CONTACTS = 'https://bsocial.at/api/contacts'
+  const API_ADD_NEW_CONTACT = 'https://bsocial.at/api/contacts/store'
 
   const open = () => setShowAddContact(true)
   const close = () => setShowAddContact(false)
 
   //  --> name, input handler
-  const userNameInputHandler = (value) => {
-    setData({
-      ...data,
-      userName: value
+  const usernameInputHandler = (value) => {
+    setState({
+      ...state,
+      username: value
     })
   }
 
@@ -42,21 +48,21 @@ const NewContact = () => {
     const phoneRegex = /\+([0-9]*)?/i
 
     if (phoneRegex.test(value)) {
-      setData({
-        ...data,
+      setState({
+        ...state,
         phone: value,
         isValidNumbre: true,
         phoneEmpty: false
       })
     } else if (value.length === 0) {
-      setData({
-        ...data,
+      setState({
+        ...state,
         phone: value,
         phoneEmpty: true
       })
     } else {
-      setData({
-        ...data,
+      setState({
+        ...state,
         phone: value,
         isValidNumbre: false,
         phoneEmpty: false
@@ -66,22 +72,50 @@ const NewContact = () => {
 
   //  -->   activation of the button
   useEffect(() => {
-    if (data.phone && data.userName && data.isValidNumbre) {
-      if (data.activateButton === false) {
-        setData({ ...data, activateButton: true })
+    if ((state.phone && state.isValidNumbre) || state.username) {
+      if (state.activateButton === false) {
+        setState({ ...state, activateButton: true })
       }
     } else {
-      if (data.activateButton === true) {
-        setData({ ...data, activateButton: false })
+      if (state.activateButton === true) {
+        setState({ ...state, activateButton: false })
       }
     }
-  }, [data.phone && data.userName && data.isValidNumbre])
+  }, [state.phone || state.username || state.isValidNumbre])
 
-  //  --> addContact
-  const saveContact = () => {
-    addNewContact(data.phone)
-    if (!loading) {
-      setData(initialState)
+  //  -->   add new contact
+  const addNewContact = async () => {
+    try {
+      console.log(state.username, state.phone)
+      setIsLoading(true)
+      const { data } = await axios.get(API_ALL_CONTACTS, { headers: { Authorization: 'Bearer ' + userToken } })
+      const contactId = data.data.filter((contact) => contact.phone === state.phone || contact.username === state.username)
+
+      if (contactId.length === 0) {
+        setIsLoading(false)
+        return Alert.alert(
+          'Error',
+          'El nombre de usuario o telefono No se encuentran registrados',
+          [{ text: 'OK' }],
+          { cancelable: false }
+        )
+      } else {
+        await axios.post(API_ADD_NEW_CONTACT,
+          { contact_id: contactId[0].id },
+          { headers: { Authorization: 'Bearer ' + userToken } }
+        )
+        setIsLoading(false)
+
+        return Alert.alert(
+          '',
+          'Contacto añadido satisfactoriamente',
+          [{ text: 'OK' }],
+          { cancelable: false }
+        )
+      }
+    } catch (error) {
+      console.log(error)
+      setIsLoading(false)
     }
   }
 
@@ -110,38 +144,38 @@ const NewContact = () => {
             <View style={styles.inputContainer}>
               <TextInput
                 placeholder='Nombre de Usuario'
-                style={[styles.emptyInput, data.userName && styles.filledInput]}
-                value={data.userName}
-                onChangeText={userNameInputHandler}
+                style={[styles.emptyInput, state.username && styles.filledInput]}
+                value={state.username}
+                onChangeText={usernameInputHandler}
               />
-
+              <Text style={styles.separatorText}>Ó</Text>
               <TextInput
                 placeholder='Numero de Telefono'
                 keyboardType='numbers-and-punctuation'
-                style={[styles.emptyInput, data.phone && styles.filledInput]}
-                value={data.phone}
+                style={[styles.emptyInput, state.phone && styles.filledInput]}
+                value={state.phone}
                 onChangeText={phoneInputHandler}
               />
               {
-                data.isValidNumbre
+                state.isValidNumbre
                   ? null
                   : <Text style={styles.errorMessage}>Ingrese un numero con formato Valido ejemplo: +0123456</Text>
               }
             </View>
             <TouchableOpacity
-              disabled={!data.activateButton}
-              style={[styles.buttonDisable, data.activateButton && styles.buttonBase]}
-              onPress={saveContact}
+              disabled={!state.activateButton}
+              style={[styles.buttonDisable, state.activateButton && styles.buttonBase]}
+              onPress={addNewContact}
             >
               <Text
-                style={[styles.button_textDisable, data.activateButton && styles.button_textBase]}
+                style={[styles.button_textDisable, state.activateButton && styles.button_textBase]}
               >
                 Guardar
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-        {loading ? <Loading /> : null}
+        {isLoading ? <Loading /> : null}
       </Modal>
     </View>
   )
@@ -211,14 +245,20 @@ const styles = StyleSheet.create({
     height: hp('8.8%'), //  60.19
     paddingLeft: wp('10%'), // 39~
     fontSize: hp('2.4%'), //  16.38
-    fontFamily: 'Poppins_400Regular',
-    marginBottom: hp('5.9%') //  40.38
+    fontFamily: 'Poppins_400Regular'
   },
 
   filledInput: {
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#EBEBEB'
+  },
+
+  separatorText: {
+    fontSize: hp('2.2%'), // 14
+    fontFamily: 'Poppins_600SemiBold',
+    color: '#000',
+    marginVertical: hp('2.5%') // 20.57
   },
 
   errorMessage: {
@@ -236,7 +276,8 @@ const styles = StyleSheet.create({
     height: hp('8.4%'), //  57.52
     alignSelf: 'center',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: hp('5.9%') //  40.38
   },
 
   buttonBase: {

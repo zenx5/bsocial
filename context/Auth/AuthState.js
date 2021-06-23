@@ -24,8 +24,6 @@ const AuthState = (props) => {
   const API_LOGIN = ' https://bsocial.at/api/auth/login'
   const API_REGISTER = ' https://bsocial.at/api/auth/register'
   const API_AUTH = ' https://bsocial.at/api/customer'
-  const ALL_CONTACTS = 'https://bsocial.at/api/contacts'
-  const API_ADD_NEW_CONTACT = 'https://bsocial.at/api/contacts/store'
 
   const [state, dispatch] = useReducer(AuthReducers, initialState)
 
@@ -123,26 +121,6 @@ const AuthState = (props) => {
       } catch (error) {
         console.log(error)
       }
-    },
-
-    //  -->   add new contact
-    addNewContact: async (phone) => {
-      try {
-        dispatch({ type: LOADING, payload: true })
-        const { data } = await axios.get(ALL_CONTACTS, { headers: { Authorization: 'Bearer ' + state.userToken } })
-        const contactId = data.data.filter((contact) => contact.phone === phone || contact.username)
-        console.log(contactId)
-
-        // const res = await axios.post(API_ADD_NEW_CONTACT, {
-        //   headers: { Authorization: 'Bearer ' + userToken },
-        //   data: { id: contactId[0].id }
-        // })
-        // console.log(res.data)
-
-        dispatch({ type: LOADING, payload: false })
-      } catch (error) {
-        console.log(error)
-      }
     }
   }), [])
 
@@ -154,7 +132,6 @@ const AuthState = (props) => {
         signOut: authContext.signOut,
         clientAuth: authContext.clientAuth,
         isAlreadyAuthenticatedUser: authContext.isAlreadyAuthenticatedUser,
-        addNewContact: authContext.addNewContact,
         loading: state.loading,
         name: state.name,
         lastName: state.lastName,

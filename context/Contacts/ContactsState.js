@@ -1,42 +1,25 @@
-import React, { useMemo, useReducer, useContext } from 'react'
-import AuthContext from '../Auth/AuthContext'
+import React, { useMemo, useReducer } from 'react'
 import ContactsContext from './ContactsContext'
 import ContactsReducer from './ContactsReducer'
 import axios from 'axios'
-import { LOADING } from '../types'
+import { CONTACT_LIST } from '../types'
 
 const ContactsState = (props) => {
   const initialState = {
     contactList: [],
-    contactId: '',
-    loading: null
+    contactId: ''
   }
 
-  const { userToken } = useContext(AuthContext)
-
   //  --> urls
-  const ALL_CONTACTS = 'https://bsocial.at/api/contacts'
-  const API_ADD_NEW_CONTACT = 'https://bsocial.at/api/contacts/store'
+  const API_MY_CONTACTS = 'https://bsocial.at/api/contacts/my-contacts'
 
   const [state, dispatch] = useReducer(ContactsReducer, initialState)
 
   const contactsState = useMemo(() => ({
-    addNewContact: async (phone) => {
+    getContacts: async (token) => {
       try {
-        console.log(userToken)
-
-        dispatch({ type: LOADING, payload: true })
-        const { data } = await axios.get(ALL_CONTACTS, { headers: { Authorization: 'Bearer ' + userToken } })
-        const contactId = data.data.filter((contact) => contact.phone === phone || contact.username)
-        console.log(contactId[0])
-
-        // const res = await axios.post(API_ADD_NEW_CONTACT, {
-        //   headers: { Authorization: 'Bearer ' + userToken },
-        //   data: { id: contactId[0].id }
-        // })
-        // console.log(res.data)
-
-        dispatch({ type: LOADING, payload: false })
+        const { data } = await axios.get(API_MY_CONTACTS, { headers: { Authorization: 'Bearer ' + token } })
+        dispatch({ type: CONTACT_LIST, payload: data.data })
       } catch (error) {
         console.log(error)
       }
@@ -46,8 +29,8 @@ const ContactsState = (props) => {
   return (
     <ContactsContext.Provider
       value={{
-        loading: state.loading,
-        addNewContact: contactsState.addNewContact
+        contactList: state.contactList,
+        getContacts: contactsState.getContacts
       }}
     >
       {props.children}

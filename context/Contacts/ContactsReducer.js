@@ -1,21 +1,14 @@
-import { LOADING, CONTACT_ID } from '../types'
+import { CONTACT_LIST } from '../types'
 
 const ContactsReducers = (state, action) => {
   const { payload, type } = action
 
   switch (type) {
-    case LOADING:
+    case CONTACT_LIST:
       return {
         ...state,
-        loading: payload
+        contactList: payload
       }
-
-    case CONTACT_ID: {
-      return {
-        ...state,
-        contactId: payload
-      }
-    }
 
     default:
       return state
