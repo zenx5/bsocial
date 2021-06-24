@@ -33,17 +33,23 @@ const Item = ({ item, navigate }) => {
 
         <View style={styles.iconContainer}>
           <View style={[styles.iconContainer, { marginRight: wp('5.5%') }]}>
-            <IconEye style={styles.icon} />
+            <View style={styles.icon}>
+              <IconEye />
+            </View>
             <Text style={styles.viewers_count}>{item.viewers_count}</Text>
           </View>
 
           <View style={[styles.iconContainer, { marginRight: wp('5.5%') }]}>
-            <IconComments style={styles.icon} />
+            <View style={styles.icon}>
+              <IconComments />
+            </View>
             <Text style={styles.count}>{item.comments_count}</Text>
           </View>
 
           <View style={styles.iconContainer}>
-            <IconLikes style={styles.icon} />
+            <View style={styles.icon}>
+              <IconLikes />
+            </View>
             <Text style={styles.count}>{item.likes_count}</Text>
           </View>
         </View>

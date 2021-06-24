@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image, ScrollView } from 'react-native'
 import axios from 'axios'
 import AuthContext from '../context/Auth/AuthContext'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -42,73 +42,75 @@ const Event = (props) => {
   console.log(eventData)
   return (
     <View style={styles.container}>
-      {/* image */}
-      <ImageBackground style={styles.image} source={{ uri: eventData.image }}>
-        <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.iconBack}>
-          <IconBack />
-        </TouchableOpacity>
-      </ImageBackground>
+      <ScrollView style={styles.scrollView}>
+        {/* image */}
+        <ImageBackground style={styles.image} source={{ uri: eventData.image }}>
+          <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.iconBack}>
+            <IconBack />
+          </TouchableOpacity>
+        </ImageBackground>
 
-      {/* header */}
-      <View style={styles.header}>
-        <Text style={styles.name}>{eventData.name}</Text>
-        <View style={styles.dataEvent}>
-          <View>
-            <Text style={styles.type}>{eventData.type === 'public' ? 'Evento Publico' : 'Evento Privado'}</Text>
-          </View>
-          <Text style={styles.dot}>·</Text>
-          <View>
-            <Text style={styles.host}>Anfitrion: </Text>
+        {/* header */}
+        <View style={styles.header}>
+          <Text style={styles.name}>{eventData.name}</Text>
+          <View style={styles.dataEvent}>
+            <View>
+              <Text style={styles.type}>{eventData.type === 'public' ? 'Evento Publico' : 'Evento Privado'}</Text>
+            </View>
+            <Text style={styles.dot}>·</Text>
+            <View>
+              <Text style={styles.host}>Anfitrion: </Text>
+            </View>
           </View>
         </View>
-      </View>
 
-      {/* details */}
-      <View style={styles.details}>
-        <Text style={styles.details_title}>Detalles</Text>
-        <Text style={styles.details_description}>{eventData.description}</Text>
-        <View style={styles.details_dateTime}>
-          <View style={styles.dateTime}>
-            <View style={styles.dateTime_icon}>
-              <IconDate />
+        {/* details */}
+        <View style={styles.details}>
+          <Text style={styles.details_title}>Detalles</Text>
+          <Text style={styles.details_description}>{eventData.description}</Text>
+          <View style={styles.details_dateTime}>
+            <View style={styles.dateTime}>
+              <View style={styles.dateTime_icon}>
+                <IconDate />
+              </View>
+              <Text style={styles.start_date}>{eventData.start_date}</Text>
             </View>
-            <Text style={styles.start_date}>{eventData.start_date}</Text>
-          </View>
-          <View style={styles.dateTime}>
-            <View style={styles.dateTime_icon}>
-              <IconTime />
+            <View style={styles.dateTime}>
+              <View style={styles.dateTime_icon}>
+                <IconTime />
+              </View>
+              <Text>{eventData.start_hour}</Text>
             </View>
-            <Text>{eventData.start_hour}</Text>
           </View>
         </View>
-      </View>
 
-      {/* guests */}
-      <View style={styles.guests}>
-        <Text style={styles.guests_title}>Invitados</Text>
-        <FlatList
-          data={eventData.guests}
-          renderItem={({ item }) => <Image style={styles.guests_image} source={{ uri: item.photo }} />}
-          keyExtractor={(item) => item.id}
-          horizontal
-          style={styles.guest_List}
-        />
-      </View>
+        {/* guests */}
+        <View style={styles.guests}>
+          <Text style={styles.guests_title}>Invitados</Text>
+          <FlatList
+            data={eventData.guests}
+            renderItem={({ item }) => <Image style={styles.guests_image} source={{ uri: item.photo }} />}
+            keyExtractor={(item) => item.id}
+            horizontal
+            style={styles.guest_List}
+          />
+        </View>
 
-      {/* location */}
-      <View style={styles.location}>
-        <Text style={styles.location_title}>Ubicación</Text>
-        <Text style={styles.location_address}>{eventData.address}</Text>
+        {/* location */}
+        <View style={styles.location}>
+          <Text style={styles.location_title}>Ubicación</Text>
+          <Text style={styles.location_address}>{eventData.address}</Text>
 
-        <View style={styles.map} />
-      </View>
+          <View style={styles.map} />
+        </View>
 
-      {/* button */}
-      <View styles={styles.buttonArea}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.button_text}>ASISTIR</Text>
-        </TouchableOpacity>
-      </View>
+        {/* button */}
+        <View style={styles.buttonArea}>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.button_text}>ASISTIR</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   )
 }
@@ -120,19 +122,20 @@ const styles = StyleSheet.create({
     flex: 1
   },
 
+  scrollView: {
+    width: '100%'
+  },
+
   image: {
-    flex: 1,
     width: '100%',
     resizeMode: 'cover',
-    justifyContent: 'center',
-    height: hp('28%') //  227.5
+    height: hp('33.5%') //  272
   },
 
   iconBack: {
     width: wp('2.8%'), //  10.5
     marginTop: Constants.statusBarHeight,
     marginLeft: wp('8.5%'), //  32
-    marginBottom: hp('15%'), //  122
     paddingTop: hp('3.7%') //  30
   },
 
@@ -141,7 +144,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopLeftRadius: 14,
     borderTopRightRadius: 14,
-    marginTop: hp('-7%'), //  56
+    marginTop: hp('-5%'), //  40
     marginBottom: hp('0.6%'), //  5
     paddingTop: hp('2%'), //  16
     paddingLeft: hp('2%'), //  16
@@ -237,8 +240,7 @@ const styles = StyleSheet.create({
 
   location: {
     backgroundColor: '#fff',
-    marginBottom: hp('0.6'), //  5
-    paddingTop: hp('1.5%')
+    marginBottom: hp('0.6') //  5
   },
 
   location_title: {
@@ -262,7 +264,8 @@ const styles = StyleSheet.create({
   },
 
   buttonArea: {
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    paddingVertical: hp('2%') // 16
   },
 
   button: {
@@ -271,7 +274,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#E1B21C',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 29
+    borderRadius: 29,
+    alignSelf: 'center'
   },
 
   button_text: {
