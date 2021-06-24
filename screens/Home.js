@@ -16,7 +16,6 @@ import FeaturedEvents from '../components/Home/FeaturedEvents'
 //  icons
 //  import IconSettings from '../components/Icons/IconSettings'
 
-
 const Home = (props) => {
   //  -->   contexts
   const { userToken } = useContext(AuthContext)
@@ -98,8 +97,7 @@ const Home = (props) => {
       </View> */}
 
       {/* featured Events */}
-      <FeaturedEvents /> 
-
+      <FeaturedEvents {...props} />
     </View>
   )
 }

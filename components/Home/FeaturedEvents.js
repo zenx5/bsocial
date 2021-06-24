@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native'
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native'
 import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins' //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import EventsContext from '../../context/Events/EventsContext'
@@ -11,27 +11,33 @@ import IconComments from '../Icons/IconComments'
 import IconLikes from '../Icons/IconLikes'
 
 //    -->   components
-const Item = ({ item }) => {
+const Item = ({ item, navigate }) => {
   const colors = [
     '#E1B21C', '#82CC7C', '#33A0F3', '#F1485F', '#F26A24',
     '#512E5F', '#1B4F72', '#186A3B'
   ]
   const colorNumber = Math.floor(Math.random() * colors.length)
+  const goEvent = () => {
+    navigate('Event', { id: item.id })
+  }
+
   return (
     <View style={styles.eventContainer}>
-      <View style={[styles.imageContainer, { backgroundColor: colors[colorNumber] }]}>
+      <TouchableOpacity onPress={goEvent} style={[styles.imageContainer, { backgroundColor: colors[colorNumber] }]}>
         <Image style={styles.image} source={{ uri: item.image }} />
-      </View>
+      </TouchableOpacity>
       <View style={styles.dataContainer}>
-        <Text style={styles.name}>{item.name}</Text>
+        <TouchableOpacity onPress={goEvent}>
+          <Text style={styles.name}>{item.name}</Text>
+        </TouchableOpacity>
 
         <View style={styles.iconContainer}>
-          <View style={styles.iconContainer}>
+          <View style={[styles.iconContainer, { marginRight: wp('5.5%') }]}>
             <IconEye style={styles.icon} />
             <Text style={styles.viewers_count}>{item.viewers_count}</Text>
           </View>
 
-          <View style={styles.iconContainer}>
+          <View style={[styles.iconContainer, { marginRight: wp('5.5%') }]}>
             <IconComments style={styles.icon} />
             <Text style={styles.count}>{item.comments_count}</Text>
           </View>
@@ -48,7 +54,8 @@ const Item = ({ item }) => {
 
 const Separator = () => <View style={styles.separator} />
 
-const FeatureEvents = () => {
+//  -->   Main    <--
+const FeatureEvents = (props) => {
   //  -->   fonts
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_500Medium, Poppins_700Bold })
 
@@ -65,12 +72,19 @@ const FeatureEvents = () => {
     <View style={styles.container}>
       <Text style={styles.sectionName}>Eventos destacados</Text>
 
-      <FlatList
-        data={featured}
-        renderItem={({ item }) => <Item item={item} />}
-        keyExtractor={(item) => item.id}
-        ItemSeparatorComponent={Separator}
-      />
+      {
+        featured.length
+          ? (
+            <FlatList
+              data={featured}
+              renderItem={({ item }) => <Item item={item} navigate={props.navigation.navigate} />}
+              keyExtractor={(item) => item.id}
+              ItemSeparatorComponent={Separator}
+            />
+            )
+          : <Text>No tiene eventos Destacados</Text>
+      }
+
     </View>
   )
 }
@@ -87,7 +101,8 @@ const styles = StyleSheet.create({
 
   sectionName: {
     fontSize: hp('2%'), //  16
-    fontFamily: 'Poppins_700Bold'
+    fontFamily: 'Poppins_700Bold',
+    width: '100%'
   },
 
   separator: {
@@ -134,8 +149,8 @@ const styles = StyleSheet.create({
 
   iconContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: wp('5.5%') //  20.5
+    alignItems: 'center'
+    // marginRight: wp('5.5%') //  20.5
   },
 
   icon: {

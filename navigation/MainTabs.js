@@ -7,6 +7,7 @@ import Home from '../screens/Home'
 import ContactList from '../screens/ContactList'
 import ListEvents from '../screens/ListEvents'
 import Settings from '../screens/Settings'
+import Event from '../screens/Event'
 import CreateEventStep1 from '../screens/CreateEventStep1'
 import CreateEventStep2 from '../screens/CreateEventStep2'
 import CreateEventStep3 from '../screens/CreateEvenStep3'
@@ -59,6 +60,13 @@ const MainTabs = () => {
         component={HomeTabs}
         options={{ header: () => null }}
       />
+
+      <Stack.Screen
+        name='Event'
+        component={Event}
+        options={{ header: () => null }}
+      />
+
       <Stack.Screen
         name='Create Event Step 1'
         component={CreateEventStep1}

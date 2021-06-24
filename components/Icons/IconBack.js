@@ -4,11 +4,9 @@ import Svg, { Path } from 'react-native-svg'
 function IconBack (props) {
   return (
     <Svg
-      {...props}
       xmlns='http://www.w3.org/2000/svg'
-      width={13.518}
-      height={24.536}
       viewBox='0 0 13.518 24.536'
+      {...props}
     >
       <Path
         data-name='Trazado 12'
