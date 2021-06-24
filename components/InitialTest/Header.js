@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
   container: {
     padding: Constants.statusBarHeight,
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#fff'
   },
 
   header: {

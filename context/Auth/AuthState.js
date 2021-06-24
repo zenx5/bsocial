@@ -103,10 +103,7 @@ const AuthState = (props) => {
         })
 
         dispatch({ type: USER_TOKEN, payload: data.data.api_token })
-        console.log(state)
-
         dispatch({ type: USER_AUTHENTICATED, payload: true })
-        console.log(state.userIsAuthenticated)
       } catch (error) {
         dispatch({ type: USER_AUTHENTICATED, payload: false })
         console.log(error)

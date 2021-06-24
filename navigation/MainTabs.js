@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
 
 // screens
-import InitialTest from '../screens/InitialTest'
 import Home from '../screens/Home'
 import ContactList from '../screens/ContactList'
 import ListEvents from '../screens/ListEvents'
@@ -13,7 +12,6 @@ import CreateEventStep2 from '../screens/CreateEventStep2'
 import CreateEventStep3 from '../screens/CreateEvenStep3'
 
 //  headers
-import HeaderInitialTest from '../components/InitialTest/Header'
 import CreateEventHeaderOne from '../components/CreateEvent/HeaderOne'
 import CreateEventHeaderTwo from '../components/CreateEvent/HeaderTwo'
 
@@ -56,12 +54,6 @@ const HomeTabs = () => {
 const MainTabs = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name='Initial Test'
-        component={InitialTest}
-        options={{ header: props => <HeaderInitialTest {...props} /> }}
-      />
-
       <Stack.Screen
         name='Home'
         component={HomeTabs}

@@ -4,7 +4,7 @@ import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-font
 import AppLoading from 'expo-app-loading'
 import Constants from 'expo-constants'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import * as Contacts from 'expo-contacts'
+// import * as Contacts from 'expo-contacts'
 import AuthContext from '../context/Auth/AuthContext'
 import ContactsContex from '../context/Contacts/ContactsContext'
 
@@ -13,7 +13,6 @@ import Header from '../components/ContactsList/Header'
 import NewContact from '../components/ContactsList/NewContact'
 
 const Item = ({ item }) => {
-  console.log(item.info_contact)
   return (
     <TouchableOpacity style={[styles.item]}>
       <Image style={styles.item_image} source={{ uri: item.info_contact.photo }} />
@@ -26,7 +25,7 @@ const ContactsList = () => {
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
 
-  //  context
+  // -->  context
   const { userToken } = useContext(AuthContext)
   const { contactList, getContacts } = useContext(ContactsContex)
 

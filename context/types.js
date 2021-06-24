@@ -1,7 +1,4 @@
-//  fonts
-export const GET_FONTS = 'GET_FONTS'
-
-//  auth
+// --->  auth
 export const USER_AUTHENTICATED = 'USER_AUTHENTICATED'
 export const USER_DATA = 'USER_DATA'
 export const USER_TOKEN = 'USER_TOKEN'
@@ -12,7 +9,9 @@ export const IS_EMAIL_IN_USE = 'IS_EMAIL_IN_USE'
 export const CREATED_USER = 'CREATED_USER'
 export const IS_VALID_USER = 'IS_VALID_USER'
 
-//  create event
+//  -->   Events
+export const UPCOMING_EVENTS = 'UPCOMING_EVENTS'
+export const FEATURED_EVENTS = 'FEATURED_EVENTS'
 export const SET_CATEGORY = 'SET_CATEGORY'
 
 //  --> contacts

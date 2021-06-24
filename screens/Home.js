@@ -1,22 +1,32 @@
-import React, { useState, useEffect } from 'react' // eslint-disable-line
-import { View, Text, StyleSheet, Alert } from 'react-native' // eslint-disable-line
+import React, { useState, useEffect, useContext } from 'react'
+import { View, Text, StyleSheet, Alert } from 'react-native'
 // import * as Location from 'expo-location'
 // import MapView, { Marker } from 'react-native-maps'
 import { useFonts, Poppins_300Light, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import AppLoading from 'expo-app-loading'
 import { StatusBar } from 'expo-status-bar'
+import AuthContext from '../context/Auth/AuthContext'
+import EventsContext from '../context/Events/EventsContext'
 
-//  header
+//  -->   components
 import Header from '../components/Home/Header'
+import FeaturedEvents from '../components/Home/FeaturedEvents'
 
 //  icons
 //  import IconSettings from '../components/Icons/IconSettings'
 
-//  import FeaturedEvents from './casa/FeaturedEvents'
 
 const Home = (props) => {
+  //  -->   contexts
+  const { userToken } = useContext(AuthContext)
+  const { getEventsHome } = useContext(EventsContext)
+
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_500Medium, Poppins_700Bold })
+
+  useEffect(() => {
+    getEventsHome(userToken)
+  }, [])
 
   // const initialRegion = {
   //   latitude: 0,
@@ -87,8 +97,8 @@ const Home = (props) => {
         </View>
       </View> */}
 
-      {/* featured Events
-      <FeaturedEvents /> */}
+      {/* featured Events */}
+      <FeaturedEvents /> 
 
     </View>
   )

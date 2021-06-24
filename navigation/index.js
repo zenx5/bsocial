@@ -2,15 +2,15 @@ import React from 'react'
 import Routes from './Routes'
 import AuthState from '../context/Auth/AuthState'
 import ContactsState from '../context/Contacts/ContactsState'
-import CreateEventState from '../context/CreateEvent/CreateEventState'
+import EventsState from '../context/Events/EventsState'
 
 const Navigation = () => {
   return (
     <AuthState>
       <ContactsState>
-        <CreateEventState>
+        <EventsState>
           <Routes />
-        </CreateEventState>
+        </EventsState>
       </ContactsState>
     </AuthState>
   )
