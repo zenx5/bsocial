@@ -39,14 +39,15 @@ const Event = (props) => {
     return <AppLoading />
   }
 
-  console.log(eventData)
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
         {/* image */}
         <ImageBackground style={styles.image} source={{ uri: eventData.image }}>
-          <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.iconBack}>
-            <IconBack />
+          <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.back}>
+            <View style={styles.iconBack}>
+              <IconBack />
+            </View>
           </TouchableOpacity>
         </ImageBackground>
 
@@ -132,11 +133,15 @@ const styles = StyleSheet.create({
     height: hp('33.5%') //  272
   },
 
-  iconBack: {
-    width: wp('2.8%'), //  10.5
+  back: {
     marginTop: Constants.statusBarHeight,
     marginLeft: wp('8.5%'), //  32
     paddingTop: hp('3.7%') //  30
+  },
+
+  iconBack: {
+    width: wp('3%'),
+    height: hp('4%') // 32
   },
 
   header: {
@@ -265,7 +270,7 @@ const styles = StyleSheet.create({
 
   buttonArea: {
     backgroundColor: '#fff',
-    paddingVertical: hp('2%') // 16
+    paddingVertical: hp('1.5%')
   },
 
   button: {

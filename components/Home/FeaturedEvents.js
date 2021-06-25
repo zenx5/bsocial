@@ -33,23 +33,17 @@ const Item = ({ item, navigate }) => {
 
         <View style={styles.iconContainer}>
           <View style={[styles.iconContainer, { marginRight: wp('5.5%') }]}>
-            <View style={styles.icon}>
-              <IconEye />
-            </View>
-            <Text style={styles.viewers_count}>{item.viewers_count}</Text>
+            <IconEye style={styles.icon} />
+            <Text style={styles.count}>{item.viewers_count}</Text>
           </View>
 
           <View style={[styles.iconContainer, { marginRight: wp('5.5%') }]}>
-            <View style={styles.icon}>
-              <IconComments />
-            </View>
+            <IconComments style={styles.icon} />
             <Text style={styles.count}>{item.comments_count}</Text>
           </View>
 
           <View style={styles.iconContainer}>
-            <View style={styles.icon}>
-              <IconLikes />
-            </View>
+            <IconLikes style={styles.icon} />
             <Text style={styles.count}>{item.likes_count}</Text>
           </View>
         </View>
@@ -166,7 +160,8 @@ const styles = StyleSheet.create({
 
   count: {
     fontSize: hp('1.4%'), // 12
-    fontFamily: 'Poppins_400Regular'
+    fontFamily: 'Poppins_400Regular',
+    color: '#00000080'
   }
 
 })
