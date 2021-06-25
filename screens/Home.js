@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { View, Text, StyleSheet, Alert, FlatList } from 'react-native'
+import { View, Text, StyleSheet, Alert } from 'react-native'
 import * as Location from 'expo-location'
 import MapView, { Marker } from 'react-native-maps'
 import { useFonts, Poppins_300Light, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
@@ -84,11 +84,11 @@ const Home = (props) => {
           >
             {
               upcoming.map((item, index) => {
-                console.log(item.latitud)
-                console.log(item.longitud)
-
                 return (
-                  <Marker key={index} coordinate={{ latitude: parseInt(item.latitud), longitude: parseInt(item.longitud) }} />
+                  <Marker
+                    key={index}
+                    coordinate={{ latitude: parseInt(item.latitud), longitude: parseInt(item.longitud) }}
+                  />
                 )
               })
             }
