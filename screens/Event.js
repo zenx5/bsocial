@@ -34,8 +34,8 @@ const Event = (props) => {
       })
       setEventData(data.data)
       setLocation({
-        latitude: parseInt(data.data.latitud),
-        longitude: parseInt(data.data.longitud)
+        latitude: parseFloat(data.data.latitud),
+        longitude: parseFloat(data.data.longitud)
       })
     } catch (error) {
       console.log(error)
@@ -66,14 +66,21 @@ const Event = (props) => {
 
         {/* header */}
         <View style={styles.header}>
-          <Text style={styles.name}>{eventData.name}</Text>
+          <Text style={styles.eventName}>{eventData.name}</Text>
           <View style={styles.dataEvent}>
             <View>
-              <Text style={styles.type}>{eventData.type === 'public' ? 'Evento Publico' : 'Evento Privado'}</Text>
+              <Text style={styles.eventInfo}>{eventData.type === 'public' ? 'Evento Publico' : 'Evento Privado'}</Text>
             </View>
             <Text style={styles.dot}>·</Text>
-            <View>
-              <Text style={styles.host}>Anfitrion: </Text>
+            <View style={styles.host}>
+              <Text style={styles.host_text}>Anfitrion: </Text>
+              <Text style={styles.eventInfo}>
+                {
+                  eventData.customer
+                    ? `${eventData.customer.name} ${eventData.customer.lastname}`
+                    : ''
+                }
+              </Text>
             </View>
           </View>
         </View>
@@ -184,7 +191,7 @@ const styles = StyleSheet.create({
     paddingBottom: hp('2.2%') // 18
   },
 
-  name: {
+  eventName: {
     fontSize: hp('2.5%'), //  20.5
     fontFamily: 'Poppins_700Bold'
   },
@@ -194,9 +201,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
 
-  type: {
+  eventInfo: {
     fontSize: hp('1.4%'), // 11
-    fontFamily: 'Poppins_400Regular'
+    fontFamily: 'Poppins_400Regular',
+    color: '#000'
   },
 
   dot: {
@@ -205,9 +213,14 @@ const styles = StyleSheet.create({
   },
 
   host: {
+    flexDirection: 'row'
+  },
+
+  host_text: {
     fontSize: hp('1.4%'), // 11.5
     fontFamily: 'Poppins_400Regular',
-    color: '#00000060'
+    color: '#00000060',
+    marginRight: wp('0.6%')
   },
 
   details: {

@@ -2,7 +2,7 @@ import React, { useReducer, useMemo } from 'react'
 import EventsContext from './EventsContext'
 import EventsReducer from './EventsReducer'
 import axios from 'axios'
-import { FEATURED_EVENTS, UPCOMING_EVENTS } from '../types'
+import { FEATURED_EVENTS, SET_COORDINATE, UPCOMING_EVENTS } from '../types'
 
 const EventsState = (props) => {
   const initialState = {
@@ -25,6 +25,7 @@ const EventsState = (props) => {
   const [state, dispatch] = useReducer(EventsReducer, initialState)
 
   const eventsState = useMemo(() => ({
+    //    -->   get all events
     getEventsHome: async (token) => {
       try {
         const { data } = await axios.get(API_HOME, { headers: { Authorization: 'Bearer ' + token } })
@@ -33,6 +34,17 @@ const EventsState = (props) => {
       } catch (error) {
         console.log(error)
       }
+    },
+
+    setCoordinate: (coordinate) => {
+      console.log(coordinate)
+      dispatch({
+        type: SET_COORDINATE,
+        payload: {
+          latitude: coordinate.latitude,
+          longitude: coordinate.longitude
+        }
+      })
     }
   }), [state])
 
@@ -41,7 +53,10 @@ const EventsState = (props) => {
       value={{
         upcoming: state.upcoming,
         featured: state.featured,
-        getEventsHome: eventsState.getEventsHome
+        latitude: state.latitude,
+        longitude: state.longitude,
+        getEventsHome: eventsState.getEventsHome,
+        setCoordinate: eventsState.setCoordinate
       }}
     >
       {props.children}

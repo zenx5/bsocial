@@ -1,4 +1,4 @@
-import { FEATURED_EVENTS, SET_CATEGORY, UPCOMING_EVENTS } from '../types'
+import { FEATURED_EVENTS, SET_CATEGORY, SET_COORDINATE, UPCOMING_EVENTS } from '../types'
 
 const EventReducer = (state, action) => {
   const { payload, type } = action
@@ -14,6 +14,13 @@ const EventReducer = (state, action) => {
       return {
         ...state,
         featured: payload
+      }
+
+    case SET_COORDINATE:
+      return {
+        ...state,
+        latitude: payload.latitude,
+        longitude: payload.longitude
       }
 
     case SET_CATEGORY:

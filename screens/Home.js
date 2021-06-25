@@ -77,8 +77,8 @@ const Home = (props) => {
             region={{
               latitude: location.latitude,
               longitude: location.longitude,
-              latitudeDelta: 0.01,
-              longitudeDelta: 0.01
+              latitudeDelta: 0.0199,
+              longitudeDelta: 0.02
             }}
             showsUserLocation
           >
@@ -87,7 +87,10 @@ const Home = (props) => {
                 return (
                   <Marker
                     key={index}
-                    coordinate={{ latitude: parseInt(item.latitud), longitude: parseInt(item.longitud) }}
+                    coordinate={{
+                      latitude: parseFloat(item.latitud),
+                      longitude: parseFloat(item.longitud)
+                    }}
                   />
                 )
               })

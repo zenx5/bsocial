@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Modal, Alert } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-// import MapView, { Marker } from 'react-native-maps'
+import MapView, { Marker } from 'react-native-maps'
 import * as Location from 'expo-location'
+import { StatusBar } from 'expo-status-bar'
+import EventsContext from '../../context/Events/EventsContext'
 
 //  icons
 import IconGeolocalizador from '../Icons/IconGeolocalizador'
@@ -10,11 +12,7 @@ import IconTimeZone from '../Icons/IconTimeZone'
 import IconClose from '../Icons/IconClose'
 
 const LocationPicker = () => {
-  const [showMap, setShowMap] = useState(false)
-
-  const open = () => setShowMap(true)
-
-  const close = () => setShowMap(false)
+  const { latitude, longitude, setCoordinate } = useContext(EventsContext)
 
   const initialRegion = {
     latitude: 0,
@@ -23,7 +21,19 @@ const LocationPicker = () => {
     longitudeDelta: 0.0121
   }
 
-  const [location, setLocation] = useState(initialRegion)
+  const [currentLocation, setCurrentLocation] = useState(initialRegion)
+  const [newLocation, setNewLocation] = useState(initialRegion)
+
+  const [showMap, setShowMap] = useState(false)
+
+  const open = () => setShowMap(true)
+
+  const close = () => {
+    setShowMap(false)
+    setCoordinate(newLocation)
+    console.log('latitude:', latitude)
+    console.log('longitude: ', longitude)
+  }
 
   useEffect(() => {
     (async () => {
@@ -39,14 +49,17 @@ const LocationPicker = () => {
       }
 
       const location = await Location.getCurrentPositionAsync({})
-      setLocation(location.coords)
-      console.log(location.coords.latitude)
-      console.log(location.coords.longitude)
+      setCurrentLocation(location.coords)
     })()
   }, [])
 
+  const location = (e) => {
+    setNewLocation(e.nativeEvent.coordinate)
+  }
+
   return (
     <View style={styles.container}>
+      {showMap ? <StatusBar backgroundColor='#00000050' /> : null}
       <TouchableOpacity onPress={open} style={styles.locationInput}>
         <Text style={styles.inputText}>Ubicación</Text>
         <IconGeolocalizador style={styles.iconGeolocalizador} />
@@ -63,23 +76,24 @@ const LocationPicker = () => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            {/* <MapView
+            <MapView
               style={styles.map}
               region={{
-                latitude: location.latitude,
-                longitude: location.longitude,
+                latitude: currentLocation.latitude,
+                longitude: currentLocation.longitude,
                 latitudeDelta: 0.01,
                 longitudeDelta: 0.01
               }}
-              showsUserLocation
             >
               <Marker
                 coordinate={{
-                  latitude: location.latitude,
-                  longitude: location.longitude
+                  latitude: currentLocation.latitude,
+                  longitude: currentLocation.longitude
                 }}
+                draggable
+                onDrag={location}
               />
-            </MapView> */}
+            </MapView>
             <TouchableOpacity onPress={close} style={styles.iconContainer}>
               <IconClose style={styles.iconClose} />
             </TouchableOpacity>
@@ -131,7 +145,8 @@ const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#00000050'
   },
 
   modalView: {
@@ -148,7 +163,9 @@ const styles = StyleSheet.create({
   },
 
   iconContainer: {
-    position: 'absolute'
+    position: 'absolute',
+    top: 10,
+    left: 10
   },
 
   iconClose: {

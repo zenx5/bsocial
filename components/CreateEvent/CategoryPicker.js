@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet, Modal } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-// import EventsContext from '../../context/CreateEvent/EventsContext'
+import EventsContext from '../../context/Events/EventsContext'
 
 const DATA_TEST = [
   { id: '1', title: 'Discotecas' },
@@ -25,7 +25,7 @@ const Item = ({ item, onSelect }) => {
 
 const CategoryPicker = () => {
   //  contexts
-  // const { setCategory } = useContext(CreateEventContext)
+  const { setCategory } = useContext(EventsContext)
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState(null)
 
