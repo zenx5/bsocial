@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image, ScrollView, FlatList } from 'react-native'
 import axios from 'axios'
 import AuthContext from '../context/Auth/AuthContext'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -11,7 +11,6 @@ import Constants from 'expo-constants'
 import IconBack from '../components/Icons/IconBack'
 import IconTime from '../components/Icons/IconTime'
 import IconDate from '../components/Icons/IconDate'
-import { FlatList } from 'react-native-gesture-handler'
 
 const Event = (props) => {
   const { id } = props.route.params
@@ -91,7 +90,7 @@ const Event = (props) => {
           <FlatList
             data={eventData.guests}
             renderItem={({ item }) => <Image style={styles.guests_image} source={{ uri: item.photo }} />}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id.toString()}
             horizontal
             style={styles.guest_List}
           />

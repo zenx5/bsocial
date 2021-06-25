@@ -62,8 +62,6 @@ const FeatureEvents = (props) => {
   //  -->   context
   const { featured } = useContext(EventsContext)
 
-  console.log(featured)
-
   if (!fontsLoaded) {
     return <AppLoading />
   }
@@ -78,7 +76,7 @@ const FeatureEvents = (props) => {
             <FlatList
               data={featured}
               renderItem={({ item }) => <Item item={item} navigate={props.navigation.navigate} />}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.id.toString()}
               ItemSeparatorComponent={Separator}
             />
             )

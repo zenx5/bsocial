@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { View, Text, StyleSheet, Alert } from 'react-native'
-// import * as Location from 'expo-location'
-// import MapView, { Marker } from 'react-native-maps'
+import { View, Text, StyleSheet, Alert, FlatList } from 'react-native'
+import * as Location from 'expo-location'
+import MapView, { Marker } from 'react-native-maps'
 import { useFonts, Poppins_300Light, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import AppLoading from 'expo-app-loading'
@@ -9,17 +9,17 @@ import { StatusBar } from 'expo-status-bar'
 import AuthContext from '../context/Auth/AuthContext'
 import EventsContext from '../context/Events/EventsContext'
 
-//  -->   components
+//    -->   components
 import Header from '../components/Home/Header'
 import FeaturedEvents from '../components/Home/FeaturedEvents'
 
-//  icons
-//  import IconSettings from '../components/Icons/IconSettings'
+//    -->   icons
+import IconSettings from '../components/Icons/IconSettings'
 
 const Home = (props) => {
   //  -->   contexts
   const { userToken } = useContext(AuthContext)
-  const { getEventsHome } = useContext(EventsContext)
+  const { getEventsHome, upcoming } = useContext(EventsContext)
 
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_500Medium, Poppins_700Bold })
 
@@ -27,34 +27,32 @@ const Home = (props) => {
     getEventsHome(userToken)
   }, [])
 
-  // const initialRegion = {
-  //   latitude: 0,
-  //   longitude: 0,
-  //   latitudeDelta: 0.0122,
-  //   longitudeDelta: 0.0121
-  // }
+  const initialRegion = {
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0.0122,
+    longitudeDelta: 0.0121
+  }
 
-  // const [location, setLocation] = useState(initialRegion)
+  const [location, setLocation] = useState(initialRegion)
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const { status } = await Location.requestForegroundPermissionsAsync()
-  //     if (status !== 'granted') {
-  //       Alert.alert(
-  //         'Error',
-  //         'Se requiere persmisos a la ubicacion',
-  //         [{ text: 'OK' }],
-  //         { cancelable: false }
-  //       )
-  //       return
-  //     }
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync()
+      if (status !== 'granted') {
+        Alert.alert(
+          'Error',
+          'Se requiere persmisos a la ubicacion',
+          [{ text: 'OK' }],
+          { cancelable: false }
+        )
+        return
+      }
 
-  //     const location = await Location.getCurrentPositionAsync({})
-  //     setLocation(location.coords)
-  //     console.log(location.coords.latitude)
-  //     console.log(location.coords.longitude)
-  //   })()
-  // }, [])
+      const location = await Location.getCurrentPositionAsync({})
+      setLocation(location.coords)
+    })()
+  }, [])
 
   if (!fontsLoaded) {
     return <AppLoading />
@@ -67,15 +65,13 @@ const Home = (props) => {
       {/* header */}
       <Header {...props} />
 
-      <Text>Home</Text>
-
-      {/* upcoming events
+      {/* upcoming events */}
       <View style={styles.upcomingEvents}>
         <View style={styles.upcomingEvents_header}>
           <Text style={styles.text}>Proximos Eventos</Text>
           <IconSettings />
-        </View> */}
-      {/* <View>
+        </View>
+        <View>
           <MapView
             style={styles.map}
             region={{
@@ -86,15 +82,19 @@ const Home = (props) => {
             }}
             showsUserLocation
           >
-            <Marker
-              coordinate={{
-                latitude: location.latitude,
-                longitude: location.longitude
-              }}
-            />
+            {
+              upcoming.map((item, index) => {
+                console.log(item.latitud)
+                console.log(item.longitud)
+
+                return (
+                  <Marker key={index} coordinate={{ latitude: parseInt(item.latitud), longitude: parseInt(item.longitud) }} />
+                )
+              })
+            }
           </MapView>
         </View>
-      </View> */}
+      </View>
 
       {/* featured Events */}
       <FeaturedEvents {...props} />
@@ -128,15 +128,15 @@ const styles = StyleSheet.create({
     fontSize: hp('1.95%'), //  16
     fontFamily: 'Poppins_700Bold',
     textTransform: 'uppercase'
-  }
+  },
 
-  // // map: {
-  // //   width: wp('95%'), //  356~
-  // //   height: hp('30%'), // 243~
-  // //   borderRadius: 5,
-  // //   backgroundColor: '#00000020',
-  // //   alignSelf: 'center'
-  // // }
+  map: {
+    width: wp('95%'), //  356~
+    height: hp('30%'), // 243~
+    borderRadius: 5,
+    backgroundColor: '#00000020',
+    alignSelf: 'center'
+  }
 })
 
 export default Home

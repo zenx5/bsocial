@@ -120,7 +120,7 @@ const ContactsList = () => {
       <FlatList
         data={contactList}
         renderItem={({ item }) => <Item item={item} />}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id.toString()}
         style={styles.flatList}
         ListHeaderComponent={NewContact}
       />
