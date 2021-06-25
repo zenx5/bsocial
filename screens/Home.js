@@ -23,10 +23,6 @@ const Home = (props) => {
 
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_500Medium, Poppins_700Bold })
 
-  useEffect(() => {
-    getEventsHome(userToken)
-  }, [])
-
   const initialRegion = {
     latitude: 0,
     longitude: 0,
@@ -54,6 +50,10 @@ const Home = (props) => {
     })()
   }, [])
 
+  // useEffect(() => {
+  //   getEventsHome(userToken)
+  // }, [])
+
   if (!fontsLoaded) {
     return <AppLoading />
   }
@@ -66,7 +66,7 @@ const Home = (props) => {
       <Header {...props} />
 
       {/* upcoming events */}
-      <View style={styles.upcomingEvents}>
+      {/* <View style={styles.upcomingEvents}>
         <View style={styles.upcomingEvents_header}>
           <Text style={styles.text}>Proximos Eventos</Text>
           <IconSettings />
@@ -97,7 +97,7 @@ const Home = (props) => {
             }
           </MapView>
         </View>
-      </View>
+      </View> */}
 
       {/* featured Events */}
       <FeaturedEvents {...props} />

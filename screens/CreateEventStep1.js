@@ -8,6 +8,7 @@ import * as ImagePicker from 'expo-image-picker'
 
 //  components
 import LocationPicker from '../components/CreateEvent/LocationPicker'
+import DateTimePicker from '../components/CreateEvent/DateTimePicker'
 import CategoryPicker from '../components/CreateEvent/CategoryPicker'
 
 //  icon
@@ -90,34 +91,8 @@ const CreateEventStep1 = (props) => {
       {/*  location picker */}
       <LocationPicker />
 
-      <View style={styles.dateTimeContainer}>
-        {/* Date */}
-        <TouchableOpacity onPress={showDatePicker} style={styles.dateTime}>
-          <IconDate />
-          <Text style={styles.inputText}>{eventData.date ? eventData.date.toLocaleDateString() : 'Fecha'}</Text>
-          <DateTimePickerModal
-            isVisible={showDateTime.date}
-            mode='date'
-            display='default'
-            onConfirm={onConfirmDate}
-            onCancel={onCancelDate}
-          />
-
-        </TouchableOpacity>
-
-        {/* Time */}
-        <TouchableOpacity onPress={showTimePicker} style={styles.dateTime}>
-          <IconTime />
-          <Text style={styles.inputText}>{eventData.time ? eventData.time.toLocaleTimeString().slice(0, 5) : 'Hora'}</Text>
-          <DateTimePickerModal
-            isVisible={showDateTime.time}
-            mode='time'
-            display='default'
-            onConfirm={onConfirmTime}
-            onCancel={onCancelTime}
-          />
-        </TouchableOpacity>
-      </View>
+      {/* Date time picker */}
+      <DateTimePicker />
 
       <View style={styles.inputContainer}>
         {/* event name */}
