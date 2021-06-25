@@ -29,8 +29,8 @@ const LocationPicker = () => {
   const open = () => setShowMap(true)
 
   const close = () => {
-    setShowMap(false)
     setCoordinate(newLocation)
+    setShowMap(false)
     console.log('latitude:', latitude)
     console.log('longitude: ', longitude)
   }

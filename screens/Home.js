@@ -98,8 +98,8 @@ const Home = (props) => {
         </View>
       </View>
 
-      {/* featured Events
-      <FeaturedEvents {...props} /> */}
+      {/* featured Events */}
+      <FeaturedEvents {...props} />
     </View>
   )
 }

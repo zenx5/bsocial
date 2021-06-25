@@ -6,13 +6,13 @@ import { FEATURED_EVENTS, SET_COORDINATE, SET_DATE, SET_TIME, UPCOMING_EVENTS } 
 
 const EventsState = (props) => {
   const initialState = {
-    latitude: null,
-    longitude: null,
-    date: null,
-    time: null,
+    latitude: '',
+    longitude: '',
+    date: '',
+    time: '',
     eventName: '',
     eventDescription: '',
-    eventImage: null,
+    eventImage: '',
     category: '',
     contacts: [],
     upcoming: [],
