@@ -28,23 +28,23 @@ const Item = ({ item, navigate }) => {
       </TouchableOpacity>
       <View style={styles.dataContainer}>
         <TouchableOpacity onPress={goEvent}>
-          <Text style={styles.name}>{item.name}</Text>
+          <Text style={styles.name}>{item.name || ''}</Text>
         </TouchableOpacity>
 
         <View style={styles.iconContainer}>
           <View style={[styles.iconContainer, { marginRight: wp('5.5%') }]}>
             <IconEye style={styles.icon} />
-            <Text style={styles.count}>{item.viewers_count}</Text>
+            <Text style={styles.count}>{item.viewers_count || ''}</Text>
           </View>
 
           <View style={[styles.iconContainer, { marginRight: wp('5.5%') }]}>
             <IconComments style={styles.icon} />
-            <Text style={styles.count}>{item.comments_count}</Text>
+            <Text style={styles.count}>{item.comments_count || ''}</Text>
           </View>
 
           <View style={styles.iconContainer}>
             <IconLikes style={styles.icon} />
-            <Text style={styles.count}>{item.likes_count}</Text>
+            <Text style={styles.count}>{item.likes_count || ''}</Text>
           </View>
         </View>
       </View>

@@ -61,12 +61,10 @@ const Home = (props) => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor='#fff' />
-      <Text>Home</Text>
-
       {/* header */}
       <Header {...props} />
 
-      upcoming events
+      {/* upcoming events */}
       <View style={styles.upcomingEvents}>
         <View style={styles.upcomingEvents_header}>
           <Text style={styles.text}>Proximos Eventos</Text>
@@ -89,8 +87,8 @@ const Home = (props) => {
                   <Marker
                     key={index}
                     coordinate={{
-                      latitude: parseFloat(item.latitud),
-                      longitude: parseFloat(item.longitud)
+                      latitude: item.latitud,
+                      longitude: item.longitud
                     }}
                   />
                 )
@@ -100,8 +98,8 @@ const Home = (props) => {
         </View>
       </View>
 
-      {/* featured Events */}
-      <FeaturedEvents {...props} />
+      {/* featured Events
+      <FeaturedEvents {...props} /> */}
     </View>
   )
 }

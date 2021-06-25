@@ -34,8 +34,8 @@ const Event = (props) => {
       })
       setEventData(data.data)
       setLocation({
-        latitude: parseFloat(data.data.latitud),
-        longitude: parseFloat(data.data.longitud)
+        latitude: data.data.latitud,
+        longitude: data.data.longitud
       })
     } catch (error) {
       console.log(error)

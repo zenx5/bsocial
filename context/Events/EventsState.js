@@ -2,7 +2,7 @@ import React, { useReducer, useMemo } from 'react'
 import EventsContext from './EventsContext'
 import EventsReducer from './EventsReducer'
 import axios from 'axios'
-import { FEATURED_EVENTS, SET_COORDINATE, SET_DATE_TIME, UPCOMING_EVENTS } from '../types'
+import { FEATURED_EVENTS, SET_COORDINATE, SET_DATE, SET_TIME, UPCOMING_EVENTS } from '../types'
 
 const EventsState = (props) => {
   const initialState = {
@@ -47,15 +47,14 @@ const EventsState = (props) => {
       })
     },
 
-    setDateTime: (date, time) => {
-      console.log(date, time)
-      dispatch({
-        type: SET_DATE_TIME,
-        payload: {
-          date,
-          time
-        }
-      })
+    setDate: (date) => {
+      console.log(date)
+      dispatch({ type: SET_DATE, payload: date })
+    },
+
+    setTime: (time) => {
+      console.log(time)
+      dispatch({ type: SET_TIME, payload: time })
     }
   }), [state])
 
@@ -70,7 +69,8 @@ const EventsState = (props) => {
         time: state.time,
         getEventsHome: eventsState.getEventsHome,
         setCoordinate: eventsState.setCoordinate,
-        setDateTime: eventsState.setDateTime
+        setDate: eventsState.setDate,
+        setTime: eventsState.setTime
       }}
     >
       {props.children}

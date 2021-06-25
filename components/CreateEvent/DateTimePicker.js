@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import EventsContext from '../../context/Events/EventsContext'
 
 //    -->   icons
 import IconDate from '../Icons/IconDate'
@@ -11,6 +12,9 @@ import IconTime from '../Icons/IconTime'
 const DateTimePicker = () => {
   //  fonts
   useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
+
+  //    -->   context
+  const { setDate, setTime } = useContext(EventsContext)
 
   //  create event data
   const [eventData, setEventData] = useState({
@@ -30,6 +34,7 @@ const DateTimePicker = () => {
 
   const onConfirmDate = (date) => {
     setEventData({ ...eventData, date: date.toLocaleDateString() })
+    setDate(eventData.date)
     onCancelDate()
   }
 
@@ -39,6 +44,7 @@ const DateTimePicker = () => {
 
   const onConfirmTime = (time) => {
     setEventData({ ...eventData, time: time.toLocaleTimeString().slice(0, 5) })
+    setTime(eventData.time)
     onCancelTime()
   }
 

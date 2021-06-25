@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Platform, Alert } from 'react-native'
 import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import * as ImagePicker from 'expo-image-picker'
+import EventsContext from '../context/Events/EventsContext'
 
 //  components
 import LocationPicker from '../components/CreateEvent/LocationPicker'
@@ -19,8 +20,6 @@ const CreateEventStep1 = (props) => {
 
   //  create event data
   const [eventData, setEventData] = useState({
-    date: null,
-    time: null,
     eventName: '',
     description: '',
     image: null
