@@ -364,7 +364,9 @@ const Register = (props) => {
       {/* header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => props.navigation.goBack()} style={styles.header_icon}>
-          <IconBack />
+          <View style={styles.iconBack}>
+            <IconBack />
+          </View>
         </TouchableOpacity>
         <Text style={styles.header_text}>Registra tu usuario</Text>
       </View>
@@ -554,6 +556,11 @@ const styles = StyleSheet.create({
 
   header_icon: {
     marginLeft: wp('6%')
+  },
+
+  iconBack: {
+    width: wp('3%'),
+    height: hp('4%') // 32
   },
 
   header_text: {

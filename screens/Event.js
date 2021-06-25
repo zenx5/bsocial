@@ -6,6 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins' //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import Constants from 'expo-constants'
+import MapView, { Marker } from 'react-native-maps'
 
 //    -->   icons
 import IconBack from '../components/Icons/IconBack'
@@ -17,12 +18,25 @@ const Event = (props) => {
   const { userToken } = useContext(AuthContext)
   const [eventData, setEventData] = useState({})
 
+  const initialRegion = {
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0.0122,
+    longitudeDelta: 0.0121
+  }
+
+  const [location, setLocation] = useState(initialRegion)
+
   const getEvent = async () => {
     try {
       const { data } = await axios.get(`https://bsocial.at/api/events/${id}/show`, {
         headers: { Authorization: 'Bearer ' + userToken }
       })
       setEventData(data.data)
+      setLocation({
+        latitude: parseInt(data.data.latitud),
+        longitude: parseInt(data.data.longitud)
+      })
     } catch (error) {
       console.log(error)
     }
@@ -101,7 +115,22 @@ const Event = (props) => {
           <Text style={styles.location_title}>Ubicación</Text>
           <Text style={styles.location_address}>{eventData.address}</Text>
 
-          <View style={styles.map} />
+          <MapView
+            style={styles.map}
+            region={{
+              latitude: location.latitude,
+              longitude: location.longitude,
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.01
+            }}
+            showsUserLocation
+          >
+            <Marker coordinate={{
+              latitude: location.latitude,
+              longitude: location.longitude
+            }}
+            />
+          </MapView>
         </View>
 
         {/* button */}
