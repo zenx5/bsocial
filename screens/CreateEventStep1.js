@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Platform, A
 import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import * as ImagePicker from 'expo-image-picker'
 
 //  components
@@ -12,8 +11,6 @@ import DateTimePicker from '../components/CreateEvent/DateTimePicker'
 import CategoryPicker from '../components/CreateEvent/CategoryPicker'
 
 //  icon
-import IconDate from '../components/Icons/IconDate'
-import IconTime from '../components/Icons/IconTime'
 import IconImage from '../components/Icons/IconImage'
 
 const CreateEventStep1 = (props) => {
@@ -28,27 +25,6 @@ const CreateEventStep1 = (props) => {
     description: '',
     image: null
   })
-
-  //  date && time
-  const [showDateTime, setShowDateTime] = useState({ date: false, time: false })
-
-  const showDatePicker = () => setShowDateTime({ ...showDateTime, date: true })
-
-  const onCancelDate = () => setShowDateTime({ ...showDateTime, date: false })
-
-  const onConfirmDate = (date) => {
-    setEventData({ ...eventData, date })
-    onCancelDate()
-  }
-
-  const showTimePicker = () => setShowDateTime({ ...showDateTime, time: true })
-
-  const onCancelTime = () => setShowDateTime({ ...showDateTime, time: false })
-
-  const onConfirmTime = (time) => {
-    setEventData({ ...eventData, time })
-    onCancelTime()
-  }
 
   //  event name handler
   const handleEventName = (value) => {

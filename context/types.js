@@ -13,6 +13,7 @@ export const IS_VALID_USER = 'IS_VALID_USER'
 export const UPCOMING_EVENTS = 'UPCOMING_EVENTS'
 export const FEATURED_EVENTS = 'FEATURED_EVENTS'
 export const SET_COORDINATE = 'SET_COORDINATE'
+export const SET_DATE_TIME = 'SET_DATE_TIME'
 export const SET_CATEGORY = 'SET_CATEGORY'
 
 //  --> contacts

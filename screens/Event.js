@@ -48,7 +48,7 @@ const Event = (props) => {
 
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_500Medium, Poppins_700Bold })
 
-  if (!fontsLoaded && eventData) {
+  if (!fontsLoaded) {
     return <AppLoading />
   }
 

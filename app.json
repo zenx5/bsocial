@@ -23,9 +23,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "permissions": ["MEDIA_LIBRARY", "LOCATION", "CONTACTS"],
-      "package": "com.bsocial.v002",
-      "versionCode": 2
+      "package": "com.hanktech.bsocial"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -29,7 +29,7 @@ const DateTimePicker = () => {
   const onCancelDate = () => setShowDateTime({ ...showDateTime, date: false })
 
   const onConfirmDate = (date) => {
-    setEventData({ ...eventData, date })
+    setEventData({ ...eventData, date: date.toLocaleDateString() })
     onCancelDate()
   }
 
@@ -38,16 +38,19 @@ const DateTimePicker = () => {
   const onCancelTime = () => setShowDateTime({ ...showDateTime, time: false })
 
   const onConfirmTime = (time) => {
-    setEventData({ ...eventData, time })
+    setEventData({ ...eventData, time: time.toLocaleTimeString().slice(0, 5) })
     onCancelTime()
   }
+
+  console.log(eventData.date)
+  console.log(eventData.time)
 
   return (
     <View style={styles.dateTimeContainer}>
       {/* Date */}
       <TouchableOpacity onPress={showDatePicker} style={styles.dateTime}>
         <IconDate />
-        <Text style={styles.inputText}>{eventData.date ? eventData.date.toLocaleDateString() : 'Fecha'}</Text>
+        <Text style={styles.inputText}>{eventData.date ? eventData.date : 'Fecha'}</Text>
         <DateTimePickerModal
           isVisible={showDateTime.date}
           mode='date'
@@ -61,7 +64,7 @@ const DateTimePicker = () => {
       {/* Time */}
       <TouchableOpacity onPress={showTimePicker} style={styles.dateTime}>
         <IconTime />
-        <Text style={styles.inputText}>{eventData.time ? eventData.time.toLocaleTimeString().slice(0, 5) : 'Hora'}</Text>
+        <Text style={styles.inputText}>{eventData.time ? eventData.time : 'Hora'}</Text>
         <DateTimePickerModal
           isVisible={showDateTime.time}
           mode='time'

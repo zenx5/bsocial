@@ -21,6 +21,10 @@ const Home = (props) => {
   const { userToken } = useContext(AuthContext)
   const { getEventsHome, upcoming } = useContext(EventsContext)
 
+  useEffect(() => {
+    getEventsHome(userToken)
+  }, [])
+
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_500Medium, Poppins_700Bold })
 
   const initialRegion = {
@@ -50,10 +54,6 @@ const Home = (props) => {
     })()
   }, [])
 
-  // useEffect(() => {
-  //   getEventsHome(userToken)
-  // }, [])
-
   if (!fontsLoaded) {
     return <AppLoading />
   }
@@ -61,12 +61,13 @@ const Home = (props) => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor='#fff' />
+      <Text>Home</Text>
 
       {/* header */}
       <Header {...props} />
 
-      {/* upcoming events */}
-      {/* <View style={styles.upcomingEvents}>
+      upcoming events
+      <View style={styles.upcomingEvents}>
         <View style={styles.upcomingEvents_header}>
           <Text style={styles.text}>Proximos Eventos</Text>
           <IconSettings />
@@ -97,7 +98,7 @@ const Home = (props) => {
             }
           </MapView>
         </View>
-      </View> */}
+      </View>
 
       {/* featured Events */}
       <FeaturedEvents {...props} />
