@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins' //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import Constants from 'expo-constants'
-import MapView, { Marker } from 'react-native-maps'
+// import MapView, { Marker } from 'react-native-maps'
 
 //    -->   icons
 import IconBack from '../components/Icons/IconBack'
@@ -121,7 +121,7 @@ const Event = (props) => {
         <View style={styles.location}>
           <Text style={styles.location_title}>Ubicación</Text>
           <Text style={styles.location_address}>{eventData.address}</Text>
-
+          {/*
           <MapView
             style={styles.map}
             region={{
@@ -137,7 +137,7 @@ const Event = (props) => {
               longitude: location.longitude
             }}
             />
-          </MapView>
+          </MapView> */}
         </View>
 
         {/* button */}

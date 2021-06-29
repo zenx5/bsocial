@@ -48,9 +48,6 @@ const DateTimePicker = () => {
     onCancelTime()
   }
 
-  console.log(eventData.date)
-  console.log(eventData.time)
-
   return (
     <View style={styles.dateTimeContainer}>
       {/* Date */}

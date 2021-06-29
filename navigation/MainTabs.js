@@ -8,12 +8,11 @@ import ContactList from '../screens/ContactList'
 import ListEvents from '../screens/ListEvents'
 import Settings from '../screens/Settings'
 import Event from '../screens/Event'
-import CreateEventStep1 from '../screens/CreateEventStep1'
+import CreateEventStepOne from '../screens/CreateEventStepOne'
 import CreateEventStep2 from '../screens/CreateEventStep2'
 import CreateEventStep3 from '../screens/CreateEvenStep3'
 
 //  headers
-import CreateEventHeaderOne from '../components/CreateEvent/HeaderOne'
 import CreateEventHeaderTwo from '../components/CreateEvent/HeaderTwo'
 
 //  icons
@@ -69,8 +68,8 @@ const MainTabs = () => {
 
       <Stack.Screen
         name='Create Event Step 1'
-        component={CreateEventStep1}
-        options={{ header: props => <CreateEventHeaderOne {...props} /> }}
+        component={CreateEventStepOne}
+        options={{ header: () => null }}
       />
       <Stack.Screen
         name='Create Event Step 2'

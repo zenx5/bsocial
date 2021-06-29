@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Platform, Alert } from 'react-native'
-import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
+import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import * as ImagePicker from 'expo-image-picker'
-import EventsContext from '../context/Events/EventsContext'
+// import EventsContext from '../context/Events/EventsContext'
 
-//  components
-import LocationPicker from '../components/CreateEvent/LocationPicker'
+//    -->   components
+import Header from '../components/CreateEvent/HeaderOne'
+// import LocationPicker from '../components/CreateEvent/LocationPicker'
 import DateTimePicker from '../components/CreateEvent/DateTimePicker'
+import FloatingTitleTextInputField from './FloatingTitleTextInputField'
 import CategoryPicker from '../components/CreateEvent/CategoryPicker'
 
 //  icon
@@ -16,18 +18,17 @@ import IconImage from '../components/Icons/IconImage'
 
 const CreateEventStep1 = (props) => {
   //  fonts
-  const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
+  const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold })
 
   //  create event data
   const [eventData, setEventData] = useState({
-    eventName: '',
+    name: '',
     description: '',
     image: null
   })
 
-  //  event name handler
-  const handleEventName = (value) => {
-    setEventData({ ...eventData, eventName: value })
+  const updateData = (attrName, value) => {
+    setEventData({ [attrName]: value })
   }
 
   //  description handler
@@ -61,33 +62,51 @@ const CreateEventStep1 = (props) => {
     return <AppLoading />
   }
 
+  console.log(eventData)
+
   return (
     <View style={styles.container}>
+      {/* Header */}
+      <Header {...props} />
+
       {/*  location picker */}
-      <LocationPicker />
+      {/* <LocationPicker /> */}
 
       {/* Date time picker */}
       <DateTimePicker />
 
+      {/* event name */}
+      <FloatingTitleTextInputField
+        title='Nombre del evento'
+        attrName='name'
+        value={eventData.name}
+        updateData={updateData}
+        titleActiveSize={hp('1.3%')} // 10
+        titleInactiveSize={hp('2.35%')} //  16
+        titleActiveFont='Poppins_600SemiBold'
+        titleInactiveFont='Poppins_400Regular'
+        titleActiveColor='#000'
+        titleInactiveColor='#000'
+        style={styles.eventName}
+      />
+
+      {/* description */}
+      <FloatingTitleTextInputField
+        title='Descripcion'
+        attrName='description'
+        value={eventData.description}
+        updateData={updateData}
+        otherTextInputProps={{ multiline: true }}
+        titleActiveSize={hp('1.3%')} // 10
+        titleInactiveSize={hp('2.35%')} //  16
+        titleActiveFont='Poppins_600SemiBold'
+        titleInactiveFont='Poppins_400Regular'
+        titleActiveColor='#000'
+        titleInactiveColor='#000'
+        style={styles.description}
+      />
+
       <View style={styles.inputContainer}>
-        {/* event name */}
-        <TextInput
-          placeholder='Nombre del evento'
-          placeholderTextColor='#000'
-          style={styles.eventName}
-          value={eventData.eventName}
-          onChangeText={handleEventName}
-        />
-
-        {/* description */}
-        <TextInput
-          placeholder='Descripcion'
-          multiline placeholderTextColor='#000'
-          style={styles.description}
-          value={eventData.description}
-          onChangeText={handleDescription}
-        />
-
         {/* image upload */}
         <TouchableOpacity onPress={handleImage} style={styles.imageInput}>
           {
@@ -150,26 +169,20 @@ const styles = StyleSheet.create({
   },
 
   eventName: {
-    width: '100%',
-    height: hp('7%'), //  48
-    fontSize: hp('2.35%'), //  16
-    color: '#000',
+    height: hp('7.4%'), //  60
+    fontSize: hp('2%'), //  16
     fontFamily: 'Poppins_400Regular',
-    paddingLeft: wp('4.18%'), // 17~
-    backgroundColor: '#00000014',
-    borderRadius: 10,
+    paddingTop: hp('1.5%'), //  12
+    paddingLeft: wp('4.5%'), // 17
     marginBottom: hp('2.5%') // 17.1
   },
 
   description: {
-    width: '100%',
     height: hp('14%'), //  95.6
-    color: '#000',
-    fontSize: hp('2.35%'), //  16
+    fontSize: hp('2%'), //  16
     fontFamily: 'Poppins_400Regular',
-    backgroundColor: '#00000014',
-    borderRadius: 10,
-    paddingLeft: wp('4.18%'), // 17~
+    paddingTop: hp('3%'), // 17
+    paddingLeft: wp('4.5%'), // 17
     marginBottom: hp('2.5%') // 17.1
   },
 
