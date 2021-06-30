@@ -67,7 +67,7 @@ const MainTabs = () => {
       />
 
       <Stack.Screen
-        name='Create Event Step 1'
+        name='Create Event Step One'
         component={CreateEventStepOne}
         options={{ header: () => null }}
       />

@@ -9,7 +9,7 @@ const Header = (props) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => props.navigation.navigate('Create Event Step 1')} style={styles.button}>
+      <TouchableOpacity onPress={() => props.navigation.navigate('Create Event Step One')} style={styles.button}>
         <Text style={styles.buttonText}>Crear Evento</Text>
       </TouchableOpacity>
       <View>

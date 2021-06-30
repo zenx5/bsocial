@@ -20,6 +20,7 @@ const Header = (props) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: Constants.statusBarHeight,
