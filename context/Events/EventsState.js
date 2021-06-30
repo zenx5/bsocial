@@ -117,6 +117,7 @@ const EventsState = (props) => {
         eventName: state.eventName,
         eventDescription: state.eventDescription,
         eventImage: state.eventImage,
+        categorySelected: state.categorySelected,
         categoriesEvents: state.categoriesEvents,
         categories_music: state.categories_music,
         getEventsHome: eventsState.getEventsHome,

@@ -8,7 +8,7 @@ import EventsContext from '../context/Events/EventsContext'
 
 //    -->   components
 import Header from '../components/CreateEvent/HeaderOne'
-// import LocationPicker from '../components/CreateEvent/LocationPicker'
+import LocationPicker from '../components/CreateEvent/LocationPicker'
 import DateTimePicker from '../components/CreateEvent/DateTimePicker'
 import CategoryPicker from '../components/CreateEvent/CategoryPicker'
 
@@ -25,6 +25,7 @@ const CreateEventStepOne = (props) => {
     longitude,
     date,
     time,
+    categorySelected,
     setEventName,
     setEventDescription,
     setEventImage
@@ -80,7 +81,8 @@ const CreateEventStepOne = (props) => {
       time &&
       eventData.name &&
       eventData.description &&
-      eventData.image
+      eventData.image &&
+      categorySelected
     ) {
       setCompleteInfo(true)
     } else {
@@ -93,7 +95,8 @@ const CreateEventStepOne = (props) => {
     time &&
     eventData.name &&
     eventData.description &&
-    eventData.image
+    eventData.image &&
+    categorySelected
   ])
 
   //    -->   on waiting for the fonts
@@ -107,7 +110,7 @@ const CreateEventStepOne = (props) => {
       <Header {...props} />
 
       {/*  location picker */}
-      {/* <LocationPicker /> */}
+      <LocationPicker />
 
       {/* Date time picker */}
       <DateTimePicker />
