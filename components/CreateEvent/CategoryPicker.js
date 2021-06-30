@@ -1,22 +1,16 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet, Modal } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import EventsContext from '../../context/Events/EventsContext'
+import AuthContext from '../../context/Auth/AuthContext'
 
-const DATA_TEST = [
-  { id: '1', title: 'Discotecas' },
-  { id: '2', title: 'Swingers' },
-  { id: '3', title: 'Fiesta privada en casa' },
-  { id: '4', title: 'Evento empresarial' },
-  { id: '5', title: 'Despedida de soltero' },
-  { id: '42', title: 'Evento empresarial' }
-]
-
+//    -->   components
 const Item = ({ item, onSelect }) => {
+  console.log(item)
   return (
     <View style={styles.item}>
       <TouchableOpacity onPress={onSelect}>
-        <Text>{item.title}</Text>
+        <Text>{item.display_name}</Text>
       </TouchableOpacity>
     </View>
 
@@ -24,8 +18,16 @@ const Item = ({ item, onSelect }) => {
 }
 
 const CategoryPicker = () => {
-  //  contexts
-  const { setCategory } = useContext(EventsContext)
+  //    -->   contexts
+  const { userToken } = useContext(AuthContext)
+  const { getAllCategories, categoriesEvents, setCategory } = useContext(EventsContext)
+
+  useEffect(() => {
+    getAllCategories(userToken)
+  }, [])
+
+  console.log(categoriesEvents)
+
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState(null)
 
@@ -56,9 +58,9 @@ const CategoryPicker = () => {
           <View style={styles.modal}>
             <View style={styles.modalView}>
               <FlatList
-                data={DATA_TEST}
+                data={categoriesEvents}
                 renderItem={renderItem}
-                keyExtractor={item => item.id}
+                keyExtractor={item => item.id.toString()}
               />
             </View>
           </View>

@@ -28,8 +28,8 @@ const EventsState = (props) => {
     contacts: [],
     upcoming: [],
     featured: [],
-    categories_events: [],
-    categories_music: []
+    categoriesEvents: [],
+    categoriesMusic: []
   }
 
   //  -->   APIs
@@ -53,11 +53,8 @@ const EventsState = (props) => {
     getAllCategories: async (token) => {
       try {
         const { data } = await axios.get(API_ALL_CATEGORIES, { headers: { Authorization: `Bearer ${token}` } })
-        console.log(data.data[1])
         const events = data.data[0].filter(event => event.enabled === 1)
         const musics = data.data[1].filter(music => music.enabled === 1)
-        console.log('los eventos activos son: ', events)
-        console.log('las musicas activos son: ', musics)
         dispatch({ type: SET_ALL_CATEGORIES_EVENTS, payload: events })
         dispatch({ type: SET_ALL_CATEGORIES_MUSIC, payload: musics })
       } catch (error) {
@@ -114,7 +111,7 @@ const EventsState = (props) => {
         eventName: state.eventName,
         eventDescription: state.eventDescription,
         eventImage: state.eventImage,
-        categories_events: state.categories_events,
+        categoriesEvents: state.categoriesEvents,
         categories_music: state.categories_music,
         getEventsHome: eventsState.getEventsHome,
         getAllCategories: eventsState.getAllCategories,

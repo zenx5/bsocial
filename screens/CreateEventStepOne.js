@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: hp('1.2%') // 20~
+    marginBottom: hp('2.5%') // 20.5
   },
 
   iconImage: {

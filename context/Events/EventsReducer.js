@@ -19,13 +19,13 @@ const EventReducer = (state, action) => {
     case SET_ALL_CATEGORIES_EVENTS:
       return {
         ...state,
-        categories_events: payload
+        categoriesEvents: payload
       }
 
     case SET_ALL_CATEGORIES_MUSIC:
       return {
         ...state,
-        categories_music: payload
+        categoriesMusic: payload
       }
 
     case SET_COORDINATE:
