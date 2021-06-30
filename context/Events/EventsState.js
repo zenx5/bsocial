@@ -107,7 +107,7 @@ const EventsState = (props) => {
       dispatch({ type: SET_CATEGORY, payload: category })
     },
 
-    setContacts: (contacts) => {
+    setInvitedContacts: async (contacts) => {
       console.log(contacts)
       dispatch({ type: SET_INVITED_CONTACTS, payload: contacts })
     },
@@ -162,7 +162,8 @@ const EventsState = (props) => {
         setEventDescription: eventsState.setEventDescription,
         setEventImage: eventsState.setEventImage,
         setCategory: eventsState.setCategory,
-        setContacts: eventsState.setContacts
+        setInvitedContacts: eventsState.setInvitedContacts,
+        createNewEvent: eventsState.createNewEvent
       }}
     >
       {props.children}

@@ -10,7 +10,7 @@ import Settings from '../screens/Settings'
 import Event from '../screens/Event'
 import CreateEventStepOne from '../screens/CreateEventStepOne'
 import CreateEventStepTwo from '../screens/CreateEventStepTwo'
-import CreateEventStep3 from '../screens/CreateEvenStep3'
+import CreateEventStepThree from '../screens/CreateEvenStepThree'
 
 //  headers
 import CreateEventHeaderTwo from '../components/CreateEvent/HeaderTwo'
@@ -78,8 +78,8 @@ const MainTabs = () => {
       />
 
       <Stack.Screen
-        name='Create Event Step 3'
-        component={CreateEventStep3}
+        name='Create Event Step Three'
+        component={CreateEventStepThree}
         options={{ header: () => null }}
       />
     </Stack.Navigator>

@@ -8,7 +8,7 @@ import EventsContext from '../context/Events/EventsContext'
 
 //    -->   components
 import Header from '../components/CreateEvent/HeaderOne'
-//import LocationPicker from '../components/CreateEvent/LocationPicker'
+//  import LocationPicker from '../components/CreateEvent/LocationPicker'
 import DateTimePicker from '../components/CreateEvent/DateTimePicker'
 import CategoryPicker from '../components/CreateEvent/CategoryPicker'
 
