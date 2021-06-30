@@ -13,7 +13,8 @@ import {
   UPCOMING_EVENTS,
   SET_ALL_CATEGORIES_EVENTS,
   SET_ALL_CATEGORIES_MUSIC,
-  SET_CATEGORY
+  SET_CATEGORY,
+  SET_INVITED_CONTACTS
 } from '../types'
 
 const EventsState = (props) => {
@@ -26,6 +27,7 @@ const EventsState = (props) => {
     eventDescription: '',
     eventImage: '',
     categorySelected: '',
+    invitedContacts: [],
     contacts: [],
     upcoming: [],
     featured: [],
@@ -36,6 +38,7 @@ const EventsState = (props) => {
   //  -->   APIs
   const API_HOME = 'https://bsocial.at/api/events'
   const API_ALL_CATEGORIES = 'https://bsocial.at/api/categories'
+  const API_CREATE_NEW_EVENT = 'https://bsocial.at/api/events/store'
 
   const [state, dispatch] = useReducer(EventsReducer, initialState)
 
@@ -102,6 +105,36 @@ const EventsState = (props) => {
     setCategory: (category) => {
       console.log(category)
       dispatch({ type: SET_CATEGORY, payload: category })
+    },
+
+    setContacts: (contacts) => {
+      console.log(contacts)
+      dispatch({ type: SET_INVITED_CONTACTS, payload: contacts })
+    },
+
+    createNewEvent: async (token) => {
+      try {
+        const { data } = await axios.post(API_CREATE_NEW_EVENT, {
+          data: {
+            address: 'Centro Comercial',
+            latitud: state.latitude,
+            longitud: state.longitude,
+            start_date: state.date,
+            start_hour: state.time,
+            name: state.eventName,
+            type: 'public',
+            description: state.eventDescription,
+            image: state.eventImage,
+            categories: state.categorySelected,
+            contacts: state.invitedContacts
+          },
+
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }), [state])
 
@@ -128,7 +161,8 @@ const EventsState = (props) => {
         setEventName: eventsState.setEventName,
         setEventDescription: eventsState.setEventDescription,
         setEventImage: eventsState.setEventImage,
-        setCategory: eventsState.setCategory
+        setCategory: eventsState.setCategory,
+        setContacts: eventsState.setContacts
       }}
     >
       {props.children}

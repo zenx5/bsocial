@@ -12,66 +12,66 @@ import IconCheck from '../components/Icons/IconCheck'
 
 const Item = ({ item, onSelectedContact }) => (
   <TouchableOpacity onPress={onSelectedContact} style={[styles.item]}>
-    <Image style={styles.item_image} source={{ uri: item.info_contact.photo }} />
-    <Text style={styles.item_text}>{`${item.info_contact.name} ${item.info_contact.lastname}`}</Text>
+    <Image style={styles.item_image} source={{ uri: item.photo }} />
+    <Text style={styles.item_text}>{`${item.name} ${item.lastname}`}</Text>
     {item.selected ? <IconCheck style={styles.iconCheck} fill='#E1B21C' /> : null}
   </TouchableOpacity>
 )
 
-const ContactsList = (props) => {
+const CreateEventStepTwo = (props) => {
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
 
   //  -->   context
   const { userToken } = useContext(AuthContext)
-  const { contactList, getContacts } = useContext(ContactsContex)
+  const { contactList, getContacts, setContacts } = useContext(ContactsContex)
 
   const [selectedContactList, setSelectedContactList] = useState([])
 
   useEffect(() => {
     getContacts(userToken)
   }, [])
-  console.log(contactList.length)
 
   useEffect(() => {
-    if (contactList.length !== 0) {
-      setSelectedContactList(contactList)
-      console.log(selectedContactList)
-    }
-  }, [])
-
-  const [buttonActive, setButtonActive] = useState(false)
-  // useEffect(() => {
-  //   (async () => {
-  //     const { status } = await Contacts.requestPermissionsAsync()
-  //     if (status === 'granted') {
-  //       const { data } = await Contacts.getContactsAsync({
-  //         fields: [Contacts.Fields.PhoneNumbers]
-  //       })
-  //       if (data.length > 0) {
-  //         const contacts = []
-  //         data.map((contact) => contacts.push({ id: contact.id, name: contact.name, selected: false }))
-  //         setContactList(contacts)
-  //       }
-  //     }
-  //   })()
-  // }, [])
+    const list = []
+    contactList.map((contact) => (
+      list.push({
+        id: contact.id,
+        contactId: contact.contact_id,
+        photo: contact.info_contact.photo,
+        name: contact.info_contact.name,
+        lastname: contact.info_contact.lastname,
+        selected: false
+      })
+    ))
+    setSelectedContactList(list)
+  }, [contactList])
 
   //  list item
   const renderItem = ({ item }) => {
     const onSelectedContact = () => {
       if (item.selected === false) {
-        const setTrue = selectedContactList.map(contact => (contact.id === item.id) ? { id: item.id, name: item.name, selected: true } : contact)
+        const setTrue = selectedContactList.map(contact => (
+          contact.id === item.id
+            ? { id: item.id, contactId: contact.contactId, photo: contact.photo, name: contact.name, lastname: contact.lastname, selected: true }
+            : contact
+        ))
         setSelectedContactList(setTrue)
       } else {
-        const setFalse = selectedContactList.map(contact => (contact.id === item.id) ? { id: item.id, name: item.name, selected: false } : contact)
+        const setFalse = selectedContactList.map(contact => (
+          contact.id === item.id
+            ? { id: item.id, contactId: contact.contactId, photo: contact.photo, name: contact.name, lastname: contact.lastname, selected: false }
+            : contact
+        ))
         setSelectedContactList(setFalse)
       }
     }
     return <Item item={item} onSelectedContact={onSelectedContact} />
   }
 
-  //  activate button
+  const [buttonActive, setButtonActive] = useState(false)
+
+  // activate button
   useEffect(() => {
     const isSelected = selectedContactList.find(element => element.selected !== false)
     if (isSelected !== undefined) {
@@ -81,7 +81,18 @@ const ContactsList = (props) => {
     }
   }, [selectedContactList])
 
-  const goToStep3 = () => props.navigation.navigate('Create Event Step 3')
+  const goToStepThree = () => props.navigation.navigate('Create Event Step Three')
+
+  //  -->   on submit
+  const submit = () => {
+    const selecteds = []
+    selectedContactList
+      .filter(contact => contact.selected === true)
+      .map(contact => selecteds.push(contact.contactId))
+
+    setContacts(selecteds)
+    goToStepThree()
+  }
 
   if (!fontsLoaded) {
     return <AppLoading />
@@ -90,14 +101,14 @@ const ContactsList = (props) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={contactList}
+        data={selectedContactList}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString()}
         style={styles.list}
       />
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={goToStep3}
+          onPress={submit}
           disabled={!buttonActive}
           style={[styles.button, buttonActive && styles.buttonVisible]}
         >
@@ -176,4 +187,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ContactsList
+export default CreateEventStepTwo

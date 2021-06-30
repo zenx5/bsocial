@@ -1,4 +1,4 @@
-import { FEATURED_EVENTS, SET_ALL_CATEGORIES_EVENTS, SET_ALL_CATEGORIES_MUSIC, SET_CATEGORY, SET_COORDINATE, SET_DATE, SET_EVENT_DESCRIPTION, SET_EVENT_IMAGE, SET_EVENT_NAME, SET_TIME, UPCOMING_EVENTS } from '../types'
+import { FEATURED_EVENTS, SET_ALL_CATEGORIES_EVENTS, SET_ALL_CATEGORIES_MUSIC, SET_CATEGORY, SET_COORDINATE, SET_DATE, SET_EVENT_DESCRIPTION, SET_EVENT_IMAGE, SET_EVENT_NAME, SET_INVITED_CONTACTS, SET_TIME, UPCOMING_EVENTS } from '../types'
 
 const EventReducer = (state, action) => {
   const { payload, type } = action
@@ -70,6 +70,13 @@ const EventReducer = (state, action) => {
         ...state,
         categorySelected: payload
       }
+
+    case SET_INVITED_CONTACTS:
+      return {
+        ...state,
+        invitedContacts: payload
+      }
+
     default:
       return state
   }
