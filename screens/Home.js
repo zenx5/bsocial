@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { View, Text, StyleSheet, Alert } from 'react-native'
 import * as Location from 'expo-location'
-// import MapView, { Marker } from 'react-native-maps'
+import MapView, { Marker } from 'react-native-maps'
 import { useFonts, Poppins_300Light, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import AppLoading from 'expo-app-loading'
@@ -71,7 +71,7 @@ const Home = (props) => {
           <IconSettings />
         </View>
         <View>
-          {/* <MapView
+          <MapView
             style={styles.map}
             region={{
               latitude: location.latitude,
@@ -94,7 +94,7 @@ const Home = (props) => {
                 )
               })
             }
-          </MapView> */}
+          </MapView>
         </View>
       </View>
 

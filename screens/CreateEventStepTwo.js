@@ -90,7 +90,7 @@ const CreateEventStepTwo = (props) => {
       .filter(contact => contact.selected === true)
       .map(contact => selecteds.push(contact.contactId))
 
-    console.log(setInvitedContacts)
+    setInvitedContacts(selecteds)
     goToStepThree()
   }
 

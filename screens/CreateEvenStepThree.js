@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native'
 import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins' // eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import { StatusBar } from 'expo-status-bar'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import EventsContext from '../context/Events/EventsContext'
 
 //  icons
 import IconCheck from '../components/Icons/IconCheck'
@@ -11,6 +12,12 @@ import IconCheck from '../components/Icons/IconCheck'
 const CreateEventStep3 = (props) => {
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
   const goHome = () => props.navigation.navigate('Home')
+
+  const { createNewEvent } = useContext(EventsContext)
+
+  useEffect(() => {
+    createNewEvent()
+  }, [])
 
   if (!fontsLoaded) {
     return <AppLoading />
