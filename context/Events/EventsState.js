@@ -12,7 +12,8 @@ import {
   SET_TIME,
   UPCOMING_EVENTS,
   SET_ALL_CATEGORIES_EVENTS,
-  SET_ALL_CATEGORIES_MUSIC
+  SET_ALL_CATEGORIES_MUSIC,
+  SET_CATEGORY
 } from '../types'
 
 const EventsState = (props) => {
@@ -96,6 +97,11 @@ const EventsState = (props) => {
     setEventImage: (image) => {
       console.log(image)
       dispatch({ type: SET_EVENT_IMAGE, payload: image })
+    },
+
+    setCategory: (category) => {
+      console.log(category)
+      dispatch({ type: SET_CATEGORY, payload: category })
     }
   }), [state])
 
@@ -120,7 +126,8 @@ const EventsState = (props) => {
         setTime: eventsState.setTime,
         setEventName: eventsState.setEventName,
         setEventDescription: eventsState.setEventDescription,
-        setEventImage: eventsState.setEventImage
+        setEventImage: eventsState.setEventImage,
+        setCategory: eventsState.setCategory
       }}
     >
       {props.children}

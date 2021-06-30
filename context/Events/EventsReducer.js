@@ -68,7 +68,7 @@ const EventReducer = (state, action) => {
     case SET_CATEGORY:
       return {
         ...state,
-        category: payload
+        categorySelected: payload
       }
     default:
       return state

@@ -3,10 +3,10 @@ import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet, Modal } from
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import EventsContext from '../../context/Events/EventsContext'
 import AuthContext from '../../context/Auth/AuthContext'
+import { StatusBar } from 'expo-status-bar'
 
 //    -->   components
 const Item = ({ item, onSelect }) => {
-  console.log(item)
   return (
     <View style={styles.item}>
       <TouchableOpacity onPress={onSelect}>
@@ -26,8 +26,6 @@ const CategoryPicker = () => {
     getAllCategories(userToken)
   }, [])
 
-  console.log(categoriesEvents)
-
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState(null)
 
@@ -38,8 +36,8 @@ const CategoryPicker = () => {
   //  list
   const renderItem = ({ item }) => {
     const onSelect = () => {
-      setCategory(item.title)
-      setSelectedCategory(item.title)
+      setCategory([item.id])
+      setSelectedCategory(item.display_name)
       setModalVisible(false)
     }
     return (
@@ -49,11 +47,12 @@ const CategoryPicker = () => {
 
   return (
     <View style={styles.container}>
+      {modalVisible ? <StatusBar backgroundColor='#00000050' /> : null}
       <View>
         <Modal
           animationType='slide'
-          transparent
           visible={modalVisible}
+          transparent
         >
           <View style={styles.modal}>
             <View style={styles.modalView}>
@@ -72,7 +71,6 @@ const CategoryPicker = () => {
 
         <Text style={styles.selectCategory_text}>{selectedCategory || 'Selecciona una categoria'}</Text>
       </TouchableOpacity>
-
     </View>
   )
 }
@@ -95,7 +93,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: wp('5.5%'), // 22~
     height: wp('5.5%'), // 22.4~
-    marginRight: wp('3%') //  12.1~
+    marginRight: wp('3.2%') //  12
   },
 
   selectCategory_text: {
@@ -106,17 +104,11 @@ const styles = StyleSheet.create({
   },
 
   modal: {
-    justifyContent: 'center',
+    flex: 1,
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    height: hp('45%')
+    backgroundColor: '#00000050',
+    height: '100%'
   },
 
   modalView: {
