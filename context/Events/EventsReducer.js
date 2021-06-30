@@ -1,4 +1,4 @@
-import { FEATURED_EVENTS, SET_CATEGORY, SET_COORDINATE, SET_DATE, SET_TIME, UPCOMING_EVENTS } from '../types'
+import { FEATURED_EVENTS, SET_CATEGORY, SET_COORDINATE, SET_DATE, SET_EVENT_DESCRIPTION, SET_EVENT_IMAGE, SET_EVENT_NAME, SET_TIME, UPCOMING_EVENTS } from '../types'
 
 const EventReducer = (state, action) => {
   const { payload, type } = action
@@ -33,6 +33,24 @@ const EventReducer = (state, action) => {
       return {
         ...state,
         time: payload
+      }
+
+    case SET_EVENT_NAME:
+      return {
+        ...state,
+        eventName: payload
+      }
+
+    case SET_EVENT_DESCRIPTION:
+      return {
+        ...state,
+        eventDescription: payload
+      }
+
+    case SET_EVENT_IMAGE:
+      return {
+        ...state,
+        eventImage: payload
       }
 
     case SET_CATEGORY:

@@ -15,6 +15,9 @@ export const FEATURED_EVENTS = 'FEATURED_EVENTS'
 export const SET_COORDINATE = 'SET_COORDINATE'
 export const SET_DATE = 'SET_DATE'
 export const SET_TIME = 'SET_TIME'
+export const SET_EVENT_NAME = 'SET_EVENT_NAME'
+export const SET_EVENT_DESCRIPTION = 'SET_EVENT_DESCRIPTION'
+export const SET_EVENT_IMAGE = 'SET_EVENT_IMAGE'
 export const SET_CATEGORY = 'SET_CATEGORY'
 
 //  --> contacts

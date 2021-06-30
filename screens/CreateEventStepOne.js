@@ -20,9 +20,17 @@ const CreateEventStepOne = (props) => {
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
 
   //    -->   context
-  const { latitude, longitude, date, time } = useContext(EventsContext)
+  const {
+    latitude,
+    longitude,
+    date,
+    time,
+    setEventName,
+    setEventDescription,
+    setEventImage
+  } = useContext(EventsContext)
 
-  //    -->   create event data
+  //    -->   create event, data
   const [eventData, setEventData] = useState({
     name: '',
     description: '',
@@ -30,14 +38,10 @@ const CreateEventStepOne = (props) => {
   })
 
   //    -->   handle name
-  const handleName = (value) => {
-    setEventData({ ...eventData, name: value })
-  }
+  const handleName = (value) => setEventData({ ...eventData, name: value })
 
   //    -->   description handler
-  const handleDescription = (value) => {
-    setEventData({ ...eventData, description: value })
-  }
+  const handleDescription = (value) => setEventData({ ...eventData, description: value })
 
   //  -->   input handler image
   const handleImage = async () => {
@@ -62,6 +66,9 @@ const CreateEventStepOne = (props) => {
   const goStepTwo = () => props.navigation.navigate('Create Event Step Two')
 
   const onPress = () => {
+    setEventName(eventData.name)
+    setEventDescription(eventData.description)
+    setEventImage(eventData.image)
     goStepTwo()
   }
 
