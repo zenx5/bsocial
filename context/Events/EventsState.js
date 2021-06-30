@@ -2,7 +2,18 @@ import React, { useReducer, useMemo } from 'react'
 import EventsContext from './EventsContext'
 import EventsReducer from './EventsReducer'
 import axios from 'axios'
-import { FEATURED_EVENTS, SET_COORDINATE, SET_DATE, SET_EVENT_DESCRIPTION, SET_EVENT_IMAGE, SET_EVENT_NAME, SET_TIME, UPCOMING_EVENTS } from '../types'
+import {
+  FEATURED_EVENTS,
+  SET_COORDINATE,
+  SET_DATE,
+  SET_EVENT_DESCRIPTION,
+  SET_EVENT_IMAGE,
+  SET_EVENT_NAME,
+  SET_TIME,
+  UPCOMING_EVENTS,
+  SET_ALL_CATEGORIES_EVENTS,
+  SET_ALL_CATEGORIES_MUSIC
+} from '../types'
 
 const EventsState = (props) => {
   const initialState = {
@@ -13,14 +24,17 @@ const EventsState = (props) => {
     eventName: '',
     eventDescription: '',
     eventImage: '',
-    category: '',
+    categorySelected: '',
     contacts: [],
     upcoming: [],
-    featured: []
+    featured: [],
+    categories_events: [],
+    categories_music: []
   }
 
-  //  -->   API
+  //  -->   APIs
   const API_HOME = 'https://bsocial.at/api/events'
+  const API_ALL_CATEGORIES = 'https://bsocial.at/api/categories'
 
   const [state, dispatch] = useReducer(EventsReducer, initialState)
 
@@ -28,9 +42,24 @@ const EventsState = (props) => {
     //    -->   get all events
     getEventsHome: async (token) => {
       try {
-        const { data } = await axios.get(API_HOME, { headers: { Authorization: 'Bearer ' + token } })
+        const { data } = await axios.get(API_HOME, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({ type: UPCOMING_EVENTS, payload: data.data.upcoming })
         dispatch({ type: FEATURED_EVENTS, payload: data.data.featured })
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    getAllCategories: async (token) => {
+      try {
+        const { data } = await axios.get(API_ALL_CATEGORIES, { headers: { Authorization: `Bearer ${token}` } })
+        console.log(data.data[1])
+        const events = data.data[0].filter(event => event.enabled === 1)
+        const musics = data.data[1].filter(music => music.enabled === 1)
+        console.log('los eventos activos son: ', events)
+        console.log('las musicas activos son: ', musics)
+        dispatch({ type: SET_ALL_CATEGORIES_EVENTS, payload: events })
+        dispatch({ type: SET_ALL_CATEGORIES_MUSIC, payload: musics })
       } catch (error) {
         console.log(error)
       }
@@ -85,7 +114,10 @@ const EventsState = (props) => {
         eventName: state.eventName,
         eventDescription: state.eventDescription,
         eventImage: state.eventImage,
+        categories_events: state.categories_events,
+        categories_music: state.categories_music,
         getEventsHome: eventsState.getEventsHome,
+        getAllCategories: eventsState.getAllCategories,
         setCoordinate: eventsState.setCoordinate,
         setDate: eventsState.setDate,
         setTime: eventsState.setTime,
