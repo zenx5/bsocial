@@ -22,14 +22,12 @@ const LocationPicker = () => {
   }
 
   const [currentLocation, setCurrentLocation] = useState(initialRegion)
-  const [newLocation, setNewLocation] = useState(initialRegion)
 
   const [showMap, setShowMap] = useState(false)
 
   const open = () => setShowMap(true)
 
   const close = () => {
-    setCoordinate(newLocation)
     setShowMap(false)
     console.log('latitude:', latitude)
     console.log('longitude: ', longitude)
@@ -54,14 +52,16 @@ const LocationPicker = () => {
   }, [])
 
   const location = (e) => {
-    setNewLocation(e.nativeEvent.coordinate)
+    setCoordinate(e.nativeEvent.coordinate)
   }
 
   return (
     <View style={styles.container}>
       {showMap ? <StatusBar backgroundColor='#00000050' /> : null}
-      <TouchableOpacity onPress={open} style={styles.locationInput}>
-        <Text style={styles.inputText}>Ubicación</Text>
+      <TouchableOpacity onPress={open} style={[styles.locationInput_inactive, (latitude && longitude) && styles.locationInput_active]}>
+        <Text style={styles.inputText}>
+          {(latitude && longitude) ? 'Ubicación seleccionada' : 'Ubicación'}
+        </Text>
         <IconGeolocalizador style={styles.iconGeolocalizador} />
       </TouchableOpacity>
       <View style={styles.location_footer}>
@@ -91,7 +91,7 @@ const LocationPicker = () => {
                   longitude: currentLocation.longitude
                 }}
                 draggable
-                onDrag={location}
+                onDragEnd={location}
               />
             </MapView>
             <TouchableOpacity onPress={close} style={styles.iconContainer}>
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp('6.6%') //  27~
   },
 
-  locationInput: {
+  locationInput_inactive: {
     height: hp('8%'), //  48
     backgroundColor: '#00000014',
     borderRadius: 10,
@@ -122,6 +122,12 @@ const styles = StyleSheet.create({
     borderColor: '#00000011',
     paddingLeft: wp('4.18%'), // 17~
     marginBottom: hp('1.1%') // 7.6~
+  },
+
+  locationInput_active: {
+    backgroundColor: '#fff',
+    borderWidth: 0.5,
+    borderColor: '#00000080'
   },
 
   iconGeolocalizador: {

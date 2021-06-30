@@ -14,16 +14,7 @@ const DateTimePicker = () => {
   useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
 
   //    -->   context
-  const { setDate, setTime } = useContext(EventsContext)
-
-  //  create event data
-  const [eventData, setEventData] = useState({
-    date: null,
-    time: null,
-    eventName: '',
-    description: '',
-    image: null
-  })
+  const { setDate, setTime, date, time } = useContext(EventsContext)
 
   //  date && time
   const [showDateTime, setShowDateTime] = useState({ date: false, time: false })
@@ -33,8 +24,7 @@ const DateTimePicker = () => {
   const onCancelDate = () => setShowDateTime({ ...showDateTime, date: false })
 
   const onConfirmDate = (date) => {
-    setEventData({ ...eventData, date: date.toLocaleDateString() })
-    setDate(eventData.date)
+    setDate(date.toLocaleDateString())
     onCancelDate()
   }
 
@@ -43,17 +33,16 @@ const DateTimePicker = () => {
   const onCancelTime = () => setShowDateTime({ ...showDateTime, time: false })
 
   const onConfirmTime = (time) => {
-    setEventData({ ...eventData, time: time.toLocaleTimeString().slice(0, 5) })
-    setTime(eventData.time)
+    setTime(time.toLocaleTimeString().slice(0, 5))
     onCancelTime()
   }
 
   return (
     <View style={styles.dateTimeContainer}>
       {/* Date */}
-      <TouchableOpacity onPress={showDatePicker} style={styles.dateTime}>
+      <TouchableOpacity onPress={showDatePicker} style={[styles.dateTime_inactive, date && styles.dateTime_active]}>
         <IconDate />
-        <Text style={styles.inputText}>{eventData.date ? eventData.date : 'Fecha'}</Text>
+        <Text style={styles.inputText}>{date || 'Fecha'}</Text>
         <DateTimePickerModal
           isVisible={showDateTime.date}
           mode='date'
@@ -65,9 +54,9 @@ const DateTimePicker = () => {
       </TouchableOpacity>
 
       {/* Time */}
-      <TouchableOpacity onPress={showTimePicker} style={styles.dateTime}>
+      <TouchableOpacity onPress={showTimePicker} style={[styles.dateTime_inactive, time && styles.dateTime_active]}>
         <IconTime />
-        <Text style={styles.inputText}>{eventData.time ? eventData.time : 'Hora'}</Text>
+        <Text style={styles.inputText}>{time || 'Hora'}</Text>
         <DateTimePickerModal
           isVisible={showDateTime.time}
           mode='time'
@@ -93,7 +82,7 @@ const styles = StyleSheet.create({
 
   },
 
-  dateTime: {
+  dateTime_inactive: {
     width: '49%',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -102,5 +91,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingLeft: wp('4.18%'), // 17~
     paddingRight: wp('13%')
+  },
+
+  dateTime_active: {
+    backgroundColor: '#fff',
+    borderWidth: 0.5,
+    borderColor: '#00000080'
   }
 })

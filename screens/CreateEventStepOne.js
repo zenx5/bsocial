@@ -101,8 +101,6 @@ const CreateEventStepOne = (props) => {
     return <AppLoading />
   }
 
-  console.log(eventData)
-
   return (
     <View style={styles.container}>
       {/* Header */}
