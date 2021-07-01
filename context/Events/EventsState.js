@@ -107,7 +107,7 @@ const EventsState = (props) => {
       dispatch({ type: SET_CATEGORY, payload: category })
     },
 
-    setInvitedContacts: async (contacts) => {
+    setInvitedContacts: (contacts) => {
       console.log(contacts)
       dispatch({ type: SET_INVITED_CONTACTS, payload: contacts })
     },
@@ -136,7 +136,7 @@ const EventsState = (props) => {
         console.log(error)
       }
     }
-  }), [state])
+  }), [])
 
   return (
     <EventsContext.Provider

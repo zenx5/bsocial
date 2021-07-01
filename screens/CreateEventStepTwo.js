@@ -6,6 +6,7 @@ import Constants from 'expo-constants'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import AuthContext from '../context/Auth/AuthContext'
 import ContactsContext from '../context/Contacts/ContactsContext'
+import EventsContext from '../context/Events/EventsContext'
 
 //  icons
 import IconCheck from '../components/Icons/IconCheck'
@@ -24,7 +25,8 @@ const CreateEventStepTwo = (props) => {
 
   //  -->   context
   const { userToken } = useContext(AuthContext)
-  const { contactList, getContacts, setInvitedContacts } = useContext(ContactsContext)
+  const { contactList, getContacts } = useContext(ContactsContext)
+  const { setInvitedContacts } = useContext(EventsContext)
 
   const [selectedContactList, setSelectedContactList] = useState([])
 
