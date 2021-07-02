@@ -14,11 +14,13 @@ import {
   SET_ALL_CATEGORIES_EVENTS,
   SET_ALL_CATEGORIES_MUSIC,
   SET_CATEGORY,
-  SET_INVITED_CONTACTS
+  SET_INVITED_CONTACTS,
+  SET_LOCATION_NAME
 } from '../types'
 
 const EventsState = (props) => {
   const initialState = {
+    locationName: '',
     latitude: '',
     longitude: '',
     date: '',
@@ -26,7 +28,7 @@ const EventsState = (props) => {
     eventName: '',
     eventDescription: '',
     eventImage: '',
-    categorySelected: '',
+    categorySelected: [],
     invitedContacts: [],
     contacts: [],
     upcoming: [],
@@ -64,6 +66,11 @@ const EventsState = (props) => {
       } catch (error) {
         console.log(error)
       }
+    },
+
+    setLocationName: (locationName) => {
+      console.log(locationName)
+      dispatch({ type: SET_LOCATION_NAME, payload: locationName })
     },
 
     setCoordinate: (coordinate) => {
@@ -113,10 +120,12 @@ const EventsState = (props) => {
     },
 
     createNewEvent: async (token) => {
+      console.log(token)
       try {
         const { data } = await axios.post(API_CREATE_NEW_EVENT, {
+          headers: { Authorization: 'Bearer ' + token },
           data: {
-            address: 'Centro Comercial',
+            address: state.locationName,
             latitud: state.latitude,
             longitud: state.longitude,
             start_date: state.date,
@@ -127,9 +136,7 @@ const EventsState = (props) => {
             image: state.eventImage,
             categories: state.categorySelected,
             contacts: state.invitedContacts
-          },
-
-          headers: { Authorization: `Bearer ${token}` }
+          }
         })
         console.log(data)
       } catch (error) {
@@ -155,6 +162,7 @@ const EventsState = (props) => {
         categories_music: state.categories_music,
         getEventsHome: eventsState.getEventsHome,
         getAllCategories: eventsState.getAllCategories,
+        setLocationName: eventsState.setLocationName,
         setCoordinate: eventsState.setCoordinate,
         setDate: eventsState.setDate,
         setTime: eventsState.setTime,

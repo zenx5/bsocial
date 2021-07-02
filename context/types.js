@@ -12,6 +12,7 @@ export const IS_VALID_USER = 'IS_VALID_USER'
 //  -->   Events
 export const UPCOMING_EVENTS = 'UPCOMING_EVENTS'
 export const FEATURED_EVENTS = 'FEATURED_EVENTS'
+export const SET_LOCATION_NAME = 'SET_LOCATION_NAME'
 export const SET_COORDINATE = 'SET_COORDINATE'
 export const SET_DATE = 'SET_DATE'
 export const SET_TIME = 'SET_TIME'

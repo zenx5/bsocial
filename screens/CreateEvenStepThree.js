@@ -4,6 +4,7 @@ import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-font
 import AppLoading from 'expo-app-loading'
 import { StatusBar } from 'expo-status-bar'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import AuthContext from '../context/Auth/AuthContext'
 import EventsContext from '../context/Events/EventsContext'
 
 //  icons
@@ -13,10 +14,11 @@ const CreateEventStep3 = (props) => {
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
   const goHome = () => props.navigation.navigate('Home')
 
+  const { userToken } = useContext(AuthContext)
   const { createNewEvent } = useContext(EventsContext)
 
   useEffect(() => {
-    createNewEvent()
+    createNewEvent(userToken)
   }, [])
 
   if (!fontsLoaded) {

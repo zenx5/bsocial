@@ -5,6 +5,12 @@ import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import EventsContext from '../../context/Events/EventsContext'
 
+//    -->   data parser
+//  var fecha = new Date()
+//  var options = {day: "2-digit", month: "long", year: "numeric"}
+//  fecha.toLocaleDateString('es-ES', options)  -> "01 de julio de 2021"
+//  var dateParsed = fecha.replace(/de /g, '')  -> "01 julio 2021"
+
 //    -->   icons
 import IconDate from '../Icons/IconDate'
 import IconTime from '../Icons/IconTime'
@@ -24,7 +30,8 @@ const DateTimePicker = () => {
   const onCancelDate = () => setShowDateTime({ ...showDateTime, date: false })
 
   const onConfirmDate = (date) => {
-    setDate(date.toLocaleDateString())
+    const options = { day: '2-digit', month: 'long', year: 'numeric' }
+    setDate(date.toLocaleDateString('es-ES', options))
     onCancelDate()
   }
 

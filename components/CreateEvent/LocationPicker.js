@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, Modal, Alert } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Modal, Alert, TextInput } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import MapView, { Marker } from 'react-native-maps'
 import * as Location from 'expo-location'
@@ -12,7 +12,7 @@ import IconTimeZone from '../Icons/IconTimeZone'
 import IconClose from '../Icons/IconClose'
 
 const LocationPicker = () => {
-  const { latitude, longitude, setCoordinate } = useContext(EventsContext)
+  const { latitude, longitude, setCoordinate, setLocationName } = useContext(EventsContext)
 
   const initialRegion = {
     latitude: 0,
@@ -22,6 +22,12 @@ const LocationPicker = () => {
   }
 
   const [currentLocation, setCurrentLocation] = useState(initialRegion)
+
+  const [currentlocationName, setCurrentLocationName] = useState('')
+
+  const handleLocationName = (value) => setCurrentLocationName(value)
+
+  const onBlur = () => setLocationName(currentlocationName)
 
   const [showMap, setShowMap] = useState(false)
 
@@ -58,12 +64,19 @@ const LocationPicker = () => {
   return (
     <View style={styles.container}>
       {showMap ? <StatusBar backgroundColor='#00000050' /> : null}
-      <TouchableOpacity onPress={open} style={[styles.locationInput_inactive, (latitude && longitude) && styles.locationInput_active]}>
-        <Text style={styles.inputText}>
-          {(latitude && longitude) ? 'Ubicación seleccionada' : 'Ubicación'}
-        </Text>
-        <IconGeolocalizador style={styles.iconGeolocalizador} />
-      </TouchableOpacity>
+      <View>
+        <TextInput
+          style={[styles.locationInput_inactive, (latitude && longitude) && styles.locationInput_active]}
+          placeholder='Ubicacion'
+          value={currentlocationName}
+          onChangeText={handleLocationName}
+          onBlur={onBlur}
+        />
+        <TouchableOpacity onPress={open} style={styles.containerIconGeolocalizador}>
+          <IconGeolocalizador style={styles.iconGeolocalizador} />
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.location_footer}>
         <IconTimeZone style={styles.iconTimeZone} />
         <Text style={styles.location_footerText}>Zona horaria determinada por ubicación</Text>
@@ -130,6 +143,12 @@ const styles = StyleSheet.create({
     borderColor: '#00000080'
   },
 
+  containerIconGeolocalizador: {
+    position: 'absolute',
+    top: hp('1%'),
+    right: 5
+  },
+
   iconGeolocalizador: {
     marginRight: wp('1.75%') //  7.2
   },
@@ -171,7 +190,7 @@ const styles = StyleSheet.create({
   iconContainer: {
     position: 'absolute',
     top: 10,
-    left: 10
+    right: 10
   },
 
   iconClose: {
