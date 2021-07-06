@@ -101,7 +101,6 @@ const CreateEventStepOne = (props) => {
       startTime &&
       eventData.name &&
       eventData.description &&
-      isEnabled &&
       eventData.image.uri &&
       category
     ) {
@@ -117,7 +116,6 @@ const CreateEventStepOne = (props) => {
     startTime &&
     eventData.name &&
     eventData.description &&
-    isEnabled &&
     eventData.image.uri &&
     category
   ])

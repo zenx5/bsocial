@@ -1,125 +1,163 @@
-import React, { useState, useRef, useEffect, useContext } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList, Animated } from 'react-native'
-import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
+import React, { useState, useEffect, useContext } from 'react'
+import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList, TextInput } from 'react-native'
+import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import Constants from 'expo-constants'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-// import * as Contacts from 'expo-contacts'
 import AuthContext from '../context/Auth/AuthContext'
 import ContactsContex from '../context/Contacts/ContactsContext'
 
+//  icons
+import IconSearch from '../components/Icons/IconSearch'
+import IconClose from '../components/Icons/IconClose'
+
 //  components
-import Header from '../components/ContactsList/Header'
 import NewContact from '../components/ContactsList/NewContact'
 
 const Item = ({ item }) => {
   return (
-    <TouchableOpacity style={[styles.item]}>
-      <Image style={styles.item_image} source={{ uri: item.info_contact.photo }} />
-      <Text style={styles.item_text}>{`${item.info_contact.name} ${item.info_contact.lastname}`}</Text>
+    <TouchableOpacity style={[styles.item, item.notDisplay && { display: 'none' }]}>
+      <Image style={styles.item_image} source={{ uri: item.photo }} />
+      <Text style={styles.item_text}>{`${item.name} ${item.lastname}`}</Text>
     </TouchableOpacity>
   )
 }
 
 const ContactsList = () => {
   //  fonts
-  const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
+  const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
 
   // -->  context
   const { userToken } = useContext(AuthContext)
   const { contactList, getContacts } = useContext(ContactsContex)
 
+  //  Ccontacts
+  const [contactsToShow, setContactsToShow] = useState([])
+
   useEffect(() => {
     getContacts(userToken)
   }, [userToken])
 
-  // header swiching
-  const [isSearch, setIsSearch] = useState(false)
+  useEffect(() => {
+    const list = []
+    contactList.map((contact) => (
+      list.push({
+        id: contact.id,
+        contactId: contact.contact_id,
+        photo: contact.info_contact.photo,
+        name: contact.info_contact.name,
+        lastname: contact.info_contact.lastname,
+        notDisplay: false
+      })
+    ))
+    setContactsToShow(list)
+  }, [contactList])
 
-  //  animation
-  const fadeAnimationSearch = useRef(new Animated.Value(0)).current
-  const fadeAnimationTitle = useRef(new Animated.Value(1)).current
+  // open search bar
+  const [isOpen, setIsOpen] = useState(false)
 
-  //  function fade
-  const fadeInSearch = () => {
-    Animated.timing(fadeAnimationSearch, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true
-    }).start()
+  // open search bar
+  const open = () => setIsOpen(true)
+
+  //  close search bar
+  const close = () => {
+    setContactToSearch('')
+    setIsOpen(false)
   }
 
-  const fadeOutSearch = () => {
-    Animated.timing(fadeAnimationSearch, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: true
-    }).start()
-  }
+  //  search contact
+  const [contactToSearch, setContactToSearch] = useState('')
 
-  const fadeInTitle = () => {
-    Animated.timing(fadeAnimationTitle, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true
-    }).start()
-  }
-
-  const fadeOutTitle = () => {
-    Animated.timing(fadeAnimationTitle, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: true
-    }).start()
-  }
-
-  //  execution hader change
-  const openSearch = () => {
-    setIsSearch(true)
-    fadeInSearch()
-    fadeOutTitle()
-  }
-  const closeSearch = () => {
-    setIsSearch(false)
-    fadeOutSearch()
-    fadeInTitle()
-  }
+  const handleSearch = (value) => setContactToSearch(...value)
 
   // useEffect(() => {
-  //   (async () => {
-  //     const { status } = await Contacts.requestPermissionsAsync()
-  //     if (status === 'granted') {
-  //       const { data } = await Contacts.getContactsAsync({
-  //         fields: [Contacts.Fields.PhoneNumbers]
-  //       })
-  //       if (data.length > 0) {
-  //         setContactsList(data)
-  //       }
-  //     }
-  //   })()
-  // }, [])
+  //   console.log(contactToSearch)
+  //   if (contactToSearch.length) {
+  //     console.log(contactToSearch)
+  //     const filtered = contactsToShow.map((contacts) => (
+  //       (contacts.name.toLocaleLowerCase() === contactToSearch || contacts.lastname.toLocaleLowerCase() === contactToSearch)
+  //         ? contacts
+  //         : { id: contacts.id, contactId: contacts.contactId, photo: contacts.photo, name: contacts.name, lastname: contacts.lastname, notDisplay: true }
+  //     ))
 
+  //     setContactToSearch(filtered)
+  //   }
+
+  //   if (contactToSearch === '') {
+  //     console.log('esta vacio el search')
+  //     const allContacts = contactsToShow.map((contacts) => (console.log(contacts)))
+  //     setContactsToShow(allContacts)
+  //   }
+  // }, [contactToSearch])
+
+  //  render item
+  const renderItem = ({ item }) => {
+    //  filtering contacts
+    // if (item.notDisplay === false) {
+    //   const setTrue = contactsToShow.map((contacts) => (
+    //     contacts.name.toLowerCase() === contactToSearch.toLocaleLowerCase() || contacts.lastname.toLowerCase() === contactToSearch.toLocaleLowerCase()
+    //       ? { id: contacts.id, contactId: contacts.contactId, photo: contacts.photo, name: contacts.name, lastname: contacts.lastname, notDisplay: true }
+    //       : contacts
+    //   ))
+    //   setContactsToShow(setTrue)
+    // } else {
+    //   const setFalse = contactsToShow.map((contacts) => (
+    //     contacts.name.toLowerCase() === contactToSearch.toLocaleLowerCase() || contacts.lastname.toLowerCase() === contactToSearch.toLocaleLowerCase()
+    //       ? { id: contacts.id, contactId: contacts.contactId, photo: contacts.photo, name: contacts.name, lastname: contacts.lastname, notDisplay: false }
+    //       : contacts
+    //   ))
+    //   setContactsToShow(setFalse)
+    // }
+
+    return <Item item={item} />
+  }
+
+  //  waiting for fonts
   if (!fontsLoaded) {
     return <AppLoading />
   }
 
-  console.log('render')
-
   return (
     <View style={styles.container}>
       {/* header */}
-      <Header
-        isSearch={isSearch}
-        openSearch={openSearch}
-        closeSearch={closeSearch}
-        fadeAnimationTitle={fadeAnimationTitle}
-        fadeAnimationSearch={fadeAnimationSearch}
-        footerText='Lista de contactos agregados'
-      />
+      <View style={styles.header}>
+        <View style={styles.header_top}>
+          {
+            isOpen
+              ? (
+                <View style={styles.search}>
+                  <TextInput
+                    placeholder='Buscar contactos'
+                    placeholderTextColor='#00000060'
+                    style={styles.searchInput}
+                    value={contactToSearch}
+                    onChangeText={handleSearch}
+                  />
+                  <View style={styles.iconSearch}>
+                    <IconSearch />
+                  </View>
+                  <TouchableOpacity onPress={close} style={styles.iconClose_Container}>
+                    <IconClose style={styles.iconClose} />
+                  </TouchableOpacity>
+                </View>
+                )
+              : (
+                <>
+                  <Text style={styles.header_title}>Contactos</Text>
+                  <TouchableOpacity onPress={open}>
+                    <IconSearch />
+                  </TouchableOpacity>
+                </>
+                )
+          }
+
+        </View>
+        <Text style={styles.header_footer}>Lista de contactos agregados</Text>
+      </View>
 
       <FlatList
-        data={contactList}
-        renderItem={({ item }) => <Item item={item} />}
+        data={contactsToShow}
+        renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
         style={styles.flatList}
         ListHeaderComponent={NewContact}
@@ -133,6 +171,69 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#fff'
+  },
+
+  header: {
+    width: '100%',
+    paddingLeft: wp('6.6%'), // 27.65
+    paddingRight: wp('8.7%'), //  36.45
+    marginBottom: hp('2.1%')//  14.5
+  },
+
+  header_top: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+
+  header_title: {
+    fontSize: hp('3%'), //  20.57
+    fontFamily: 'Poppins_700Bold',
+    color: '#000',
+    marginTop: hp('3.7%'), //  25.37
+    marginBottom: hp('4%') // 27.42
+  },
+
+  header_footer: {
+    fontSize: hp('2.1%'), // 14.4
+    fontFamily: 'Poppins_400Regular'
+  },
+
+  search: {
+    width: '100%',
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+    marginTop: hp('3.7%'), //  25.37
+    marginBottom: hp('4%') // 27.42
+  },
+
+  searchInput: {
+    fontSize: hp('2.4'), // 16.45
+    width: '100%',
+    height: hp('7%'), //  48
+    paddingLeft: wp('12.5%'), //  52.38
+    backgroundColor: '#0000000D',
+    borderRadius: 10,
+    fontFamily: 'Poppins_300Light'
+  },
+
+  iconSearch: {
+    position: 'absolute',
+    top: 14,
+    left: 13
+  },
+
+  iconClose_Container: {
+    position: 'absolute',
+    top: 15,
+    right: 10
+  },
+
+  iconClose: {
+    width: wp('4%'), // 20.57
+    height: hp('2.5%') // 20.57
   },
 
   flatList: {
