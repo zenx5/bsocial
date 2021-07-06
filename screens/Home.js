@@ -1,59 +1,32 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { View, Text, StyleSheet, Alert } from 'react-native'
-import * as Location from 'expo-location'
-import MapView, { Marker } from 'react-native-maps'
-import { useFonts, Poppins_300Light, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins'  // eslint-disable-line
+import React, { useEffect, useContext } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+// eslint-disable-next-line camelcase
+import { useFonts, Poppins_700Bold } from '@expo-google-fonts/poppins'
 import AppLoading from 'expo-app-loading'
 import { StatusBar } from 'expo-status-bar'
 import AuthContext from '../context/Auth/AuthContext'
 import EventsContext from '../context/Events/EventsContext'
+import Constants from 'expo-constants'
 
 //    -->   components
-import Header from '../components/Home/Header'
+import UpcomingEvents from '../components/Home/UpcomingEvents'
 import FeaturedEvents from '../components/Home/FeaturedEvents'
 
-//    -->   icons
-import IconSettings from '../components/Icons/IconSettings'
-
 const Home = (props) => {
-  //  -->   contexts
-  const { userToken } = useContext(AuthContext)
-  const { getEventsHome, upcoming } = useContext(EventsContext)
+  //  load fonts
+  const [fontsLoaded] = useFonts({ Poppins_700Bold })
 
+  //  context
+  const { getEventsHome } = useContext(EventsContext)
+  const { userToken, photo } = useContext(AuthContext)
+
+  // get all events for home
   useEffect(() => {
     getEventsHome(userToken)
   }, [])
 
-  const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_500Medium, Poppins_700Bold })
-
-  const initialRegion = {
-    latitude: 0,
-    longitude: 0,
-    latitudeDelta: 0.0122,
-    longitudeDelta: 0.0121
-  }
-
-  const [location, setLocation] = useState(initialRegion)
-
-  useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync()
-      if (status !== 'granted') {
-        Alert.alert(
-          'Error',
-          'Se requiere persmisos a la ubicacion',
-          [{ text: 'OK' }],
-          { cancelable: false }
-        )
-        return
-      }
-
-      const location = await Location.getCurrentPositionAsync({})
-      setLocation(location.coords)
-    })()
-  }, [])
-
+  //  waiting for fonts
   if (!fontsLoaded) {
     return <AppLoading />
   }
@@ -61,42 +34,19 @@ const Home = (props) => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor='#fff' />
-      {/* header */}
-      <Header {...props} />
 
-      {/* upcoming events */}
-      <View style={styles.upcomingEvents}>
-        <View style={styles.upcomingEvents_header}>
-          <Text style={styles.text}>Proximos Eventos</Text>
-          <IconSettings />
-        </View>
+      {/* header */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Create Event Step One')} style={styles.button}>
+          <Text style={styles.buttonText}>Crear Evento</Text>
+        </TouchableOpacity>
         <View>
-          <MapView
-            style={styles.map}
-            region={{
-              latitude: location.latitude,
-              longitude: location.longitude,
-              latitudeDelta: 0.0199,
-              longitudeDelta: 0.02
-            }}
-            showsUserLocation
-          >
-            {
-              upcoming.map((item, index) => {
-                return (
-                  <Marker
-                    key={index}
-                    coordinate={{
-                      latitude: item.latitud,
-                      longitude: item.longitud
-                    }}
-                  />
-                )
-              })
-            }
-          </MapView>
+          <Image style={styles.image} source={{ uri: photo }} />
         </View>
       </View>
+
+      {/* upcoming events */}
+      <UpcomingEvents />
 
       {/* featured Events */}
       <FeaturedEvents {...props} />
@@ -109,35 +59,38 @@ const styles = StyleSheet.create({
     flex: 1
   },
 
-  upcomingEvents: {
-    backgroundColor: '#fff',
-    flexDirection: 'column',
-    paddingTop: hp('1.6%'), //  13
-    paddingBottom: hp('1.85%'), // 15
-    marginBottom: hp('1.5%'), // 12,
-    justifyContent: 'center'
-  },
-
-  upcomingEvents_header: {
+  header: {
+    backgroundColor: '#ffffff',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingLeft: wp('3.4%'), //  13
-    paddingRight: wp('10%'), // 43
-    marginBottom: hp('1.4%') // 11.5
+    marginTop: Constants.statusBarHeight,
+    marginBottom: hp('0.9%'), // 7~
+    paddingVertical: hp('2.2%'), // 18~
+    paddingHorizontal: wp('7.2%') // 27~
   },
 
-  text: {
-    fontSize: hp('1.95%'), //  16
+  button: {
+    width: wp('63%'), //  236~
+    height: hp('6.2%'), //  50~
+    backgroundColor: '#E1B21C',
+    borderRadius: 27,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  buttonText: {
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontSize: hp('2%'), // 16~
     fontFamily: 'Poppins_700Bold',
     textTransform: 'uppercase'
   },
 
-  map: {
-    width: wp('95%'), //  356~
-    height: hp('30%'), // 243~
-    borderRadius: 5,
-    backgroundColor: '#00000020',
-    alignSelf: 'center'
+  image: {
+    width: hp('6.5%'), //  53~
+    height: hp('6.5%'), //  53~
+    borderRadius: 6,
+    backgroundColor: '#00000029'
   }
 })
 
