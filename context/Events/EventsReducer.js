@@ -1,4 +1,18 @@
-import { FEATURED_EVENTS, SET_ALL_CATEGORIES_EVENTS, SET_ALL_CATEGORIES_MUSIC, SET_CATEGORY, SET_COORDINATE, SET_DATE, SET_EVENT_DESCRIPTION, SET_EVENT_IMAGE, SET_EVENT_NAME, SET_INVITED_CONTACTS, SET_LOCATION_NAME, SET_TIME, UPCOMING_EVENTS } from '../types'
+import {
+  FEATURED_EVENTS,
+  SET_ALL_EVENTS_CATEGORIES,
+  SET_ALL_CATEGORIES_MUSIC,
+  SET_CATEGORY,
+  SET_COORDINATE,
+  SET_START_DATE,
+  SET_START_TIME,
+  SET_EVENT_DESCRIPTION,
+  SET_EVENT_IMAGE,
+  SET_EVENT_NAME,
+  SET_INVITED_CONTACTS,
+  SET_ADDRESS,
+  UPCOMING_EVENTS
+} from '../types'
 
 const EventReducer = (state, action) => {
   const { payload, type } = action
@@ -16,10 +30,10 @@ const EventReducer = (state, action) => {
         featured: payload
       }
 
-    case SET_ALL_CATEGORIES_EVENTS:
+    case SET_ALL_EVENTS_CATEGORIES:
       return {
         ...state,
-        categoriesEvents: payload
+        allEventsCategories: payload
       }
 
     case SET_ALL_CATEGORIES_MUSIC:
@@ -28,10 +42,10 @@ const EventReducer = (state, action) => {
         categoriesMusic: payload
       }
 
-    case SET_LOCATION_NAME:
+    case SET_ADDRESS:
       return {
         ...state,
-        locationName: payload
+        address: payload
       }
 
     case SET_COORDINATE:
@@ -41,16 +55,16 @@ const EventReducer = (state, action) => {
         longitude: payload.longitude
       }
 
-    case SET_DATE:
+    case SET_START_DATE:
       return {
         ...state,
-        date: payload
+        startDate: payload
       }
 
-    case SET_TIME:
+    case SET_START_TIME:
       return {
         ...state,
-        time: payload
+        startTime: payload
       }
 
     case SET_EVENT_NAME:
@@ -62,7 +76,7 @@ const EventReducer = (state, action) => {
     case SET_EVENT_DESCRIPTION:
       return {
         ...state,
-        eventDescription: payload
+        description: payload
       }
 
     case SET_EVENT_IMAGE:
@@ -74,7 +88,7 @@ const EventReducer = (state, action) => {
     case SET_CATEGORY:
       return {
         ...state,
-        categorySelected: payload
+        category: payload
       }
 
     case SET_INVITED_CONTACTS:

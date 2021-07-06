@@ -15,10 +15,34 @@ const CreateEventStep3 = (props) => {
   const goHome = () => props.navigation.navigate('Home')
 
   const { userToken } = useContext(AuthContext)
-  const { createNewEvent } = useContext(EventsContext)
+  const {
+    createNewEvent,
+    locationName,
+    latitude,
+    longitude,
+    date,
+    time,
+    eventName,
+    eventDescription,
+    eventImage,
+    categorySelected,
+    invitedContacts
+  } = useContext(EventsContext)
 
   useEffect(() => {
-    createNewEvent(userToken)
+    createNewEvent(
+      userToken,
+      locationName,
+      latitude,
+      longitude,
+      date,
+      time,
+      eventName,
+      eventDescription,
+      eventImage,
+      categorySelected,
+      invitedContacts
+    )
   }, [])
 
   if (!fontsLoaded) {

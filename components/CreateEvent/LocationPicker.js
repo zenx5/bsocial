@@ -59,6 +59,7 @@ const LocationPicker = () => {
 
   const location = (e) => {
     setCoordinate(e.nativeEvent.coordinate)
+    setCurrentLocation(location.coords)
   }
 
   return (

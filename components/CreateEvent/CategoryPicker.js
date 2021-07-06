@@ -20,8 +20,9 @@ const Item = ({ item, onSelect }) => {
 const CategoryPicker = () => {
   //    -->   contexts
   const { userToken } = useContext(AuthContext)
-  const { getAllCategories, categoriesEvents, setCategory } = useContext(EventsContext)
+  const { getAllCategories, allEventsCategories, setCategory } = useContext(EventsContext)
 
+  //  get all cotegories
   useEffect(() => {
     getAllCategories(userToken)
   }, [])
@@ -29,11 +30,9 @@ const CategoryPicker = () => {
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState(null)
 
-  const showCategoryList = () => {
-    setModalVisible(true)
-  }
+  const showCategoryList = () => setModalVisible(true)
 
-  //  list
+  //  render list item
   const renderItem = ({ item }) => {
     const onSelect = () => {
       setCategory([item.id])
@@ -57,7 +56,7 @@ const CategoryPicker = () => {
           <View style={styles.modal}>
             <View style={styles.modalView}>
               <FlatList
-                data={categoriesEvents}
+                data={allEventsCategories}
                 renderItem={renderItem}
                 keyExtractor={item => item.id.toString()}
               />

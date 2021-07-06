@@ -5,14 +5,15 @@ import AppLoading from 'expo-app-loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import * as ImagePicker from 'expo-image-picker'
 import EventsContext from '../context/Events/EventsContext'
+import Constants from 'expo-constants'
 
 //    -->   components
-import Header from '../components/CreateEvent/HeaderOne'
-import LocationPicker from '../components/CreateEvent/LocationPicker'
+// import LocationPicker from '../components/CreateEvent/LocationPicker'
 import DateTimePicker from '../components/CreateEvent/DateTimePicker'
 import CategoryPicker from '../components/CreateEvent/CategoryPicker'
 
-//    -->   icon
+//    -->   icons
+import IconClose from '../components/Icons/IconClose'
 import IconImage from '../components/Icons/IconImage'
 
 const CreateEventStepOne = (props) => {
@@ -21,11 +22,12 @@ const CreateEventStepOne = (props) => {
 
   //    -->   context
   const {
+    address,
     latitude,
     longitude,
-    date,
-    time,
-    categorySelected,
+    startDate,
+    startTime,
+    category,
     setEventName,
     setEventDescription,
     setEventImage
@@ -35,7 +37,11 @@ const CreateEventStepOne = (props) => {
   const [eventData, setEventData] = useState({
     name: '',
     description: '',
-    image: null
+    image: {
+      width: '',
+      height: '',
+      uri: ''
+    }
   })
 
   //    -->   handle name
@@ -44,7 +50,7 @@ const CreateEventStepOne = (props) => {
   //    -->   description handler
   const handleDescription = (value) => setEventData({ ...eventData, description: value })
 
-  //  -->   input handler image
+  //  -->    image input handler
   const handleImage = async () => {
     // permissions
     if (Platform.OS !== 'web') {
@@ -56,7 +62,14 @@ const CreateEventStepOne = (props) => {
           quality: 0.5
         })
         if (!result.cancelled) {
-          setEventData({ ...eventData, image: result.uri })
+          setEventData({
+            ...eventData,
+            image: {
+              width: result.width,
+              height: result.height,
+              uri: result.uri
+            }
+          })
         }
       }
     }
@@ -66,23 +79,17 @@ const CreateEventStepOne = (props) => {
   const [completeInfo, setCompleteInfo] = useState(false)
   const goStepTwo = () => props.navigation.navigate('Create Event Step Two')
 
-  const onPress = () => {
-    setEventName(eventData.name)
-    setEventDescription(eventData.description)
-    setEventImage(eventData.image)
-    goStepTwo()
-  }
-
   useEffect(() => {
     if (
+      address &&
       latitude &&
       longitude &&
-      date &&
-      time &&
+      startDate &&
+      startTime &&
       eventData.name &&
       eventData.description &&
-      eventData.image &&
-      categorySelected
+      eventData.image.uri &&
+      category
     ) {
       setCompleteInfo(true)
     } else {
@@ -91,13 +98,22 @@ const CreateEventStepOne = (props) => {
   }, [
     latitude &&
     longitude &&
-    date &&
-    time &&
+    address &&
+    startDate &&
+    startTime &&
     eventData.name &&
     eventData.description &&
-    eventData.image &&
-    categorySelected
+    eventData.image.uri &&
+    category
   ])
+
+  //    -->   next step
+  const onPress = () => {
+    setEventName(eventData.name)
+    setEventDescription(eventData.description)
+    setEventImage(eventData.image)
+    goStepTwo()
+  }
 
   //    -->   on waiting for the fonts
   if (!fontsLoaded) {
@@ -107,10 +123,15 @@ const CreateEventStepOne = (props) => {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <Header {...props} />
+      <View style={styles.header}>
+        <Text style={styles.title}>Crear evento</Text>
+        <TouchableOpacity onPress={() => props.navigation.goBack()}>
+          <IconClose style={styles.iconClose} />
+        </TouchableOpacity>
+      </View>
 
-      {/*  location picker */}
-      <LocationPicker />
+      {/*  location picker
+      <LocationPicker /> */}
 
       {/* Date time picker */}
       <DateTimePicker />
@@ -137,8 +158,8 @@ const CreateEventStepOne = (props) => {
       {/* image upload */}
       <TouchableOpacity onPress={handleImage} style={styles.imageInput}>
         {
-            eventData.image
-              ? <Image style={styles.image} source={{ uri: eventData.image }} />
+            eventData.image.uri
+              ? <Image style={styles.image} source={{ uri: eventData.image.uri }} />
               : (
                 <>
                   <IconImage style={styles.iconImage} />
@@ -171,6 +192,27 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center'
+  },
+
+  header: {
+    backgroundColor: '#fff',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: Constants.statusBarHeight,
+    paddingTop: hp('4%'), //  27.4
+    paddingBottom: hp('3%'), //  20.5
+    paddingHorizontal: wp('6.6%') //  27~
+  },
+
+  title: {
+    fontFamily: 'Poppins_700Bold',
+    fontSize: hp('2.7%') // 18.2~
+  },
+
+  iconClose: {
+    width: wp('5%'), // 20.57
+    height: hp('3%') // 20.57
   },
 
   inputText_inactive: {
