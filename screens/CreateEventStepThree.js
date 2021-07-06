@@ -7,43 +7,53 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import AuthContext from '../context/Auth/AuthContext'
 import EventsContext from '../context/Events/EventsContext'
 
+//  components
+import Loading from '../components/Loading'
+
 //  icons
 import IconCheck from '../components/Icons/IconCheck'
 
 const CreateEventStep3 = (props) => {
+  //  fonts
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
-  const goHome = () => props.navigation.navigate('Home')
 
+  //  context
   const { userToken } = useContext(AuthContext)
+
   const {
+    loading,
     createNewEvent,
-    locationName,
+    address,
     latitude,
     longitude,
-    date,
-    time,
+    startDate,
+    startTime,
     eventName,
-    eventDescription,
-    eventImage,
-    categorySelected,
+    description,
+    image,
+    category,
     invitedContacts
   } = useContext(EventsContext)
 
   useEffect(() => {
-    createNewEvent(
-      userToken,
-      locationName,
+    const eventData = {
+      address,
       latitude,
       longitude,
-      date,
-      time,
+      startDate,
+      startTime,
       eventName,
-      eventDescription,
-      eventImage,
-      categorySelected,
+      description,
+      image,
+      category,
       invitedContacts
-    )
+    }
+
+    createNewEvent(userToken, eventData)
   }, [])
+
+  //  go home
+  const goHome = () => props.navigation.navigate('Home')
 
   if (!fontsLoaded) {
     return <AppLoading />
@@ -51,6 +61,7 @@ const CreateEventStep3 = (props) => {
 
   return (
     <View style={styles.container}>
+      {loading ? <Loading /> : null}
       <StatusBar hidden />
       <ImageBackground source={require('../assets/backgroundStep3.png')} style={styles.image}>
         <View style={styles.message}>

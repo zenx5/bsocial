@@ -11,7 +11,8 @@ import {
   SET_EVENT_NAME,
   SET_INVITED_CONTACTS,
   SET_ADDRESS,
-  UPCOMING_EVENTS
+  UPCOMING_EVENTS,
+  LOADING
 } from '../types'
 
 const EventReducer = (state, action) => {
@@ -82,7 +83,7 @@ const EventReducer = (state, action) => {
     case SET_EVENT_IMAGE:
       return {
         ...state,
-        eventImage: payload
+        image: payload
       }
 
     case SET_CATEGORY:
@@ -95,6 +96,12 @@ const EventReducer = (state, action) => {
       return {
         ...state,
         invitedContacts: payload
+      }
+
+    case LOADING:
+      return {
+        ...state,
+        loading: payload
       }
 
     default:

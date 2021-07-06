@@ -9,8 +9,11 @@ import ContactsContext from '../context/Contacts/ContactsContext'
 import EventsContext from '../context/Events/EventsContext'
 
 //  icons
+import IconBack from '../components/Icons/IconBack'
+import IconClose from '../components/Icons/IconClose'
 import IconCheck from '../components/Icons/IconCheck'
 
+//  components
 const Item = ({ item, onSelectedContact }) => (
   <TouchableOpacity onPress={onSelectedContact} style={[styles.item]}>
     <Image style={styles.item_image} source={{ uri: item.photo }} />
@@ -92,7 +95,10 @@ const CreateEventStepTwo = (props) => {
       .filter(contact => contact.selected === true)
       .map(contact => selecteds.push(contact.contactId))
 
+    //  set contacts in the state
     setInvitedContacts(selecteds)
+
+    //  go to screen create event step three
     goToStepThree()
   }
 
@@ -102,6 +108,22 @@ const CreateEventStepTwo = (props) => {
 
   return (
     <View style={styles.container}>
+      {/* Header */}
+      <View style={styles.headerContainer}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => props.navigation.goBack()}>
+            <View>
+              <IconBack style={styles.iconBack} />
+            </View>
+          </TouchableOpacity>
+          <Text style={styles.title}>Invitar Contactos</Text>
+        </View>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Home')}>
+          <IconClose style={styles.iconClose} />
+        </TouchableOpacity>
+      </View>
+
+      {/* contact list */}
       <FlatList
         data={selectedContactList}
         renderItem={renderItem}
@@ -123,9 +145,40 @@ const CreateEventStepTwo = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Constants.statusBarHeight,
     flex: 1,
     backgroundColor: '#fff'
+  },
+
+  headerContainer: {
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: Constants.statusBarHeight,
+    paddingTop: hp('2%'), //  27.4
+    paddingBottom: hp('5%'),
+    paddingHorizontal: wp('6.6%') //  27~
+  },
+
+  iconBack: {
+    width: wp('3%'),
+    height: hp('4%') // 32
+  },
+
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+
+  title: {
+    fontFamily: 'Poppins_700Bold',
+    fontSize: hp('2.7%'), // 18.2~
+    marginLeft: wp('5%')
+  },
+
+  iconClose: {
+    width: wp('5%'),
+    height: hp('6%') // 32
   },
 
   list: {

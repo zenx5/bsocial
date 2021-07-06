@@ -1,7 +1,9 @@
+/* global FormData, fetch */
 import React, { useReducer, useMemo } from 'react'
 import EventsContext from './EventsContext'
 import EventsReducer from './EventsReducer'
 import axios from 'axios'
+import { Platform } from 'react-native'
 import {
   FEATURED_EVENTS,
   UPCOMING_EVENTS,
@@ -15,11 +17,13 @@ import {
   SET_ALL_CATEGORIES_MUSIC,
   SET_CATEGORY,
   SET_INVITED_CONTACTS,
-  SET_ADDRESS
+  SET_ADDRESS,
+  LOADING
 } from '../types'
 
 const EventsState = (props) => {
   const initialState = {
+    loading: false,
     address: '',
     latitude: '',
     longitude: '',
@@ -33,6 +37,7 @@ const EventsState = (props) => {
       uri: ''
     },
     category: [],
+    eventType: '',
     invitedContacts: [],
     contacts: [],
     upcoming: [],
@@ -109,9 +114,15 @@ const EventsState = (props) => {
       dispatch({ type: SET_EVENT_NAME, payload: name })
     },
 
+    //  set event description in state
     setEventDescription: (description) => {
       console.log(description)
       dispatch({ type: SET_EVENT_DESCRIPTION, payload: description })
+    },
+
+    //  set event type in the state
+    setEventType: (type) => {
+      console.log(type)
     },
 
     setEventImage: (image) => {
@@ -129,63 +140,79 @@ const EventsState = (props) => {
       dispatch({ type: SET_INVITED_CONTACTS, payload: contacts })
     },
 
-    createNewEvent: async (info, image, userToken) => {
-      // console.log('userToken: ', userToken)
-      // console.log(info)
-      // console.log(image)
+    createNewEvent: async (userToken, eventData) => {
+      console.log('userToken: ', userToken)
+      console.log(eventData)
 
-      /* global FormData, fetch */
       const formData = new FormData()
 
-      // data.append("image", {
-      //   name: "some_name", // also, won't work without this. A name is required
-      //   height: image.height,
-      //   width: image.width,
-      //   type: "multipart/form-data", // <-- this part here
-      //   uri:
-      //     Platform.OS === "android" ? image.uri : image.uri.replace("file:/", "")
-      // });
+      formData.append('address', eventData.address)
 
-      formData.append('address', 'info.address')
-      formData.append('latitud', 40.75951761811803)
-      formData.append('longitud', -73.97105421870947)
-      formData.append('start_date', '2021/07/14')
-      formData.append('start_hour', '06:30')
-      formData.append('name', 'info.name')
-      formData.append('type', 'public')
-      formData.append('description', 'info.description')
+      formData.append('latitud', eventData.latitude)
+
+      formData.append('longitud', eventData.longitude)
+
+      formData.append('start_date', eventData.startDate)
+
+      formData.append('start_hour', eventData.startTime)
+
+      formData.append('name', eventData.eventName)
+
+      formData.append('description', eventData.description)
+
       formData.append('image', {
-        name: 'image_Name',
-        height: 1187,
-        width: 1920,
+        name: 'generic_name',
+        width: eventData.image.width,
+        height: eventData.image.height,
         type: 'multipart/form-data',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540hanktech%252Fbsocial_development/ImagePicker/b5d90df7-77ea-494a-813f-4a95515c5279.jpg'
-      })
-      const categories = [10]
-      categories.map((category) => formData.append('categories[]', category))
-
-      const contacts = [4, 6]
-      contacts.map((contact) => formData.append('contacts[]', contact))
-
-      const response = await fetch(API_CREATE_NEW_EVENT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${userToken}`,
-          Accept: '*/*'
-        },
-        body: formData
+        uri: Platform.OS === 'android' ? eventData.image.uri : eventData.image.uri.replace('file:/', '')
       })
 
-      console.log(response)
-      const result = await response.json()
-      console.log(result)
+      formData.append('type', 'public')
+
+      eventData.category.map((categories) => formData.append('categories[]', categories))
+
+      eventData.invitedContacts.map((contact) => formData.append('contacts[]', contact))
+
+      try {
+        //  start loading
+        dispatch({ type: LOADING, payload: true })
+
+        //  fetch to create event
+        const response = await fetch(API_CREATE_NEW_EVENT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userToken}`,
+            Accept: '*/*'
+          },
+          body: formData
+        })
+
+        //  show result
+        const result = await response.json()
+        console.log(result)
+
+        //  stop loading
+        dispatch({ type: LOADING, payload: true })
+
+        //  clear state
+        dispatch({ type: SET_START_DATE, payload: '' })
+        dispatch({ type: SET_START_TIME, payload: '' })
+      } catch (error) {
+        //  stop loading
+        dispatch({ type: LOADING, payload: true })
+
+        //  show erros
+        console.log(error)
+      }
     }
   }), [])
 
   return (
     <EventsContext.Provider
       value={{
+        loading: state.loading,
         upcoming: state.upcoming,
         featured: state.featured,
         address: state.address,
@@ -195,7 +222,7 @@ const EventsState = (props) => {
         startTime: state.startTime,
         eventName: state.eventName,
         description: state.description,
-        eventImage: state.eventImage,
+        image: state.image,
         category: state.category,
         invitedContacts: state.invitedContacts,
         allEventsCategories: state.allEventsCategories,
@@ -210,6 +237,7 @@ const EventsState = (props) => {
         setEventDescription: eventsState.setEventDescription,
         setEventImage: eventsState.setEventImage,
         setCategory: eventsState.setCategory,
+        setEventType: eventsState.setEventType,
         setInvitedContacts: eventsState.setInvitedContacts,
         createNewEvent: eventsState.createNewEvent
       }}

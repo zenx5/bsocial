@@ -1,10 +1,12 @@
 import React, { useState, useContext } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
-import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import EventsContext from '../../context/Events/EventsContext'
-
+import dayjs from 'dayjs'
+// eslint-disable-next-line camelcase
+import { useFonts, Poppins_400Regular } from '@expo-google-fonts/poppins'
+import AppLoading from 'expo-app-loading'
 //    -->   data parser
 //  var fecha = new Date()
 //  var options = {day: "2-digit", month: "long", year: "numeric"}
@@ -16,11 +18,11 @@ import IconDate from '../Icons/IconDate'
 import IconTime from '../Icons/IconTime'
 
 const DateTimePicker = () => {
-  //  fonts
-  useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
+  //    -->   fonts
+  const [fontsLoaded] = useFonts({ Poppins_400Regular })
 
   //    -->   context
-  const { setDate, setTime, date, time } = useContext(EventsContext)
+  const { setStartDate, setStartTime, startDate, startTime } = useContext(EventsContext)
 
   //  date && time
   const [showDateTime, setShowDateTime] = useState({ date: false, time: false })
@@ -30,8 +32,7 @@ const DateTimePicker = () => {
   const onCancelDate = () => setShowDateTime({ ...showDateTime, date: false })
 
   const onConfirmDate = (date) => {
-    const options = { day: '2-digit', month: 'long', year: 'numeric' }
-    setDate(date.toLocaleDateString('es-ES', options))
+    setStartDate(dayjs(date).format('YYYY/MM/DD'))
     onCancelDate()
   }
 
@@ -40,16 +41,21 @@ const DateTimePicker = () => {
   const onCancelTime = () => setShowDateTime({ ...showDateTime, time: false })
 
   const onConfirmTime = (time) => {
-    setTime(time.toLocaleTimeString().slice(0, 5))
+    setStartTime(dayjs(time).format('HH:mm'))
     onCancelTime()
+  }
+
+  //    -->   on waiting for the fonts
+  if (!fontsLoaded) {
+    return <AppLoading />
   }
 
   return (
     <View style={styles.dateTimeContainer}>
       {/* Date */}
-      <TouchableOpacity onPress={showDatePicker} style={[styles.dateTime_inactive, date && styles.dateTime_active]}>
+      <TouchableOpacity onPress={showDatePicker} style={[styles.dateTime_inactive, startDate && styles.dateTime_active]}>
         <IconDate />
-        <Text style={styles.inputText}>{date || 'Fecha'}</Text>
+        <Text style={styles.date}>{startDate || 'Fecha'}</Text>
         <DateTimePickerModal
           isVisible={showDateTime.date}
           mode='date'
@@ -61,9 +67,9 @@ const DateTimePicker = () => {
       </TouchableOpacity>
 
       {/* Time */}
-      <TouchableOpacity onPress={showTimePicker} style={[styles.dateTime_inactive, time && styles.dateTime_active]}>
+      <TouchableOpacity onPress={showTimePicker} style={[styles.dateTime_inactive, startTime && styles.dateTime_active]}>
         <IconTime />
-        <Text style={styles.inputText}>{time || 'Hora'}</Text>
+        <Text style={styles.time}>{startTime || 'Hora'}</Text>
         <DateTimePickerModal
           isVisible={showDateTime.time}
           mode='time'
@@ -80,13 +86,11 @@ export default DateTimePicker
 
 const styles = StyleSheet.create({
   dateTimeContainer: {
-    width: '100%',
-    height: hp('7%'), //  48
+    width: wp('85.5%'), //  320.5
+    height: hp('8.5%'),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: wp('6.6%'), //  27~
-    marginBottom: hp('2.5%') // 17.1
-
+    marginBottom: hp('3%')
   },
 
   dateTime_inactive: {
@@ -96,13 +100,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#00000014',
     borderRadius: 10,
-    paddingLeft: wp('4.18%'), // 17~
-    paddingRight: wp('13%')
+    paddingLeft: wp('4.18%') // 17~
   },
 
   dateTime_active: {
     backgroundColor: '#fff',
     borderWidth: 0.5,
     borderColor: '#00000080'
+  },
+
+  date: {
+    width: '100%',
+    fontSize: hp('2.35%'), //  16
+    fontFamily: 'Poppins_400Regular',
+    color: '#000',
+    paddingHorizontal: wp('6%')
+  },
+
+  time: {
+    width: '100%',
+    fontSize: hp('2.35%'), //  16
+    fontFamily: 'Poppins_400Regular',
+    color: '#000',
+    textAlign: 'left',
+    paddingLeft: wp('8%')
   }
 })

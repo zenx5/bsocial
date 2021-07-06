@@ -76,9 +76,9 @@ const CategoryPicker = () => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: wp('85.5%'), //  320.5
     flexDirection: 'row',
-    paddingHorizontal: wp('6.6%') //  27~
+    marginBottom: hp('2.5%') // 17.1
   },
 
   selectCategory: {

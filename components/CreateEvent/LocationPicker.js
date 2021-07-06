@@ -5,6 +5,9 @@ import MapView, { Marker } from 'react-native-maps'
 import * as Location from 'expo-location'
 import { StatusBar } from 'expo-status-bar'
 import EventsContext from '../../context/Events/EventsContext'
+// eslint-disable-next-line camelcase
+import { useFonts, Poppins_400Regular } from '@expo-google-fonts/poppins'
+import AppLoading from 'expo-app-loading'
 
 //  icons
 import IconGeolocalizador from '../Icons/IconGeolocalizador'
@@ -12,7 +15,11 @@ import IconTimeZone from '../Icons/IconTimeZone'
 import IconClose from '../Icons/IconClose'
 
 const LocationPicker = () => {
-  const { latitude, longitude, setCoordinate, setLocationName } = useContext(EventsContext)
+  //  context
+  const { latitude, longitude, setCoordinate, setAddress } = useContext(EventsContext)
+
+  //    -->   fonts
+  const [fontsLoaded] = useFonts({ Poppins_400Regular })
 
   const initialRegion = {
     latitude: 0,
@@ -27,17 +34,15 @@ const LocationPicker = () => {
 
   const handleLocationName = (value) => setCurrentLocationName(value)
 
-  const onBlur = () => setLocationName(currentlocationName)
+  const onBlur = () => setAddress(currentlocationName)
 
   const [showMap, setShowMap] = useState(false)
 
+  //  open the map
   const open = () => setShowMap(true)
 
-  const close = () => {
-    setShowMap(false)
-    console.log('latitude:', latitude)
-    console.log('longitude: ', longitude)
-  }
+  //  close the map
+  const close = () => setShowMap(false)
 
   useEffect(() => {
     (async () => {
@@ -59,7 +64,12 @@ const LocationPicker = () => {
 
   const location = (e) => {
     setCoordinate(e.nativeEvent.coordinate)
-    setCurrentLocation(location.coords)
+    setCurrentLocation(e.nativeEvent.coordinate)
+  }
+
+  //    -->   on waiting for the fonts
+  if (!fontsLoaded) {
+    return <AppLoading />
   }
 
   return (
@@ -67,8 +77,9 @@ const LocationPicker = () => {
       {showMap ? <StatusBar backgroundColor='#00000050' /> : null}
       <View>
         <TextInput
-          style={[styles.locationInput_inactive, (latitude && longitude) && styles.locationInput_active]}
+          style={[styles.locationInput_inactive, (latitude && longitude && currentlocationName) && styles.locationInput_active]}
           placeholder='Ubicacion'
+          placeholderTextColor='#000'
           value={currentlocationName}
           onChangeText={handleLocationName}
           onBlur={onBlur}
@@ -120,13 +131,18 @@ const LocationPicker = () => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    marginBottom: hp('2.5%'), // 17.1
-    paddingHorizontal: wp('6.6%') //  27~
+    width: wp('85.5%'), //  320.5
+    alignSelf: 'center',
+    marginBottom: hp('2.5%') // 17.1
   },
 
   locationInput_inactive: {
-    height: hp('8%'), //  48
+    width: wp('85.5%'), //  320.5
+    height: hp('8.5%'),
+    alignSelf: 'center',
+    fontSize: hp('2.35%'), //  16
+    fontFamily: 'Poppins_400Regular',
+    color: '#000',
     backgroundColor: '#00000014',
     borderRadius: 10,
     flexDirection: 'row',
@@ -146,7 +162,7 @@ const styles = StyleSheet.create({
 
   containerIconGeolocalizador: {
     position: 'absolute',
-    top: hp('1%'),
+    top: hp('0.8%'),
     right: 5
   },
 

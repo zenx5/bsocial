@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Platform, Alert } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Platform, Alert, ScrollView, Switch } from 'react-native'
 import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -8,7 +8,7 @@ import EventsContext from '../context/Events/EventsContext'
 import Constants from 'expo-constants'
 
 //    -->   components
-// import LocationPicker from '../components/CreateEvent/LocationPicker'
+import LocationPicker from '../components/CreateEvent/LocationPicker'
 import DateTimePicker from '../components/CreateEvent/DateTimePicker'
 import CategoryPicker from '../components/CreateEvent/CategoryPicker'
 
@@ -30,7 +30,8 @@ const CreateEventStepOne = (props) => {
     category,
     setEventName,
     setEventDescription,
-    setEventImage
+    setEventImage,
+    setEventType
   } = useContext(EventsContext)
 
   //    -->   create event, data
@@ -41,7 +42,8 @@ const CreateEventStepOne = (props) => {
       width: '',
       height: '',
       uri: ''
-    }
+    },
+    type: 'private'
   })
 
   //    -->   handle name
@@ -75,9 +77,20 @@ const CreateEventStepOne = (props) => {
     }
   }
 
-  //    -->   actvate button
+  //  handler switch
+  const [isEnabled, setIsEnabled] = useState(false)
+  const toggleSwitch = () => {
+    setIsEnabled(previousState => !previousState)
+
+    if (isEnabled) {
+      setEventData({ ...eventData, type: 'private' })
+    } else {
+      setEventData({ ...eventData, type: 'public' })
+    }
+  }
+
+  //  actvate button
   const [completeInfo, setCompleteInfo] = useState(false)
-  const goStepTwo = () => props.navigation.navigate('Create Event Step Two')
 
   useEffect(() => {
     if (
@@ -88,6 +101,7 @@ const CreateEventStepOne = (props) => {
       startTime &&
       eventData.name &&
       eventData.description &&
+      isEnabled &&
       eventData.image.uri &&
       category
     ) {
@@ -103,15 +117,19 @@ const CreateEventStepOne = (props) => {
     startTime &&
     eventData.name &&
     eventData.description &&
+    isEnabled &&
     eventData.image.uri &&
     category
   ])
 
   //    -->   next step
+  const goStepTwo = () => props.navigation.navigate('Create Event Step Two')
+
   const onPress = () => {
     setEventName(eventData.name)
     setEventDescription(eventData.description)
     setEventImage(eventData.image)
+    setEventType(eventData.type)
     goStepTwo()
   }
 
@@ -129,35 +147,35 @@ const CreateEventStepOne = (props) => {
           <IconClose style={styles.iconClose} />
         </TouchableOpacity>
       </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/*  location picker */}
+        <LocationPicker />
 
-      {/*  location picker
-      <LocationPicker /> */}
+        {/* Date time picker */}
+        <DateTimePicker />
 
-      {/* Date time picker */}
-      <DateTimePicker />
+        {/* event name */}
+        <TextInput
+          placeholder='Nombre del evento'
+          placeholderTextColor='#000'
+          style={[styles.inputText_inactive, styles.inputText_name, eventData.name && styles.inputText_active]}
+          value={eventData.name}
+          onChangeText={handleName}
+        />
 
-      {/* event name */}
-      <TextInput
-        placeholder='Nombre del evento'
-        placeholderTextColor='#000'
-        style={[styles.inputText_inactive, styles.inputText_name, eventData.name && styles.inputText_active]}
-        value={eventData.name}
-        onChangeText={handleName}
-      />
+        {/* description */}
+        <TextInput
+          placeholder='Descripcion'
+          placeholderTextColor='#000'
+          multiline
+          style={[styles.inputText_inactive, styles.inputText_description, eventData.description && styles.inputText_active]}
+          value={eventData.description}
+          onChangeText={handleDescription}
+        />
 
-      {/* description */}
-      <TextInput
-        placeholder='Descripcion'
-        placeholderTextColor='#000'
-        multiline
-        style={[styles.inputText_inactive, styles.inputText_description, eventData.description && styles.inputText_active]}
-        value={eventData.description}
-        onChangeText={handleDescription}
-      />
-
-      {/* image upload */}
-      <TouchableOpacity onPress={handleImage} style={styles.imageInput}>
-        {
+        {/* image upload */}
+        <TouchableOpacity onPress={handleImage} style={styles.imageInput}>
+          {
             eventData.image.uri
               ? <Image style={styles.image} source={{ uri: eventData.image.uri }} />
               : (
@@ -167,21 +185,33 @@ const CreateEventStepOne = (props) => {
                 </>
                 )
           }
-      </TouchableOpacity>
+        </TouchableOpacity>
 
-      {/* category picker */}
-      <CategoryPicker />
+        {/* category picker */}
+        <CategoryPicker />
 
-      {/* Button */}
-      <TouchableOpacity
-        disabled={!completeInfo}
-        onPress={onPress}
-        style={[styles.buttonDisable, completeInfo && styles.buttonBase]}
-      >
-        <Text style={[styles.buttonTextDisable, completeInfo && styles.buttonTextBase]}>
-          Continuar
-        </Text>
-      </TouchableOpacity>
+        {/* Switch  */}
+        <View style={styles.switchContainer}>
+          <Text style={styles.typeEvent}>Evento Publico: </Text>
+          <Switch
+            trackColor={{ false: '#767577', true: '#767577' }}
+            thumbColor={isEnabled ? '#E1B21C' : '#f4f3f4'}
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+          />
+        </View>
+
+        {/* Button */}
+        <TouchableOpacity
+          disabled={!completeInfo}
+          onPress={onPress}
+          style={[styles.buttonDisable, completeInfo && styles.buttonBase]}
+        >
+          <Text style={[styles.buttonTextDisable, completeInfo && styles.buttonTextBase]}>
+            Continuar
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   )
 }
@@ -216,13 +246,15 @@ const styles = StyleSheet.create({
   },
 
   inputText_inactive: {
+    width: wp('85.5%'), //  320.5
+    alignSelf: 'center',
     fontSize: hp('2.35%'), //  16
     color: '#000',
     fontFamily: 'Poppins_400Regular',
     paddingLeft: wp('4.18%'), // 17~
     backgroundColor: '#00000014',
     borderRadius: 10,
-    marginBottom: hp('2.5%') // 17.1
+    marginBottom: hp('3%')
   },
 
   inputText_active: {
@@ -232,13 +264,13 @@ const styles = StyleSheet.create({
   },
 
   inputText_name: {
-    width: wp('85.5%'), //  320.5
-    height: hp('7.4%') //  60
+    height: hp('8.5%')
   },
 
   inputText_description: {
-    width: wp('85.5%'), //  320.5
-    height: hp('14.4%') //  117
+    height: hp('14.4%'), //  117
+    textAlignVertical: 'top',
+    paddingTop: hp('2%')
   },
 
   imageInput: {
@@ -248,7 +280,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: hp('2.5%') // 20.5
+    alignSelf: 'center',
+    marginBottom: hp('3%')
   },
 
   iconImage: {
@@ -268,6 +301,19 @@ const styles = StyleSheet.create({
     width: '100%'
   },
 
+  switchContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: hp('3%') // 17.1
+  },
+
+  typeEvent: {
+    fontSize: hp('2.4%'), //  ~18
+    fontFamily: 'Poppins_400Regular',
+    marginRight: wp('3%')
+  },
+
   buttonDisable: {
     width: wp('85.5%'), //  320.5
     height: hp('7.5%'), //  57
@@ -276,7 +322,8 @@ const styles = StyleSheet.create({
     borderRadius: 29,
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginBottom: 20
   },
 
   buttonBase: {
