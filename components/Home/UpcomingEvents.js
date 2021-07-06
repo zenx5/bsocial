@@ -1,12 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { StyleSheet, Text, View, Alert } from 'react-native'
+import { StyleSheet, Text, View, Alert, TouchableOpacity } from 'react-native'
 // eslint-disable-next-line camelcase
 import { useFonts, Poppins_700Bold } from '@expo-google-fonts/poppins'
 import AppLoading from 'expo-app-loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import * as Location from 'expo-location'
 import MapView, { Marker } from 'react-native-maps'
-import EventsContext from '../context/Events/EventsContext'
+import EventsContext from '../../context/Events/EventsContext'
+
+//  components
+import UpcomingEventsSettings from './UpcomingEventsSettings'
 
 //  icons
 import IconSettings from '../Icons/IconSettings'
@@ -24,7 +27,7 @@ const UpcomingEvents = () => {
     latitudeDelta: 0.0122,
     longitudeDelta: 0.0121
   }
-
+  //  get current location
   const [location, setLocation] = useState(initialRegion)
 
   useEffect(() => {
@@ -45,6 +48,11 @@ const UpcomingEvents = () => {
     })()
   }, [])
 
+  //  show map settings
+  const [showSettings, setShowSettings] = useState(false)
+
+  const onPress = () => setShowSettings(previousState => !previousState)
+
   //  waiting for fonts
   if (!fontsLoaded) {
     return <AppLoading />
@@ -54,7 +62,15 @@ const UpcomingEvents = () => {
     <View style={styles.upcomingEvents}>
       <View style={styles.upcomingEvents_header}>
         <Text style={styles.text}>Proximos Eventos</Text>
-        <IconSettings />
+        <TouchableOpacity onPress={onPress}>
+          <IconSettings />
+          {showSettings
+            ? <UpcomingEventsSettings
+                showSettings={showSettings}
+                setShowSettings={setShowSettings}
+              />
+            : null}
+        </TouchableOpacity>
       </View>
       <View>
         <MapView
