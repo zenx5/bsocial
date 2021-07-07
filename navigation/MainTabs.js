@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 // screens
 import Home from '../screens/Home'
 import ContactList from '../screens/ContactList'
-import ListEvents from '../screens/ListEvents'
+import EventList from '../screens/EventList'
 import Settings from '../screens/Settings'
 import Event from '../screens/Event'
 import CreateEventStepOne from '../screens/CreateEventStepOne'
@@ -42,7 +42,7 @@ const HomeTabs = () => {
     >
       <Tab.Screen name='Home' component={Home} options={{ tabBarLabel: () => null }} />
       <Tab.Screen name='ContactList' component={ContactList} options={{ tabBarLabel: () => null }} />
-      <Tab.Screen name='List' component={ListEvents} options={{ tabBarLabel: () => null }} />
+      <Tab.Screen name='List' component={EventList} options={{ tabBarLabel: () => null }} />
       <Tab.Screen name='Settings' component={Settings} options={{ tabBarLabel: () => null }} />
     </Tab.Navigator>
   )
