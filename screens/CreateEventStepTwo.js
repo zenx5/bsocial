@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList } from 'react-native'
-import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
+import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList, TextInput } from 'react-native'
+import { useFonts, Poppins_300Light, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import Constants from 'expo-constants'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -12,10 +12,11 @@ import EventsContext from '../context/Events/EventsContext'
 import IconBack from '../components/Icons/IconBack'
 import IconClose from '../components/Icons/IconClose'
 import IconCheck from '../components/Icons/IconCheck'
+import IconSearch from '../components/Icons/IconSearch'
 
 //  components
 const Item = ({ item, onSelectedContact }) => (
-  <TouchableOpacity onPress={onSelectedContact} style={[styles.item]}>
+  <TouchableOpacity onPress={onSelectedContact} style={[styles.item, item.notDisplay && { display: 'none' }]}>
     <Image style={styles.item_image} source={{ uri: item.photo }} />
     <Text style={styles.item_text}>{`${item.name} ${item.lastname}`}</Text>
     {item.selected ? <IconCheck style={styles.iconCheck} fill='#E1B21C' /> : null}
@@ -24,7 +25,7 @@ const Item = ({ item, onSelectedContact }) => (
 
 const CreateEventStepTwo = (props) => {
   //  fonts
-  const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_700Bold })
+  const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
 
   //  -->   context
   const { userToken } = useContext(AuthContext)
@@ -46,11 +47,65 @@ const CreateEventStepTwo = (props) => {
         photo: contact.info_contact.photo,
         name: contact.info_contact.name,
         lastname: contact.info_contact.lastname,
-        selected: false
+        selected: false,
+        notDisplay: false
       })
     ))
     setSelectedContactList(list)
   }, [contactList])
+
+  //  search contact
+  const [contactToSearch, setContactToSearch] = useState('')
+  const [contactNotFound, setContactNotFound] = useState(false)
+
+  const handleSearch = (value) => setContactToSearch(value)
+
+  //  filter contacts
+  const filtered = () => {
+    const contactToSearchToLoweCase = contactToSearch.toLowerCase()
+
+    setContactNotFound(false)
+
+    const result = selectedContactList.map((contact) => {
+      const name = contact.name.toLowerCase()
+      const lastname = contact.lastname.toLowerCase()
+
+      if ((name.indexOf(contactToSearchToLoweCase) !== -1) || (lastname.indexOf(contactToSearchToLoweCase) !== -1)) {
+        return {
+          id: contact.id,
+          contactId: contact.contact_id,
+          photo: contact.photo,
+          name: contact.name,
+          lastname: contact.lastname,
+          selected: contact.selected ? contact.selected : false,
+          notDisplay: false
+        }
+      } else {
+        return {
+          id: contact.id,
+          contactId: contact.contact_id,
+          photo: contact.photo,
+          name: contact.name,
+          lastname: contact.lastname,
+          selected: contact.selected ? contact.selected : false,
+          notDisplay: true
+        }
+      }
+    })
+
+    //  in case not found contacts
+    const notDisplay = result.filter((contact) => contact.notDisplay === true)
+    if (selectedContactList.length === notDisplay.length) {
+      setContactNotFound(true)
+    }
+
+    //  set contacts filtered
+    setSelectedContactList(result)
+  }
+
+  useEffect(() => {
+    filtered()
+  }, [contactToSearch])
 
   //  list item
   const renderItem = ({ item }) => {
@@ -123,13 +178,33 @@ const CreateEventStepTwo = (props) => {
         </TouchableOpacity>
       </View>
 
+      {/* search bar */}
+      <View style={styles.search}>
+        <TextInput
+          placeholder='Buscar contactos'
+          placeholderTextColor='#00000060'
+          style={styles.searchInput}
+          value={contactToSearch}
+          onChangeText={handleSearch}
+        />
+        <View style={styles.iconSearch}>
+          <IconSearch />
+        </View>
+      </View>
+
       {/* contact list */}
-      <FlatList
-        data={selectedContactList}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-        style={styles.list}
-      />
+      {
+        contactNotFound
+          ? <Text style={styles.contactNotFound}>Contacto no encontrado...</Text>
+          : <FlatList
+              data={selectedContactList}
+              renderItem={renderItem}
+              keyExtractor={item => item.id.toString()}
+              style={styles.list}
+            />
+      }
+
+      {/* button */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={submit}
@@ -143,6 +218,9 @@ const CreateEventStepTwo = (props) => {
   )
 }
 
+console.log('wp: ', wp('1%'))
+console.log('hp: ', hp('1%'))
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -155,9 +233,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: Constants.statusBarHeight,
+    marginBottom: hp('4.4%'), //  30.17
     paddingTop: hp('2%'), //  27.4
-    paddingBottom: hp('5%'),
-    paddingHorizontal: wp('6.6%') //  27~
+    paddingHorizontal: wp('6.6%') //  27.65
   },
 
   iconBack: {
@@ -181,7 +259,40 @@ const styles = StyleSheet.create({
     height: hp('6%') // 32
   },
 
+  search: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+    marginBottom: hp('4%'), // 27.42
+    paddingHorizontal: wp('6.6%') //  27.65
+
+  },
+
+  searchInput: {
+    fontSize: hp('2.4'), // 16.45
+    width: '100%',
+    height: hp('7%'), //  48
+    paddingLeft: wp('12.5%'), //  52.38
+    backgroundColor: '#0000000D',
+    borderRadius: 10,
+    fontFamily: 'Poppins_300Light'
+  },
+
+  iconSearch: {
+    position: 'absolute',
+    top: 14,
+    left: wp('9%') // 37.71
+  },
+
+  contactNotFound: {
+    fontSize: hp('2.1%'), // 14.4
+    fontFamily: 'Poppins_700Bold',
+    textAlign: 'center'
+  },
+
   list: {
+    marginBottom: hp('1%'),
     paddingLeft: wp('6.6%'), //  27~
     paddingRight: wp('12.2%') //  50.28~
   },
@@ -189,7 +300,7 @@ const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: hp('2%') //  20
+    marginBottom: hp('3%') //  20.57
   },
 
   item_image: {
@@ -212,16 +323,16 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    marginTop: 'auto',
-    marginBottom: hp('5%'),
+    height: hp('12'), //  82.28
+    justifyContent: 'center',
     paddingHorizontal: wp('6.6%') //  27~
 
   },
 
   button: {
     backgroundColor: '#E1B21C',
-    width: '100%',
-    height: hp('7.5%'), //  57
+    width: wp('76.5'), // 320.57
+    height: hp('8.4%'), //  57.6
     borderWidth: 0,
     borderRadius: 29,
     alignItems: 'center',
