@@ -62,9 +62,9 @@ const FeatureEvents = (props) => {
   //  -->   context
   const { featured } = useContext(EventsContext)
 
-  // if (!fontsLoaded) {
-  //   return <AppLoading />
-  // }
+  if (!fontsLoaded) {
+    return <AppLoading />
+  }
 
   return (
     <View style={styles.container}>
