@@ -126,8 +126,6 @@ const ContactsList = () => {
     return <AppLoading />
   }
 
-  console.log('render')
-
   return (
     <View style={styles.container}>
       {/* header */}
