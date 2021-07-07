@@ -1,8 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-// eslint-disable-next-line camelcase
-import { useFonts, Poppins_700Bold } from '@expo-google-fonts/poppins'
+import { useFonts, Poppins_700Bold } from '@expo-google-fonts/poppins' //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import { StatusBar } from 'expo-status-bar'
 import AuthContext from '../context/Auth/AuthContext'
@@ -45,7 +44,7 @@ const Home = (props) => {
         </View>
       </View>
 
-      {/* upcoming events */}
+      {/* map for upcoming events */}
       <UpcomingEvents />
 
       {/* featured Events */}

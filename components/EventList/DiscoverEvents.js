@@ -100,7 +100,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     paddingTop: hp('1.7%'), // 11.65
-    paddingBottom: hp('2.4') // 16.45
+    paddingBottom: hp('2.4'), // 16.45
+    marginBottom: hp('1.7%') // 11.65
   },
 
   header: {
@@ -127,6 +128,7 @@ const styles = StyleSheet.create({
 
   card: {
     width: wp('37.5%'), //  157.14
+    height: hp('20.2%'), // 138.51
     borderWidth: 1.5,
     borderRadius: 16,
     borderColor: '#DFDFDF',
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
     fontSize: hp('1.7%'), //  11.65
     fontFamily: 'Poppins_500Medium',
     paddingLeft: wp('2.7%'), // 11.31
-    marginBottom: hp('1.5%') // 10.8
+    marginBottom: hp('1.2%') //  8.22
   },
 
   card_icons: {
