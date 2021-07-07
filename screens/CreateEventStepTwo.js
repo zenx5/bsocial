@@ -218,9 +218,6 @@ const CreateEventStepTwo = (props) => {
   )
 }
 
-console.log('wp: ', wp('1%'))
-console.log('hp: ', hp('1%'))
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -266,7 +263,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginBottom: hp('4%'), // 27.42
     paddingHorizontal: wp('6.6%') //  27.65
-
   },
 
   searchInput: {
@@ -326,7 +322,6 @@ const styles = StyleSheet.create({
     height: hp('12'), //  82.28
     justifyContent: 'center',
     paddingHorizontal: wp('6.6%') //  27~
-
   },
 
   button: {
