@@ -27,17 +27,19 @@ const ContactsList = () => {
   //  fonts
   const [fontsLoaded] = useFonts({ Poppins_300Light, Poppins_400Regular, Poppins_700Bold })
 
-  // -->  context
+  // context
   const { userToken } = useContext(AuthContext)
   const { contactList, getContacts } = useContext(ContactsContex)
 
-  //  Ccontacts
+  //  contacts
   const [contactsToShow, setContactsToShow] = useState([])
 
+  //  get all contacts from api
   useEffect(() => {
     getContacts(userToken)
   }, [userToken])
 
+  //  parsed contacts and set in state
   useEffect(() => {
     const list = []
     contactList.map((contact) => (
@@ -53,7 +55,7 @@ const ContactsList = () => {
     setContactsToShow(list)
   }, [contactList])
 
-  // open search bar
+  // search bar
   const [isOpen, setIsOpen] = useState(false)
 
   // open search bar
@@ -67,55 +69,64 @@ const ContactsList = () => {
 
   //  search contact
   const [contactToSearch, setContactToSearch] = useState('')
+  const [contactNotFound, setContactNotFound] = useState(false)
 
-  const handleSearch = (value) => setContactToSearch(...value)
+  const handleSearch = (value) => setContactToSearch(value)
 
-  // useEffect(() => {
-  //   console.log(contactToSearch)
-  //   if (contactToSearch.length) {
-  //     console.log(contactToSearch)
-  //     const filtered = contactsToShow.map((contacts) => (
-  //       (contacts.name.toLocaleLowerCase() === contactToSearch || contacts.lastname.toLocaleLowerCase() === contactToSearch)
-  //         ? contacts
-  //         : { id: contacts.id, contactId: contacts.contactId, photo: contacts.photo, name: contacts.name, lastname: contacts.lastname, notDisplay: true }
-  //     ))
+  //  filter contacts
+  const filtered = () => {
+    const contactToSearchToLoweCase = contactToSearch.toLowerCase()
 
-  //     setContactToSearch(filtered)
-  //   }
+    setContactNotFound(false)
 
-  //   if (contactToSearch === '') {
-  //     console.log('esta vacio el search')
-  //     const allContacts = contactsToShow.map((contacts) => (console.log(contacts)))
-  //     setContactsToShow(allContacts)
-  //   }
-  // }, [contactToSearch])
+    const result = contactsToShow.map((contact) => {
+      const name = contact.name.toLowerCase()
+      const lastname = contact.lastname.toLowerCase()
 
-  //  render item
-  const renderItem = ({ item }) => {
-    //  filtering contacts
-    // if (item.notDisplay === false) {
-    //   const setTrue = contactsToShow.map((contacts) => (
-    //     contacts.name.toLowerCase() === contactToSearch.toLocaleLowerCase() || contacts.lastname.toLowerCase() === contactToSearch.toLocaleLowerCase()
-    //       ? { id: contacts.id, contactId: contacts.contactId, photo: contacts.photo, name: contacts.name, lastname: contacts.lastname, notDisplay: true }
-    //       : contacts
-    //   ))
-    //   setContactsToShow(setTrue)
-    // } else {
-    //   const setFalse = contactsToShow.map((contacts) => (
-    //     contacts.name.toLowerCase() === contactToSearch.toLocaleLowerCase() || contacts.lastname.toLowerCase() === contactToSearch.toLocaleLowerCase()
-    //       ? { id: contacts.id, contactId: contacts.contactId, photo: contacts.photo, name: contacts.name, lastname: contacts.lastname, notDisplay: false }
-    //       : contacts
-    //   ))
-    //   setContactsToShow(setFalse)
-    // }
+      if ((name.indexOf(contactToSearchToLoweCase) !== -1) || (lastname.indexOf(contactToSearchToLoweCase) !== -1)) {
+        return {
+          id: contact.id,
+          contactId: contact.contactId,
+          photo: contact.photo,
+          name: contact.name,
+          lastname: contact.lastname,
+          notDisplay: false
+        }
+      } else {
+        return {
+          id: contact.id,
+          contactId: contact.contactId,
+          photo: contact.photo,
+          name: contact.name,
+          lastname: contact.lastname,
+          notDisplay: true
+        }
+      }
+    })
 
-    return <Item item={item} />
+    //  in case not found contacts
+    const notDisplay = result.filter((contact) => contact.notDisplay === true)
+    if ((contactsToShow.length === notDisplay.length) && isOpen) {
+      setContactNotFound(true)
+    }
+
+    //  set contacts filtered
+    setContactsToShow(result)
   }
+
+  useEffect(() => {
+    filtered()
+  }, [contactToSearch])
+
+  //  render item list
+  const renderItem = ({ item }) => <Item item={item} />
 
   //  waiting for fonts
   if (!fontsLoaded) {
     return <AppLoading />
   }
+
+  console.log('render')
 
   return (
     <View style={styles.container}>
@@ -155,13 +166,17 @@ const ContactsList = () => {
         <Text style={styles.header_footer}>Lista de contactos agregados</Text>
       </View>
 
-      <FlatList
-        data={contactsToShow}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-        style={styles.flatList}
-        ListHeaderComponent={NewContact}
-      />
+      {
+        contactNotFound
+          ? <Text style={styles.contactNotFound}>Contacto no encontrado...</Text>
+          : <FlatList
+              data={contactsToShow}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id.toString()}
+              style={styles.flatList}
+              ListHeaderComponent={NewContact}
+            />
+      }
     </View>
   )
 }
@@ -197,6 +212,13 @@ const styles = StyleSheet.create({
   header_footer: {
     fontSize: hp('2.1%'), // 14.4
     fontFamily: 'Poppins_400Regular'
+  },
+
+  contactNotFound: {
+    fontSize: hp('2.1%'), // 14.4
+    fontFamily: 'Poppins_700Bold',
+    textAlign: 'center'
+
   },
 
   search: {
