@@ -1,96 +1,70 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native'
 import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins'  //  eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import EventsContext from '../../context/Events/EventsContext'
 
 //  icons
 import IconEye from '../../components/Icons/IconEye'
 import IconComments from '../../components/Icons/IconComments'
 import IconLikes from '../../components/Icons/IconLikes'
+import AuthContext from '../../context/Auth/AuthContext'
 
-//  example data
-const FAKE_DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-    content: 'Far far away, behind the word mountains, Pityful a rethoric question ran over her cheek, then',
-    views: 54,
-    likes: 12,
-    commets: 4
-  },
-  {
-    id: 'bc13ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-    content: 'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia',
-    views: 54,
-    likes: 12,
-    commets: 4
-  },
-  {
-    id: 'f5sd4fbc13ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-    content: 'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. She packed her seven versalia, put her initial into the belt and made herself on the way. When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then',
-    views: 54,
-    likes: 12,
-    commets: 4
-  },
-  {
-    id: 'f5sd4fbc13ac68afc-c605-48d3-sdf84a4f8-fbd91aa97f63',
-    title: 'Second Item',
-    content: 'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. She packed her seven versalia, put her initial into the belt and made herself on the way. When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then',
-    views: 54,
-    likes: 12,
-    commets: 4
-  }
-]
-
-const Item = ({ item, navigate }) => {
-  const colors = [
-    '#E1B21C', '#82CC7C', '#33A0F3', '#F1485F', '#F26A24',
-    '#512E5F', '#1B4F72', '#186A3B'
-  ]
-  const colorNumber = Math.floor(Math.random() * colors.length)
-  const goEvent = () => {
-    navigate('Event', { id: item.id })
-  }
-
+const Item = ({ item, goEvent }) => {
   return (
-    <View style={styles.eventContainer}>
-      <TouchableOpacity onPress={goEvent} style={[styles.imageContainer, { backgroundColor: colors[colorNumber] }]}>
-        <Image style={styles.image} source={{ uri: item.image }} />
+    <View style={styles.card}>
+      {/* image */}
+      <TouchableOpacity style={styles.card_imageContainer}>
+        <Image style={styles.card_image} source={{ uri: item.image }} />
       </TouchableOpacity>
-      <View style={styles.dataContainer}>
-        <TouchableOpacity onPress={goEvent}>
+
+      <View style={styles.card_body}>
+        {/* title */}
+        <TouchableOpacity style={styles.card_title}>
           <Text style={styles.name}>{item.name || ''}</Text>
         </TouchableOpacity>
 
-        <View style={styles.iconContainer}>
-          <View style={[styles.iconContainer, { marginRight: wp('5.5%') }]}>
-            <IconEye style={styles.icon} />
-            <Text style={styles.count}>{item.viewers_count || ''}</Text>
-          </View>
+        {/* description */}
+        <Text style={styles.card_description}>{item.description}</Text>
 
-          <View style={[styles.iconContainer, { marginRight: wp('5.5%') }]}>
-            <IconComments style={styles.icon} />
-            <Text style={styles.count}>{item.comments_count || ''}</Text>
-          </View>
+        {/* icons */}
+        <View style={styles.card_iconsContainer}>
+          <IconEye />
+          <Text style={styles.icons_count}>{item.viewers_count}</Text>
 
-          <View style={styles.iconContainer}>
-            <IconLikes style={styles.icon} />
-            <Text style={styles.count}>{item.likes_count || ''}</Text>
-          </View>
+          <IconComments />
+          <Text style={styles.icons_count}>{item.comments_count}</Text>
+
+          <IconLikes />
+          <Text style={styles.icons_count}>{item.likes_count}</Text>
         </View>
       </View>
     </View>
   )
 }
+
+//  separator item
 const Separator = () => <View style={styles.separator} />
 
 const MyUpcomingEvents = (props) => {
+  //  fonts
   const [fontsLoaded] = useFonts({ Poppins_400Regular, Poppins_500Medium, Poppins_700Bold })
 
-  const renderItem = ({ item }) => <Item item={item} navigate={props.navigation} />
+  //  context
+  const { userToken } = useContext(AuthContext)
+  const { getEventsHome, upcoming } = useContext(EventsContext)
+
+  //  on end scroll
+  const onEndList = () => getEventsHome(userToken)
+
+  const renderItem = ({ item }) => {
+    // const goEvent = () => props.navigation.navigate('Event', { id: item.id })
+    return (
+      <Item item={item} />
+    )
+  }
+  // const memoizedValue = useMemo(() => renderItem, [upcoming])
 
   if (!fontsLoaded) {
     return <AppLoading />
@@ -102,12 +76,17 @@ const MyUpcomingEvents = (props) => {
         <Text style={styles.header_tiitle}>Mis próximos eventos</Text>
       </View>
       <FlatList
-        data={FAKE_DATA}
+        showsVerticalScrollIndicator={false}
+        onEndReachedThreshold={0.5}
+        onEndReached={onEndList}
+        initialNumToRender={5}
+        data={upcoming}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
         ItemSeparatorComponent={Separator}
         style={styles.flatList}
       />
+
     </>
   )
 }
@@ -137,7 +116,8 @@ const styles = StyleSheet.create({
 
   flatList: {
     backgroundColor: '#fff',
-    paddingHorizontal: wp('4.8%') // 20.11
+    paddingHorizontal: wp('4.8%'), // 20.11
+    paddingBottom: 10
   },
 
   separator: {
@@ -148,18 +128,17 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    flexDirection: 'row',
-    alignItems: 'center'
+    flexDirection: 'row'
   },
 
-  card_image: {
+  card_imageContainer: {
     width: wp('18.9%'), //  79.2
     borderRadius: 6,
     paddingLeft: 11,
     backgroundColor: '#00000020'
   },
 
-  image: {
+  card_image: {
     width: wp('16.3%'), //  68.30
     height: hp('15.8%'), // 108.34
     borderRadius: 6,
@@ -168,25 +147,23 @@ const styles = StyleSheet.create({
 
   card_body: {
     height: hp('15.8%'), // 108.34
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    marginLeft: 10
+    marginLeft: hp('1.5%') // 10.28
   },
 
   card_title: {
-    fontSize: 14,
+    fontSize: hp('2.1%'), //  14.4
     color: '#000',
-    fontFamily: 'Poppins_500Medium'
+    fontFamily: 'Poppins_500Medium',
+    marginBottom: hp('1.5%') // 10.28
   },
 
-  card_content: {
-    fontSize: 10,
+  card_description: {
+    fontSize: hp('1.5%'), // 10.28
     fontFamily: 'Poppins_400Regular',
-    flexWrap: 'wrap'
+    marginBottom: 'auto'
   },
 
-  card_icons: {
+  card_iconsContainer: {
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -195,13 +172,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 10
+    marginRight: wp('2.4%') //  10.05
   },
 
-  icon_total: {
-    fontSize: 12,
+  icons_count: {
+    fontSize: hp('1.8%'), //  12.34
     fontFamily: 'Poppins_400Regular',
-    marginLeft: 3
+    color: '#000',
+    marginLeft: wp('1.2%'), // 5.02
+    marginRight: wp('2%') // 8.38
   }
 })
 export default MyUpcomingEvents

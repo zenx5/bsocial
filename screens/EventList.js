@@ -80,7 +80,7 @@ const EventList = (props) => {
       <DiscoverEvents />
 
       {/* my upcoming events */}
-      <MyUpcomingEvents />
+      <MyUpcomingEvents {...props} />
     </View>
   )
 }
