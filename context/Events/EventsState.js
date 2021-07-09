@@ -2,6 +2,7 @@
 import React, { useReducer, useMemo } from 'react'
 import EventsContext from './EventsContext'
 import EventsReducer from './EventsReducer'
+import { API_HOME, API_ALL_CATEGORIES, API_CREATE_NEW_EVENT } from '../../constants'
 import axios from 'axios'
 import { Platform } from 'react-native'
 import {
@@ -45,11 +46,6 @@ const EventsState = (props) => {
     allEventsCategories: [],
     categoriesMusic: []
   }
-
-  //  -->   APIs
-  const API_HOME = 'https://bsocial.at/api/events'
-  const API_ALL_CATEGORIES = 'https://bsocial.at/api/categories'
-  const API_CREATE_NEW_EVENT = 'https://bsocial.at/api/events/store'
 
   const [state, dispatch] = useReducer(EventsReducer, initialState)
 

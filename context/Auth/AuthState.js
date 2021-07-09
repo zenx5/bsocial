@@ -3,6 +3,7 @@ import AuthContext from './AuthContext'
 import AuthReducers from './AuthReducers'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { API_LOGIN, API_REGISTER, API_AUTH } from '../../constants'
 import { USER_DATA, USER_AUTHENTICATED, USER_TOKEN, IS_EMAIL_IN_USE, LOADING, IS_VALID_USER, CREATED_USER } from '../types'
 
 const AuthState = (props) => {
@@ -19,11 +20,6 @@ const AuthState = (props) => {
     isValidUser: null,
     userIsAuthenticated: null
   }
-
-  //  -->  api urls
-  const API_LOGIN = ' https://bsocial.at/api/auth/login'
-  const API_REGISTER = ' https://bsocial.at/api/auth/register'
-  const API_AUTH = ' https://bsocial.at/api/customer'
 
   const [state, dispatch] = useReducer(AuthReducers, initialState)
 

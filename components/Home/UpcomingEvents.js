@@ -8,6 +8,7 @@ import { StatusBar } from 'expo-status-bar'
 import MapView, { Marker } from 'react-native-maps'
 import EventsContext from '../../context/Events/EventsContext'
 import AuthContext from '../../context/Auth/AuthContext'
+import { MAP_STYLE } from '../../constants'
 
 //  icons
 import IconSettings from '../Icons/IconSettings'
@@ -51,14 +52,16 @@ const UpcomingEvents = () => {
     getAllCategories(userToken)
   }, [])
 
-  //  set events in state
+  //  state
   const [upcomingEvents, setUpcomingEvents] = useState([])
+  const [eventsCategories, setEventsCategories] = useState([])
 
   //  parsed events, categories and set in state
   useEffect(() => {
-    const list = []
+    const eventList = []
+    const categoriesList = []
     upcoming.map((event) => (
-      list.push({
+      eventList.push({
         id: event.id,
         name: event.name,
         latitude: event.latitud,
@@ -69,7 +72,16 @@ const UpcomingEvents = () => {
       })
     ))
 
-    setUpcomingEvents(list)
+    allEventsCategories.map((category) => (
+      categoriesList.push({
+        id: category.id,
+        display_name: category.display_name,
+        selected: false
+      })
+    ))
+
+    setUpcomingEvents(eventList)
+    setEventsCategories(categoriesList)
   }, [upcoming])
 
   //  show map settings
@@ -119,12 +131,12 @@ const UpcomingEvents = () => {
   if (!fontsLoaded) {
     return <AppLoading />
   }
-  console.log(upcomingEvents)
 
   return (
     <View style={styles.upcomingEvents}>
       {showSettings ? <StatusBar backgroundColor='#00000045' /> : <StatusBar backgroundColor='#fff' />}
 
+      {/* header */}
       <View style={styles.upcomingEvents_header}>
         <Text style={styles.text}>Proximos Eventos</Text>
         <TouchableOpacity onPress={onPress}>
@@ -132,6 +144,7 @@ const UpcomingEvents = () => {
         </TouchableOpacity>
       </View>
       <View>
+
         <MapView
           style={styles.map}
           region={{
@@ -141,6 +154,7 @@ const UpcomingEvents = () => {
             longitudeDelta: 0.02
           }}
           showsUserLocation
+          customMapStyle={MAP_STYLE}
         >
           {
           upcomingEvents.map((item, index) => {
@@ -166,7 +180,7 @@ const UpcomingEvents = () => {
           <View style={styles.modalBody}>
             {/* categories list */}
             <FlatList
-              data={allEventsCategories}
+              data={eventsCategories}
               renderItem={renderItem}
               keyExtractor={(item) => item.id.toString()}
             />

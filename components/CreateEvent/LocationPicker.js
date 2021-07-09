@@ -8,6 +8,7 @@ import EventsContext from '../../context/Events/EventsContext'
 // eslint-disable-next-line camelcase
 import { useFonts, Poppins_400Regular } from '@expo-google-fonts/poppins'
 import AppLoading from 'expo-app-loading'
+import { MAP_STYLE } from '../../constants'
 
 //  icons
 import IconGeolocalizador from '../Icons/IconGeolocalizador'
@@ -109,6 +110,7 @@ const LocationPicker = () => {
                 latitudeDelta: 0.01,
                 longitudeDelta: 0.01
               }}
+              customMapStyle={MAP_STYLE}
             >
               <Marker
                 coordinate={{
