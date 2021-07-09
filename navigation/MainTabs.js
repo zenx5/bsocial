@@ -11,6 +11,7 @@ import Event from '../screens/Event'
 import CreateEventStepOne from '../screens/CreateEventStepOne'
 import CreateEventStepTwo from '../screens/CreateEventStepTwo'
 import CreateEventStepThree from '../screens/CreateEventStepThree'
+import test from '../screens/test'
 
 //  icons
 import IconsSwitching from '../components/Icons/IconsSwitching'
@@ -65,7 +66,7 @@ const MainTabs = () => {
 
       <Stack.Screen
         name='Create Event Step One'
-        component={CreateEventStepOne}
+        component={test}
         options={{ header: () => null }}
       />
       <Stack.Screen

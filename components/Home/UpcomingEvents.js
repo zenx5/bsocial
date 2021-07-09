@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { StyleSheet, Text, View, Alert, TouchableOpacity, Modal, FlatList } from 'react-native'
+import { StyleSheet, Text, View, Alert } from 'react-native'
 import { useFonts, Poppins_700Bold } from '@expo-google-fonts/poppins' // eslint-disable-line
 import AppLoading from 'expo-app-loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -10,17 +10,13 @@ import EventsContext from '../../context/Events/EventsContext'
 import AuthContext from '../../context/Auth/AuthContext'
 import { MAP_STYLE } from '../../constants'
 
-//  icons
-import IconSettings from '../Icons/IconSettings'
-import IconClose from '../Icons/IconClose'
-
 const UpcomingEvents = () => {
   //  load fonts
   const [fontsLoaded] = useFonts({ Poppins_700Bold })
 
   //  context
   const { userToken } = useContext(AuthContext)
-  const { upcoming, getAllCategories, allEventsCategories } = useContext(EventsContext)
+  const { upcoming, getAllCategories } = useContext(EventsContext)
 
   const initialRegion = {
     latitude: 0,
@@ -54,12 +50,10 @@ const UpcomingEvents = () => {
 
   //  state
   const [upcomingEvents, setUpcomingEvents] = useState([])
-  const [eventsCategories, setEventsCategories] = useState([])
 
   //  parsed events, categories and set in state
   useEffect(() => {
     const eventList = []
-    const categoriesList = []
     upcoming.map((event) => (
       eventList.push({
         id: event.id,
@@ -71,61 +65,8 @@ const UpcomingEvents = () => {
         selected: false
       })
     ))
-
-    allEventsCategories.map((category) => (
-      categoriesList.push({
-        id: category.id,
-        display_name: category.display_name,
-        selected: false
-      })
-    ))
-
     setUpcomingEvents(eventList)
-    setEventsCategories(categoriesList)
   }, [upcoming])
-
-  //  show map settings
-  const [showSettings, setShowSettings] = useState(false)
-
-  const onPress = () => setShowSettings(prevState => !prevState)
-
-  //  render categories list
-  const renderItem = ({ item }) => {
-    const onSelectedCategory = () => {
-      if (item.selected === false) {
-        console.log('enter')
-        const setTrue = upcomingEvents.map(event => (
-          event.id === item.id
-            ? {
-                id: event.id,
-                latitude: event.latitud,
-                longitude: event.longitud,
-                type: event.type,
-                category: event.category,
-                selected: true
-              }
-            : event
-        ))
-        setUpcomingEvents(setTrue)
-      } else {
-        const setFalse = upcomingEvents.map(event => (
-          event.id === item.id
-            ? {
-                id: event.id,
-                latitude: event.latitud,
-                longitude: event.longitud,
-                type: event.type,
-                category: event.category,
-                selected: false
-              }
-            : event
-        ))
-        setUpcomingEvents(setFalse)
-      }
-    }
-
-    return <Item item={item} onSelectedCategory={onSelectedCategory} />
-  }
 
   //  waiting for fonts
   if (!fontsLoaded) {
@@ -134,14 +75,11 @@ const UpcomingEvents = () => {
 
   return (
     <View style={styles.upcomingEvents}>
-      {showSettings ? <StatusBar backgroundColor='#00000045' /> : <StatusBar backgroundColor='#fff' />}
+      <StatusBar backgroundColor='#fff' />
 
       {/* header */}
       <View style={styles.upcomingEvents_header}>
         <Text style={styles.text}>Proximos Eventos</Text>
-        <TouchableOpacity onPress={onPress}>
-          <IconSettings />
-        </TouchableOpacity>
       </View>
       <View>
 
@@ -171,43 +109,11 @@ const UpcomingEvents = () => {
         }
         </MapView>
       </View>
-      <Modal
-        visible={showSettings}
-        transparent
-        animationType='fade'
-      >
-        <View style={styles.modal}>
-          <View style={styles.modalBody}>
-            {/* categories list */}
-            <FlatList
-              data={eventsCategories}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id.toString()}
-            />
-            {/* close button */}
-            <TouchableOpacity style={styles.iconClose_Container} onPress={onPress}>
-              <IconClose style={styles.iconClose} />
-            </TouchableOpacity>
-          </View>
-
-        </View>
-      </Modal>
     </View>
   )
 }
 
 export default UpcomingEvents
-
-//  list item
-const Item = ({ item, onSelectedCategory }) => {
-  return (
-    <View>
-      <TouchableOpacity onPress={onSelectedCategory} style={[styles.item_category]}>
-        <Text>{item.display_name}</Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
 
 const styles = StyleSheet.create({
   upcomingEvents: {

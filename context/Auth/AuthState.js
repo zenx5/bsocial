@@ -1,3 +1,4 @@
+/* global fetch */
 import React, { useReducer, useMemo } from 'react'
 import AuthContext from './AuthContext'
 import AuthReducers from './AuthReducers'
@@ -26,8 +27,17 @@ const AuthState = (props) => {
   const authContext = useMemo(() => ({
     //  login
     login: async (userData) => {
-      dispatch({ type: LOADING, payload: true })
-      dispatch({ type: IS_VALID_USER, payload: null })
+      console.log(userData)
+      // dispatch({ type: LOADING, payload: true })
+      // dispatch({ type: IS_VALID_USER, payload: null })
+
+      // const response = await fetch(API_LOGIN, {
+      //   method: 'POST',
+      //   body: JSON.stringify(userData)
+      // })
+
+      // const result = await response.json()
+      // console.log(result)
 
       axios.post(API_LOGIN, {
         email: userData.email,
